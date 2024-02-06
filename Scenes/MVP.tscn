@@ -1,6 +1,64 @@
-[gd_scene load_steps=2 format=3 uid="uid://bs2uec3bxwmen"]
+[gd_scene load_steps=9 format=3 uid="uid://bs2uec3bxwmen"]
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
+[ext_resource type="Script" path="res://Camera/TopDownCameraFollow.cs" id="2_fla0r"]
+[ext_resource type="PackedScene" uid="uid://dkl43e1muftxi" path="res://Player/Player.tscn" id="3_naffg"]
+
+[sub_resource type="Environment" id="Environment_l0ktl"]
+background_mode = 1
+background_color = Color(0.392157, 0.596078, 0.803922, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_iisck"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k3hhn"]
+albedo_color = Color(0.152941, 0.454902, 0.129412, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ki12o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xogqd"]
+size = Vector3(5.50126, 1, 4.75428)
 
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_e8mri")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l0ktl")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866026, 0, -0.866025, 0.5, 2.91003, 5.20315, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4.247, 1.63231)
+script = ExtResource("2_fla0r")
+Speed = 20.0
+Offset = Vector3(0, 7, 3)
+DebugOffset = Vector3(0, 6, 4)
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+transform = Transform3D(20, 0, 0, 0, 0.5, 0, 0, 0, 20, 0, -0.25, 0)
+mesh = SubResource("BoxMesh_iisck")
+surface_material_override/0 = SubResource("StandardMaterial3D_k3hhn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_ki12o")
+
+[node name="Battle Area" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1218, 0.0692785, -6.58051)
+
+[node name="BattleArea" type="Area3D" parent="World/Battle Area"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Battle Area/BattleArea"]
+shape = SubResource("BoxShape3D_xogqd")
+
+[node name="Label3D" type="Label3D" parent="World/Battle Area"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+text = "BATTLE"
+font_size = 267
+outline_size = 42
+
+[node name="Player" parent="." instance=ExtResource("3_naffg")]

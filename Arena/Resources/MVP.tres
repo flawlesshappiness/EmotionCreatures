@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ArenaInfo" load_steps=2 format=3 uid="uid://bmftrjj7ivcdj"]
+
+[ext_resource type="Script" path="res://Arena/ArenaInfo.cs" id="1_wt66l"]
+
+[resource]
+script = ExtResource("1_wt66l")
+Type = 0
+Scene = "res://Arena/Scenes/MVP_Arena.tscn"

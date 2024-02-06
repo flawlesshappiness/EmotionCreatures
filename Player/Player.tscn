@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkl43e1muftxi"]
+
+[ext_resource type="Script" path="res://Player/TopDownController.cs" id="1_vtxpr"]
+[ext_resource type="Script" path="res://Human/HumanAnimationController.cs" id="2_4n5n0"]
+[ext_resource type="PackedScene" uid="uid://c0jnpk1herxhl" path="res://Assets/Quaternius/Ultimate Modular Women - April 2022/Individual Characters/glTF/Adventurer.gltf" id="3_yi5fs"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1v3i3"]
+radius = 0.194107
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_vtxpr")
+
+[node name="Animation" type="Node3D" parent="."]
+script = ExtResource("2_4n5n0")
+IdleAnimation = "Idle"
+MoveAnimation = "Run"
+
+[node name="Adventurer" parent="Animation" instance=ExtResource("3_yi5fs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0719757, 0.00675273, 0.0298169)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_1v3i3")

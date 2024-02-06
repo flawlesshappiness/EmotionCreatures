@@ -43,7 +43,9 @@ public static class Singleton
 
     public static T LoadInstance<T>(string scene_path) where T : Node
     {
-        scene_path = $"res://{scene_path}.tscn";
+        scene_path = $"{scene_path}";
+        scene_path = scene_path.StartsWith("res://") ? scene_path : "res://" + scene_path;
+        scene_path = scene_path.EndsWith(".tscn") ? scene_path : scene_path + ".tscn";
         var scene = GD.Load(scene_path) as PackedScene;
         var packed_scene = scene.Instantiate();
         Scene.Root.AddChild(packed_scene);

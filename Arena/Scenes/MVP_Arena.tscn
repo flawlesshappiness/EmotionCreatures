@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://brgy8yigb6646"]
+
+[ext_resource type="Script" path="res://Arena/Scenes/MVP_Arena.cs" id="1_wy5tj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2dgvf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fu45u"]
+albedo_color = Color(0.741176, 0.470588, 0.00784314, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3yrdo"]
+
+[node name="MVP Arena" type="Node3D"]
+script = ExtResource("1_wy5tj")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 10, 0, -0.25, 0)
+mesh = SubResource("BoxMesh_2dgvf")
+surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_3yrdo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 10, -4.75, 0.25, 0)
+mesh = SubResource("BoxMesh_2dgvf")
+surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D2/StaticBody3D"]
+shape = SubResource("BoxShape3D_3yrdo")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="World"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 10, 4.75, 0.25, 0)
+mesh = SubResource("BoxMesh_2dgvf")
+surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D3/StaticBody3D"]
+shape = SubResource("BoxShape3D_3yrdo")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="World"]
+transform = Transform3D(9, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.25, 4.75)
+mesh = SubResource("BoxMesh_2dgvf")
+surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D4/StaticBody3D"]
+shape = SubResource("BoxShape3D_3yrdo")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="World"]
+transform = Transform3D(9, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.25, -4.75)
+mesh = SubResource("BoxMesh_2dgvf")
+surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D5"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D5/StaticBody3D"]
+shape = SubResource("BoxShape3D_3yrdo")
+
+[node name="Positions" type="Node3D" parent="World"]
+
+[node name="PlayerStart" type="Node3D" parent="World/Positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5877)
+
+[node name="OpponentStart" type="Node3D" parent="World/Positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.56066)

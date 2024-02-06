@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ArenaInfoCollection" load_steps=2 format=3 uid="uid://bh45upt0idpj8"]
+
+[ext_resource type="Script" path="res://Arena/ArenaInfoCollection.cs" id="1_a0v83"]
+
+[resource]
+script = ExtResource("1_a0v83")
+Paths = PackedStringArray("res://Arena/Resources/MVP.tres")

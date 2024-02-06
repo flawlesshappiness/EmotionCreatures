@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ResourcePathsCollection" load_steps=2 format=3 uid="uid://g1hcnabyfxd1"]
+
+[ext_resource type="Script" path="res://ResourcePaths/ResourcePathsCollection.cs" id="1_w0q54"]
+
+[resource]
+script = ExtResource("1_w0q54")
+ArenaInfoCollection = "res://Arena/Resources/ArenaInfoCollection.tres"

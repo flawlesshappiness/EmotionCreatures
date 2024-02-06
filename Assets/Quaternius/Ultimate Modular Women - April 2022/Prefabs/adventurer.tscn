@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://mru22rwgyfvo"]
+
+[ext_resource type="PackedScene" uid="uid://c0jnpk1herxhl" path="res://Assets/Quaternius/Ultimate Modular Women - April 2022/Individual Characters/glTF/Adventurer.gltf" id="1_y6b5k"]
+
+[node name="Adventurer" instance=ExtResource("1_y6b5k")]
+
+[node name="Skeleton3D" parent="CharacterArmature" index="0"]
+bones/1/rotation = Quaternion(0, 0.23553, 0, 0.971867)
+bones/4/rotation = Quaternion(0.153868, -0.237706, -0.00529317, 0.959058)
+bones/5/rotation = Quaternion(-0.000206973, 1.23439e-10, 1.1865e-10, 1)
+bones/6/rotation = Quaternion(0.0306859, 7.47589e-07, 2.27269e-08, 0.999529)
+bones/7/rotation = Quaternion(-0.0245108, -5.84526e-11, 0.000127055, 0.9997)
+bones/9/rotation = Quaternion(-0.741918, -0.0413935, -0.176409, 0.645542)
+bones/11/rotation = Quaternion(0.00930064, 0.00630404, 0.0231915, 0.999668)
+bones/17/rotation = Quaternion(-0.0535813, 0.0588508, -0.000211704, 0.996828)
+bones/25/rotation = Quaternion(-0.0766031, 0.0608134, -0.182085, 0.978406)
+bones/32/rotation = Quaternion(-0.741143, 0.171119, 0.108826, 0.639987)
+bones/33/rotation = Quaternion(-0.203003, -0.203246, 0.331849, 0.898531)
+bones/34/rotation = Quaternion(0.00822544, -0.00981952, -0.0520068, 0.998565)
+bones/40/rotation = Quaternion(-0.0656035, -0.0574026, -0.0753899, 0.993337)
+bones/54/rotation = Quaternion(0.96787, 0.0771803, -0.222048, 0.0892494)
+bones/55/rotation = Quaternion(0.247458, -1.07379e-08, -2.62593e-09, 0.968899)
+bones/56/rotation = Quaternion(0.965092, -0.0183965, 0.171005, 0.197524)
+bones/57/rotation = Quaternion(0.222987, 8.68261e-09, 4.36873e-09, 0.974821)
+bones/58/rotation = Quaternion(0.614423, 0.348027, -0.34617, 0.617679)
+bones/60/rotation = Quaternion(0.704032, 0.0409887, -0.0407701, 0.707811)
