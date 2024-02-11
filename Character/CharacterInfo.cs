@@ -7,5 +7,8 @@ public partial class CharacterInfo : Resource
     public string Scene { get; set; }
 
     [Export]
-    public CharacterType Type { get; set; }
+    public CharacterBaseType BaseType { get; set; }
+
+    [Export]
+    public CharacterType CharacterType { get; set; }
 }

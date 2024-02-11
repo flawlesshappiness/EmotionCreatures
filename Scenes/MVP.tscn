@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bs2uec3bxwmen"]
+[gd_scene load_steps=8 format=3 uid="uid://bs2uec3bxwmen"]
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
 [ext_resource type="Script" path="res://Camera/TopDownCameraFollow.cs" id="2_fla0r"]
-[ext_resource type="PackedScene" uid="uid://xn86bcu7wvvr" path="res://Characters/Adventurer/adventurer.tscn" id="3_2ua55"]
 
 [sub_resource type="Environment" id="Environment_l0ktl"]
 background_mode = 1
@@ -25,7 +24,7 @@ script = ExtResource("1_e8mri")
 environment = SubResource("Environment_l0ktl")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866026, 0, -0.866025, 0.5, 2.91003, 5.20315, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 21.9525, 5.20315, 0)
 light_color = Color(1, 1, 0.658824, 1)
 shadow_enabled = true
 
@@ -61,5 +60,3 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 text = "BATTLE"
 font_size = 267
 outline_size = 42
-
-[node name="Adventurer" parent="." instance=ExtResource("3_2ua55")]

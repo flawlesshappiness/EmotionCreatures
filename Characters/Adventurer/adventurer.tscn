@@ -1,29 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://xn86bcu7wvvr"]
+[gd_scene load_steps=2 format=3 uid="uid://xn86bcu7wvvr"]
 
-[ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_igbnm"]
-[ext_resource type="Script" path="res://Animation/HumanAnimationController.cs" id="2_7u70r"]
 [ext_resource type="PackedScene" uid="uid://c0jnpk1herxhl" path="res://Assets/Quaternius/Ultimate Modular Women - April 2022/Individual Characters/glTF/Adventurer.gltf" id="3_dmoj4"]
-[ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="4_vhda8"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1v3i3"]
-radius = 0.194107
-
-[node name="Adventurer" type="CharacterBody3D"]
-script = ExtResource("1_igbnm")
-
-[node name="Movement" type="Node3D" parent="."]
-script = ExtResource("4_vhda8")
-
-[node name="Animation" type="Node3D" parent="."]
-script = ExtResource("2_7u70r")
-IdleAnimation = "Idle"
-MoveAnimation = "Run"
-
-[node name="Adventurer" parent="Animation" instance=ExtResource("3_dmoj4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0719757, 0.00675273, 0.0298169)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_1v3i3")
-
-[editable path="Animation/Adventurer"]
+[node name="Adventurer" instance=ExtResource("3_dmoj4")]

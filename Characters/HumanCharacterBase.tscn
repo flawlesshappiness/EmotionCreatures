@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckap6ux3nauhq"]
+
+[ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_ceiqt"]
+[ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="2_lkdhg"]
+[ext_resource type="Script" path="res://Animation/HumanAnimationController.cs" id="3_dynj1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
+radius = 0.194107
+
+[node name="HumanCharacterBase" type="CharacterBody3D"]
+script = ExtResource("1_ceiqt")
+
+[node name="Movement" type="Node3D" parent="."]
+script = ExtResource("2_lkdhg")
+
+[node name="Animation" type="Node3D" parent="."]
+script = ExtResource("3_dynj1")
+IdleAnimation = "Idle"
+MoveAnimation = "Run"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_rnhpt")

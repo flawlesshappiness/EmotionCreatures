@@ -28,7 +28,7 @@ public static class Debug
         var log = new LogMessage
         {
             Message = message,
-            Type = LogType.LOG,
+            Type = LogType.Log,
             Indent = Indent,
         };
 
@@ -54,7 +54,7 @@ public static class Debug
         var log = new LogMessage
         {
             Message = message,
-            Type = LogType.ERROR,
+            Type = LogType.Error,
             Indent = Indent,
         };
 
@@ -71,7 +71,7 @@ public static class Debug
         var log = new LogMessage
         {
             Message = message,
-            Type = LogType.TRACE,
+            Type = LogType.Trace,
             Indent = Indent,
         };
 
@@ -90,22 +90,6 @@ public static class Debug
         var filename = Path.GetFileNameWithoutExtension(file);
         var message = obj?.ToString() ?? "";
         Trace(string.IsNullOrEmpty(message) ? $"{filename}.{caller}" : $"{filename}.{caller}: {message}");
-    }
-
-    public static void AddIndent() => Indent++;
-
-    public static void RemoveIndent() => Indent--;
-
-    private static string GetIndentString()
-    {
-        string s = "";
-
-        for (int i = 0; i < Indent; i++)
-        {
-            s += "  ";
-        }
-
-        return s;
     }
 
     public static void RegisterAction(DebugAction action)
@@ -137,12 +121,12 @@ public class DebugAction
     public System.Action<DebugView> Action { get; set; }
 }
 
-public enum LogType { LOG, TRACE, EXCEPTION, ERROR }
+public enum LogType { Log, Trace, Exception, Error }
 
 public class LogMessage
 {
     public string Message { get; set; }
-    public LogType Type { get; set; } = LogType.LOG;
+    public LogType Type { get; set; } = LogType.Log;
     public int Indent { get; set; } = 0;
     public string UtcTime { get; private set; }
     public string GameTime { get; private set; }

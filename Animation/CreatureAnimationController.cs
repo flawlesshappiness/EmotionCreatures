@@ -10,9 +10,9 @@ public partial class CreatureAnimationController : AnimationController
 
     public AnimationEvent Attack, Hurt;
 
-    public override void _Ready()
+    public override void SetModel(Node3D model)
     {
-        base._Ready();
+        base.SetModel(model);
 
         Attack = new AnimationEvent(AttackAnimation, this);
         Hurt = new AnimationEvent(HurtAnimation, this);

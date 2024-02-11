@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_exrl5")
 Scene = "res://Characters/Frog/frog.tscn"
-Type = 1
+BaseType = 1
+CharacterType = 1

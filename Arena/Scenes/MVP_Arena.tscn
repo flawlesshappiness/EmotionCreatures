@@ -1,6 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://brgy8yigb6646"]
+[gd_scene load_steps=6 format=3 uid="uid://brgy8yigb6646"]
 
 [ext_resource type="Script" path="res://Arena/Scenes/MVP_Arena.cs" id="1_wy5tj"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_e4ei5"]
+vertices = PackedVector3Array(-4.5, 0.5, -4.5, -4.5, 0.5, 4.5, 4.5, 0.5, 4.5, 4.5, 0.5, -4.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="BoxMesh" id="BoxMesh_2dgvf"]
 
@@ -14,14 +18,18 @@ script = ExtResource("1_wy5tj")
 
 [node name="World" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="World"]
+navigation_mesh = SubResource("NavigationMesh_e4ei5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/NavigationRegion3D"]
 transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 10, 0, -0.25, 0)
 mesh = SubResource("BoxMesh_2dgvf")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_fu45u")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="World/NavigationRegion3D/MeshInstance3D"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/NavigationRegion3D/MeshInstance3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_3yrdo")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]

@@ -9,10 +9,10 @@ public partial class MVP : Scene
     {
         base.OnInitialize();
 
+        var player = CharacterController.Instance.CreateCharacter(CharacterType.Adventurer);
         var camera = this.GetNodeInChildren<TopDownCameraFollow>();
-        var target = this.GetNodeInChildren<Character>();
-        camera.SetTarget(target);
-        PlayerController.Instance.SetTargetCharacter(target);
+        camera.SetTarget(player);
+        PlayerController.Instance.SetTargetCharacter(player);
 
         BattleArea.BodyEntered += OnEnterBattleArea;
     }

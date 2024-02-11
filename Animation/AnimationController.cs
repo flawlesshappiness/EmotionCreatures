@@ -8,8 +8,7 @@ public partial class AnimationController : Node3DScript
     [Export]
     public string MoveAnimation;
 
-    [NodeName("AnimationPlayer")]
-    public AnimationPlayer Animation;
+    public AnimationPlayer Animation { get; private set; }
 
     protected Character Character { get; private set; }
 
@@ -17,9 +16,10 @@ public partial class AnimationController : Node3DScript
 
     private AnimationEvent Idle, Move;
 
-    public override void _Ready()
+    public virtual void SetModel(Node3D model)
     {
-        base._Ready();
+        model.SetParent(this);
+        Animation = model.GetNodeInChildren<AnimationPlayer>();
 
         Idle = new AnimationEvent(IdleAnimation, this)
             .Loop();

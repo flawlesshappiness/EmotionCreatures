@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_c6ktf")
+HumanBase = "res://Characters/HumanCharacterBase.tscn"
+CreatureBase = "res://Characters/CreatureCharacterBase.tscn"
 Paths = PackedStringArray("res://Character/Resources/adventurer.tres", "res://Character/Resources/frog.tres")
