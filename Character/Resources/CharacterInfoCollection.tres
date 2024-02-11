@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CharacterInfoCollection" load_steps=2 format=3 uid="uid://0c1y2d3gnhiu"]
+
+[ext_resource type="Script" path="res://Character/CharacterInfoCollection.cs" id="1_c6ktf"]
+
+[resource]
+script = ExtResource("1_c6ktf")
+Paths = PackedStringArray("res://Character/Resources/adventurer.tres", "res://Character/Resources/frog.tres")

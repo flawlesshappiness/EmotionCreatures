@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://bmi1chtb3p53p"]
+
+[ext_resource type="Script" path="res://Character/CreatureCharacter.cs" id="1_i7v11"]
+[ext_resource type="Script" path="res://Character/CreatureCombat.cs" id="2_ye1er"]
+[ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="3_dgcvi"]
+[ext_resource type="Script" path="res://Animation/CreatureAnimationController.cs" id="4_ar2jm"]
+[ext_resource type="PackedScene" uid="uid://de5na0qnsmhoy" path="res://Assets/Quaternius/Ultimate Monsters/Big/glTF/Frog.gltf" id="5_s5wm5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5lw7e"]
+radius = 0.38234
+height = 1.31922
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ctmhb"]
+size = Vector3(0.751953, 0.80957, 0.849609)
+
+[node name="Frog" type="CharacterBody3D"]
+script = ExtResource("1_i7v11")
+
+[node name="Combat" type="Node3D" parent="."]
+script = ExtResource("2_ye1er")
+
+[node name="Movement" type="Node3D" parent="."]
+script = ExtResource("3_dgcvi")
+
+[node name="Animation" type="Node3D" parent="."]
+script = ExtResource("4_ar2jm")
+AttackAnimation = "Punch"
+HurtAnimation = "HitReact"
+IdleAnimation = "Idle"
+MoveAnimation = "Run"
+
+[node name="Model" parent="Animation" instance=ExtResource("5_s5wm5")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Animation/Model/CharacterArmature" index="0"]
+bones/1/rotation = Quaternion(1.16747e-05, 0.705806, 0.708405, 1.2001e-05)
+bones/2/position = Vector3(0.000588355, 0.934556, 0.213122)
+bones/2/rotation = Quaternion(0.0178074, 0.121451, -0.00188197, 0.992436)
+bones/4/rotation = Quaternion(0.010323, -0.0002374, 0.00853267, 0.99991)
+bones/5/rotation = Quaternion(0.0476192, -8.33657e-07, 3.38223e-08, 0.998866)
+bones/7/rotation = Quaternion(-0.323433, -0.000261012, 8.87389e-05, 0.946251)
+bones/8/position = Vector3(0.194911, 0.272644, 0.0440527)
+bones/8/rotation = Quaternion(-0.168777, 0.0455166, -0.417424, 0.89174)
+bones/9/rotation = Quaternion(0.590995, 0.470892, 0.079297, -0.650152)
+bones/10/rotation = Quaternion(0.0672825, 0.0622747, -0.355827, 0.930044)
+bones/12/rotation = Quaternion(-0.0283748, -0.00482241, -0.167482, 0.985455)
+bones/18/rotation = Quaternion(0.042254, 0.0256417, 0.232305, 0.971387)
+bones/19/rotation = Quaternion(-0.0766122, -0.00152706, -0.0198675, 0.996862)
+bones/20/rotation = Quaternion(-0.0137147, -0.0297074, -0.677202, 0.735069)
+bones/21/rotation = Quaternion(-0.0116281, 0.00252355, 0.212192, 0.977155)
+bones/22/position = Vector3(-0.193634, 0.272644, 0.0440528)
+bones/22/rotation = Quaternion(-0.168777, -0.045516, 0.417424, 0.89174)
+bones/23/rotation = Quaternion(-0.202542, -0.585765, -0.652291, -0.436317)
+bones/24/rotation = Quaternion(-0.0508451, 0.00324431, 0.120618, 0.991391)
+bones/26/rotation = Quaternion(-0.352085, 0.0399518, 0.261516, 0.897803)
+bones/27/rotation = Quaternion(-0.624877, -0.0621056, -0.0610276, 0.775853)
+bones/29/rotation = Quaternion(-0.510454, -0.0201786, 0.0861193, 0.855344)
+bones/30/rotation = Quaternion(-0.527099, -0.0349146, 0.0715487, 0.846066)
+bones/32/rotation = Quaternion(-0.373965, -0.0142688, -0.143299, 0.916194)
+bones/33/rotation = Quaternion(-0.636407, -0.0269334, 0.160936, 0.753897)
+bones/35/rotation = Quaternion(-0.685943, -0.169033, -0.270985, 0.653817)
+bones/36/rotation = Quaternion(0.981247, 0.0240622, 0.115933, 0.152102)
+bones/37/rotation = Quaternion(0.259935, 0.00371872, 0.00992303, 0.965568)
+bones/38/rotation = Quaternion(0.961625, -0.0171733, 0.115925, 0.248082)
+bones/39/rotation = Quaternion(0.480384, -0.00595474, -0.00876569, 0.876994)
+bones/41/position = Vector3(-0.349298, 0.127513, 0.0731416)
+bones/41/rotation = Quaternion(-1.20779e-05, 0.705806, 0.708405, -1.16644e-05)
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.662199, 0.0478231)
+shape = SubResource("CapsuleShape3D_5lw7e")
+
+[node name="MeleeAttackArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69259, 0.580385)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeleeAttackArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0112908)
+shape = SubResource("BoxShape3D_ctmhb")
+
+[editable path="Animation/Model"]

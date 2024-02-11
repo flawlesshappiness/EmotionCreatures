@@ -12,43 +12,47 @@ public partial class ArenaController : Node
 
     private ArenaInfoCollection _collection;
     private ArenaInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-
     private ArenaInfoCollection LoadCollection() => GD.Load<ArenaInfoCollection>(ResourcePaths.Instance.Collection.ArenaInfoCollection);
-    private ArenaInfo GetInfo(ArenaType type) => Collection.Resources.FirstOrDefault(r => r.Type == type);
 
-    public void SetArena(ArenaType type)
+    public ArenaScene SetArena(ArenaType type)
     {
+        Debug.LogMethod(type);
         Debug.Indent++;
-        Debug.Log($"Set Arena: {type}");
         RemoveArena();
         CurrentArena = CreateArena(type);
         Debug.Indent--;
+
+        return CurrentArena;
     }
 
     private void RemoveArena()
     {
-        Debug.Indent++;
         if (CurrentArena != null)
         {
-            Debug.Log($"Removing current arena");
+            Debug.LogMethod();
+            Debug.Indent++;
             CurrentArena.QueueFree();
             CurrentArena = null;
+            Debug.Indent--;
             Debug.Log($"Success");
         }
-        Debug.Indent--;
     }
 
     private ArenaScene CreateArena(ArenaType type)
     {
+        Debug.LogMethod(type);
         Debug.Indent++;
-        Debug.Log($"Creating arena: {type}");
-        Debug.Indent++;
-        var info = GetInfo(type);
+        var info = GetRandomArenaInfo(type);
         var arena = Scene.CreateInstance<ArenaScene>(info.Scene);
         arena.World.GlobalPosition = new Vector3(300, 0, 0);
         Debug.Indent--;
         Debug.Log($"Success: {arena}");
-        Debug.Indent--;
         return arena;
+    }
+
+    private ArenaInfo GetRandomArenaInfo(ArenaType type)
+    {
+        var arenas = Collection.Resources.Where(r => r.Type == type).ToList();
+        return arenas.Random();
     }
 }

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CharacterInfo" load_steps=2 format=3 uid="uid://bhn60hrm0memd"]
+
+[ext_resource type="Script" path="res://Character/CharacterInfo.cs" id="1_htalh"]
+
+[resource]
+script = ExtResource("1_htalh")
+Scene = "res://Characters/Adventurer/adventurer.tscn"
+Type = 0

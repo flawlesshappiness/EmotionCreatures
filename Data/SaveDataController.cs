@@ -64,7 +64,7 @@ public partial class SaveDataController : Node
 
     public void SaveAll()
     {
-        Debug.Log("SaveDataController.SaveAll");
+        Debug.LogMethod();
         Debug.Indent++;
 
         foreach (var kvp in data_objects)

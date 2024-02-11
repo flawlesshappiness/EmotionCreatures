@@ -11,6 +11,28 @@ public partial class PlayerController : Node
 
     public void SetTargetCharacter(Character target)
     {
+        Debug.LogMethod(target);
+        Debug.Indent++;
+        if (TargetCharacter != null)
+        {
+            TargetCharacter.EndTarget();
+            TargetCharacter = null;
+        }
+
         TargetCharacter = target;
+
+        if (TargetCharacter != null)
+        {
+            TargetCharacter.BeginTarget();
+        }
+        Debug.Indent--;
+    }
+
+    public void RemoveTargetCharacter()
+    {
+        Debug.LogMethod();
+        Debug.Indent++;
+        SetTargetCharacter(null);
+        Debug.Indent--;
     }
 }

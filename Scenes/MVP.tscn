@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
 [ext_resource type="Script" path="res://Camera/TopDownCameraFollow.cs" id="2_fla0r"]
-[ext_resource type="PackedScene" uid="uid://dkl43e1muftxi" path="res://Player/Player.tscn" id="3_naffg"]
+[ext_resource type="PackedScene" uid="uid://xn86bcu7wvvr" path="res://Characters/Adventurer/adventurer.tscn" id="3_2ua55"]
 
 [sub_resource type="Environment" id="Environment_l0ktl"]
 background_mode = 1
@@ -48,7 +48,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_k3hhn")
 shape = SubResource("BoxShape3D_ki12o")
 
 [node name="Battle Area" type="Node3D" parent="World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1218, 0.0692785, -6.58051)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1218, 0.0692785, -0.199995)
 
 [node name="BattleArea" type="Area3D" parent="World/Battle Area"]
 
@@ -61,4 +61,4 @@ text = "BATTLE"
 font_size = 267
 outline_size = 42
 
-[node name="Player" parent="." instance=ExtResource("3_naffg")]
+[node name="Adventurer" parent="." instance=ExtResource("3_2ua55")]

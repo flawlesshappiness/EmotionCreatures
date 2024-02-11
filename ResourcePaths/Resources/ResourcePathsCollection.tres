@@ -5,3 +5,4 @@
 [resource]
 script = ExtResource("1_w0q54")
 ArenaInfoCollection = "res://Arena/Resources/ArenaInfoCollection.tres"
+CharacterInfoCollection = "res://Character/Resources/CharacterInfoCollection.tres"

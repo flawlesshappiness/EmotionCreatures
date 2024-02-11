@@ -1,5 +1,7 @@
 using Godot;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 public static class Debug
 {
@@ -34,6 +36,15 @@ public static class Debug
             string s = IndentString + message;
             GD.Print(s);
         }
+    }
+
+    public static void LogMethod(object obj = null, [CallerFilePath] string file = "", [CallerMemberName] string caller = "")
+    {
+        if (string.IsNullOrEmpty(caller)) return;
+        if (string.IsNullOrEmpty(file)) return;
+        var filename = Path.GetFileNameWithoutExtension(file);
+        var message = obj?.ToString() ?? "";
+        Log(string.IsNullOrEmpty(message) ? $"{filename}.{caller}" : $"{filename}.{caller}: {message}");
     }
 
     public static void LogError(string message)

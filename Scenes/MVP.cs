@@ -21,12 +21,8 @@ public partial class MVP : Scene
     {
         var character = body.GetNodeInParents<Character>();
 
-        if (PlayerController.Instance.TargetCharacter != character)
-            return;
+        if (!character.IsPlayer) return;
 
-        ArenaController.Instance.SetArena(ArenaType.MVP);
-
-        var arena = ArenaController.Instance.CurrentArena;
-        PlayerController.Instance.TargetCharacter.GlobalPosition = arena.PlayerStart.GlobalPosition;
+        BattleController.Instance.StartBattle(ArenaType.MVP);
     }
 }
