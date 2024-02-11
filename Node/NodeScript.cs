@@ -5,8 +5,6 @@ using System.Reflection;
 
 public partial class NodeScript : Node
 {
-    private const bool DEBUG = false;
-
     public override void _Ready()
     {
         FindNodesFromAttribute(this, GetType());
@@ -16,7 +14,7 @@ public partial class NodeScript : Node
 
     public static void FindNodesFromAttribute(Node root, Type type)
     {
-        Debug.Log(DEBUG, $"FindNodes_NodePathAttribute ({root.Name})");
+        Debug.TraceMethod(root.Name);
         Debug.Indent++;
 
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -28,7 +26,7 @@ public partial class NodeScript : Node
             try
             {
                 FindNodeFromAttribute(root, field);
-                Debug.Log(DEBUG, $"Found value for field: {field.Name}");
+                Debug.Trace($"Found value for field: {field.Name}");
             }
             catch (Exception e)
             {

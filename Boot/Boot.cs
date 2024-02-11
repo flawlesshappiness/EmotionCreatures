@@ -12,6 +12,17 @@ public partial class Boot : Node
             Initialize();
     }
 
+    public override void _Notification(int what)
+    {
+        base._Notification(what);
+
+        long id = what;
+        if (id is NotificationWMCloseRequest or NotificationCrash or NotificationExitTree)
+        {
+            Debug.WriteLogsToPersistentData();
+        }
+    }
+
     private void Initialize()
     {
         _initialized = true;

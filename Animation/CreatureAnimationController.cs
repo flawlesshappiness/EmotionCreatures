@@ -14,7 +14,7 @@ public partial class CreatureAnimationController : AnimationController
     {
         base._Ready();
 
-        Attack = new AnimationEvent(AttackAnimation, Animation);
-        Hurt = new AnimationEvent(HurtAnimation, Animation);
+        Attack = new AnimationEvent(AttackAnimation, this);
+        Hurt = new AnimationEvent(HurtAnimation, this);
     }
 }

@@ -13,15 +13,17 @@ public partial class AnimationController : Node3DScript
 
     protected Character Character { get; private set; }
 
+    protected AnimationEvent CurrentAnimation { get; private set; }
+
     private AnimationEvent Idle, Move;
 
     public override void _Ready()
     {
         base._Ready();
 
-        Idle = new AnimationEvent(IdleAnimation, Animation)
+        Idle = new AnimationEvent(IdleAnimation, this)
             .Loop();
-        Move = new AnimationEvent(MoveAnimation, Animation)
+        Move = new AnimationEvent(MoveAnimation, this)
             .Loop();
 
         OnMovingChanged(false);
@@ -65,5 +67,16 @@ public partial class AnimationController : Node3DScript
     public void PlayIdle()
     {
         OnMovingChanged(Character.Movement.IsMoving);
+    }
+
+    public void SetCurrentAnimation(AnimationEvent anim)
+    {
+        if (CurrentAnimation != null && !CurrentAnimation.Finished)
+        {
+            CurrentAnimation.Interrupt();
+            CurrentAnimation = null;
+        }
+
+        CurrentAnimation = anim;
     }
 }

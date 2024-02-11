@@ -1,9 +1,16 @@
 using Godot;
 
-public partial class CreatureCombat : Node
+public partial class CreatureCombat : NodeScript
 {
     [NodeName(nameof(MeleeAttackArea))]
     public Area3D MeleeAttackArea;
+
+    private CharacterBody3D Body { get; set; }
+
+    public void SetBody(CharacterBody3D body)
+    {
+        Body = body;
+    }
 
     public void Attack()
     {
@@ -13,9 +20,10 @@ public partial class CreatureCombat : Node
         var bodies = MeleeAttackArea.GetOverlappingBodies();
         foreach (var body in bodies)
         {
-            Debug.Log("Body: " + body);
+            if (body == Body) continue;
+            Debug.Trace("Body: " + body);
             var creature = body.GetNodeInChildren<CreatureCharacter>();
-            Debug.Log("Creature: " + creature);
+            Debug.Trace("Creature: " + creature);
             if (creature == null) continue;
 
             creature.Damage();

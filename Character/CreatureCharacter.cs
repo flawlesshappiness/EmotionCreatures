@@ -1,10 +1,14 @@
 public partial class CreatureCharacter : Character
 {
     public CreatureAnimationController CreatureAnimation { get; private set; }
+    public CreatureCombat Combat { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
+
+        Combat = this.GetNodeInChildren<CreatureCombat>();
+        Combat.SetBody(this);
 
         CreatureAnimation = Animation as CreatureAnimationController;
     }
@@ -35,6 +39,8 @@ public partial class CreatureCharacter : Character
 
     public void Damage()
     {
+        Debug.TraceMethod();
+
         var anim = CreatureAnimation.Hurt;
 
         Movement.MovementLock.AddLock(anim.Name);
