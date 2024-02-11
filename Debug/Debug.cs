@@ -66,6 +66,12 @@ public static class Debug
         }
     }
 
+    public static void Trace(object o)
+    {
+        var message = o == null ? "null" : o.ToString();
+        Trace(message);
+    }
+
     public static void Trace(string message)
     {
         var log = new LogMessage

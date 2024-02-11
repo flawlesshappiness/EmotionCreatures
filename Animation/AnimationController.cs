@@ -12,7 +12,7 @@ public partial class AnimationController : Node3DScript
 
     protected Character Character { get; private set; }
 
-    protected AnimationEvent CurrentAnimation { get; private set; }
+    public AnimationEvent CurrentAnimation { get; private set; }
 
     private AnimationEvent Idle, Move;
 
@@ -29,7 +29,7 @@ public partial class AnimationController : Node3DScript
         OnMovingChanged(false);
     }
 
-    public void SetCharacter(Character character)
+    public void Initialize(Character character)
     {
         Character = character;
         Character.Movement.OnMoveStart += OnMoveStart;

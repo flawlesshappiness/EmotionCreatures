@@ -8,7 +8,10 @@ public partial class CreatureAnimationController : AnimationController
     [Export]
     public string HurtAnimation;
 
-    public AnimationEvent Attack, Hurt;
+    [Export]
+    public string DeadAnimation;
+
+    public AnimationEvent Attack, Hurt, Dead;
 
     public override void SetModel(Node3D model)
     {
@@ -16,5 +19,6 @@ public partial class CreatureAnimationController : AnimationController
 
         Attack = new AnimationEvent(AttackAnimation, this);
         Hurt = new AnimationEvent(HurtAnimation, this);
+        Dead = new AnimationEvent(DeadAnimation, this);
     }
 }

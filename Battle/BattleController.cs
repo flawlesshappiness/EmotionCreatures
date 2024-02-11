@@ -1,5 +1,8 @@
 using Godot;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class BattleController : Node
 {
@@ -10,6 +13,12 @@ public partial class BattleController : Node
 
     private BattleAnimationView AnimationView { get; set; }
 
+    public Action OnBattleStart, OnBattleEnd;
+
+    private List<CreatureCharacter> OpponentCreatures { get; set; } = new();
+    private List<CreatureCharacter> PlayerCreatures { get; set; } = new();
+    private List<Node> BattleObjects { get; set; } = new();
+
     public override void _Ready()
     {
         base._Ready();
@@ -17,8 +26,22 @@ public partial class BattleController : Node
         AnimationView = View.LoadSingleton<BattleAnimationView>();
     }
 
+    public void Clear()
+    {
+        OpponentCreatures.Clear();
+        PlayerCreatures.Clear();
+
+        foreach (var obj in BattleObjects.ToList())
+        {
+            obj.QueueFree();
+        }
+
+        BattleObjects.Clear();
+    }
+
     public void StartBattle(ArenaType arena_type)
     {
+        Clear();
         Coroutine.Start(Cr);
         IEnumerator Cr()
         {
@@ -42,23 +65,75 @@ public partial class BattleController : Node
             AnimationView.Label.Visible = false;
             AnimationView.Visible = false;
             // Begin battle
+            OnBattleStart?.Invoke();
             Debug.Indent--;
 
             // LOCAL HELPER METHODS
-            Character CreatePlayerCreature(CharacterType type)
+            CreatureCharacter CreatePlayerCreature(CharacterType type)
             {
-                var creature = CharacterController.Instance.CreateCharacter(type);
+                var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
                 creature.GlobalPosition = arena.PlayerStart.GlobalPosition;
                 PlayerController.Instance.SetTargetCharacter(creature);
+                creature.OnDeath += () => OnPlayerCreatureDeath(creature);
+
+                PlayerCreatures.Add(creature);
+                BattleObjects.Add(creature);
                 return creature;
             }
 
-            Character CreateOpponentCreature(CharacterType type)
+            CreatureCharacter CreateOpponentCreature(CharacterType type)
             {
-                var creature = CharacterController.Instance.CreateCharacter(type);
+                var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
                 creature.GlobalPosition = arena.OpponentStart.GlobalPosition;
+                creature.SetAI(new AI_Opponent_MVP(arena));
+                creature.OnDeath += () => OnOpponentCreatureDeath(creature);
+
+                OpponentCreatures.Add(creature);
+                BattleObjects.Add(creature);
                 return creature;
             }
+        }
+    }
+
+    private void EndBattle()
+    {
+        OpponentCreatures.ForEach(x => x.AI?.Stop());
+        PlayerCreatures.ForEach(x => x.AI?.Stop());
+
+        Coroutine.Start(Cr);
+        IEnumerator Cr()
+        {
+            AnimationView.Visible = true;
+            yield return AnimationView.AnimateBackgroundFade(true, 1f);
+            OnBattleEnd?.Invoke();
+            yield return AnimationView.AnimateBackgroundFade(false, 1.0f);
+            AnimationView.Visible = false;
+        }
+    }
+
+    private void OnOpponentCreatureDeath(CreatureCharacter creature)
+    {
+        var all_dead = OpponentCreatures.All(x => x.IsDead);
+        if (!all_dead) return;
+
+        Coroutine.Start(Cr);
+        IEnumerator Cr()
+        {
+            yield return new WaitForSeconds(1.0f);
+            EndBattle();
+        }
+    }
+
+    private void OnPlayerCreatureDeath(CreatureCharacter creature)
+    {
+        var all_dead = PlayerCreatures.All(x => x.IsDead);
+        if (!all_dead) return;
+
+        Coroutine.Start(Cr);
+        IEnumerator Cr()
+        {
+            yield return new WaitForSeconds(1.0f);
+            EndBattle();
         }
     }
 }

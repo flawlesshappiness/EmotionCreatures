@@ -31,6 +31,8 @@ public partial class Boot : Node
         LoadScene();
 
         SaveDataController.Instance.SaveAll();
+
+        PlayerInput.Instance.Pause.OnPressed += Quit;
     }
 
     private void InitializeScene()
@@ -44,5 +46,11 @@ public partial class Boot : Node
     private void LoadScene()
     {
         Scene.Goto(Save.Game.Scene);
+    }
+
+    private static void Quit()
+    {
+
+        Scene.Tree.Quit();
     }
 }

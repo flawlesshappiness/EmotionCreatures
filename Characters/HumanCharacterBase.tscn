@@ -1,11 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckap6ux3nauhq"]
+[gd_scene load_steps=8 format=3 uid="uid://ckap6ux3nauhq"]
 
 [ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_ceiqt"]
 [ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="2_lkdhg"]
 [ext_resource type="Script" path="res://Animation/HumanAnimationController.cs" id="3_dynj1"]
+[ext_resource type="Script" path="res://Navigation/CharacterNavigation.cs" id="4_geetl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
 radius = 0.194107
+
+[sub_resource type="SphereMesh" id="SphereMesh_0uexq"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5666w"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
 
 [node name="HumanCharacterBase" type="CharacterBody3D"]
 script = ExtResource("1_ceiqt")
@@ -21,3 +30,10 @@ MoveAnimation = "Run"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_rnhpt")
+
+[node name="Navigation" type="NavigationAgent3D" parent="."]
+script = ExtResource("4_geetl")
+
+[node name="DebugSphere" type="MeshInstance3D" parent="Navigation"]
+mesh = SubResource("SphereMesh_0uexq")
+surface_material_override/0 = SubResource("StandardMaterial3D_5666w")

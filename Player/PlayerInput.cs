@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
 public partial class PlayerInput : Node
@@ -13,6 +12,7 @@ public partial class PlayerInput : Node
     private bool HasTarget => Target != null;
 
     public readonly InputAction Attack = new InputAction(PlayerControls.Attack);
+    public readonly InputAction Pause = new InputAction(PlayerControls.Pause);
 
     private List<InputAction> input_actions = new();
 
@@ -44,14 +44,15 @@ public partial class PlayerInput : Node
     private void InitializeInputActions()
     {
         input_actions.Add(Attack);
+        input_actions.Add(Pause);
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        base._Process(delta);
+        base._PhysicsProcess(delta);
+        if (Scene.Root == null) return;
 
-        var fdelta = Convert.ToSingle(delta);
-        ProcessInputTargetCharacter(fdelta);
+        ProcessInputTargetCharacter();
     }
 
     public override void _Input(InputEvent @event)
@@ -60,11 +61,11 @@ public partial class PlayerInput : Node
         input_actions.ForEach(x => x.ProcessInput(@event));
     }
 
-    private void ProcessInputTargetCharacter(float delta)
+    private void ProcessInputTargetCharacter()
     {
         if (!HasTarget) return;
         var input = Input.GetVector(PlayerControls.Left, PlayerControls.Right, PlayerControls.Forward, PlayerControls.Back);
-        Target.Movement.Move(input, delta);
+        Target.Movement.Move(input);
     }
 
     public PlayerInput()

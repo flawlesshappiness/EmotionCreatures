@@ -1,7 +1,19 @@
+using System;
+
 public partial class CreatureCharacter : Character
 {
     public CreatureAnimationController CreatureAnimation { get; private set; }
     public CreatureCombat Combat { get; private set; }
+
+    public int Health = 3;
+
+    private bool is_dead;
+
+    public bool IsAlive => !is_dead;
+
+    public bool IsDead => is_dead;
+
+    public Action OnDeath;
 
     public override void _Ready()
     {
@@ -27,7 +39,16 @@ public partial class CreatureCharacter : Character
 
     private void AttackPressed()
     {
+        Attack();
+    }
+
+    public void Attack()
+    {
+        if (IsDead) return;
+
         var anim = CreatureAnimation.Attack;
+
+        if (Animation.CurrentAnimation.Name == anim.Name) return;
 
         Movement.MovementLock.AddLock(anim.Name);
         anim.Play(() =>
@@ -39,7 +60,23 @@ public partial class CreatureCharacter : Character
 
     public void Damage()
     {
-        Debug.TraceMethod();
+        if (IsDead) return;
+
+        Health--;
+
+        if (Health <= 0)
+        {
+            Kill();
+        }
+        else
+        {
+            Hurt();
+        }
+    }
+
+    private void Hurt()
+    {
+        if (IsDead) return;
 
         var anim = CreatureAnimation.Hurt;
 
@@ -49,5 +86,22 @@ public partial class CreatureCharacter : Character
             CreatureAnimation.PlayIdle();
             Movement.MovementLock.RemoveLock(anim.Name);
         });
+    }
+
+    public void Kill()
+    {
+        if (IsDead) return;
+
+        is_dead = true;
+        Movement.MovementLock.AddLock("Death");
+
+        var anim = CreatureAnimation.Dead;
+
+        Movement.MovementLock.AddLock(anim.Name);
+        anim.Play(() =>
+        {
+        });
+
+        OnDeath?.Invoke();
     }
 }

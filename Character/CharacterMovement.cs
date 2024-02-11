@@ -8,6 +8,7 @@ public partial class CharacterMovement : Node
 
     private bool _init;
     private bool _moving;
+    private float _time;
 
     public MultiLock MovementLock { get; private set; } = new MultiLock();
 
@@ -20,27 +21,42 @@ public partial class CharacterMovement : Node
 
     public bool IsMoving => _moving;
 
-    public void SetBody(CharacterBody3D body)
+    public void Initialize(CharacterBody3D body)
     {
         Body = body;
     }
 
-    public void Move(Vector2 input, float delta)
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        _time = Convert.ToSingle(delta);
+    }
+
+    public void Stop()
+    {
+        Move(Vector2.Zero);
+    }
+
+    public void Move(Vector3 input)
+    {
+        Move(new Vector2(input.X, input.Z));
+    }
+
+    public void Move(Vector2 input)
     {
         Vector3 velocity = Body.Velocity;
         Vector3 direction = MovementLock.IsLocked ? Vector3.Zero : (new Vector3(input.X, 0, input.Y)).Normalized();
 
         // Add the gravity.
         if (!Body.IsOnFloor())
-            velocity.Y -= Gravity * (float)delta;
+            velocity.Y -= Gravity * _time;
 
         if (direction != Vector3.Zero)
         {
             velocity.X = direction.X * Speed;
             velocity.Z = direction.Z * Speed;
 
-            var ry = Mathf.LerpAngle(Body.Rotation.Y, Mathf.Atan2(velocity.X, velocity.Z), delta * RotationSpeed);
-            Body.Rotation = new Vector3(0, ry, 0);
+            Rotate(velocity);
         }
         else
         {
@@ -71,5 +87,17 @@ public partial class CharacterMovement : Node
         {
             _moving = false;
         }
+    }
+
+    public void Rotate(Vector3 velocity)
+    {
+        var ry = Mathf.LerpAngle(Body.Rotation.Y, Mathf.Atan2(velocity.X, velocity.Z), RotationSpeed * _time);
+        Body.Rotation = new Vector3(0, ry, 0);
+    }
+
+    public void RotateTowards(Vector3 position)
+    {
+        var dir = Body.GlobalPosition.DirectionTo(position);
+        Rotate(dir);
     }
 }

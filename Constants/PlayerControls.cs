@@ -7,4 +7,5 @@ public partial class PlayerControls : Node
     public const string Left = "left";
     public const string Right = "right";
     public const string Attack = "attack";
+    public const string Pause = "pause";
 }
