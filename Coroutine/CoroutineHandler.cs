@@ -10,7 +10,7 @@ public partial class CoroutineHandler : Node
     private Dictionary<Guid, Coroutine> _coroutines = new();
 
     public static CoroutineHandler Create() =>
-        Singleton.CreateSingleton<CoroutineHandler>($"Coroutine/{nameof(CoroutineHandler)}");
+        Singleton.Create<CoroutineHandler>($"Coroutine/{nameof(CoroutineHandler)}");
 
     public override void _Ready()
     {

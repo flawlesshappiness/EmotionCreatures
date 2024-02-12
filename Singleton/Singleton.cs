@@ -5,7 +5,7 @@ public static class Singleton
 {
     private static Dictionary<string, Node> _singletons = new();
 
-    public static T CreateInstance<T>(string script_path) where T : Node
+    private static T CreateInstance<T>(string script_path) where T : Node
     {
         var node = new Node();
         node.Name = typeof(T).Name;
@@ -27,7 +27,7 @@ public static class Singleton
         throw new System.NullReferenceException("Failed to get script instance on node");
     }
 
-    public static T CreateSingleton<T>(string script_path) where T : Node
+    public static T Create<T>(string script_path) where T : Node
     {
         if (!TryGet<T>(out var singleton))
         {
@@ -41,24 +41,12 @@ public static class Singleton
         return singleton;
     }
 
-    public static T LoadInstance<T>(string scene_path) where T : Node
-    {
-        scene_path = $"{scene_path}";
-        scene_path = scene_path.StartsWith("res://") ? scene_path : "res://" + scene_path;
-        scene_path = scene_path.EndsWith(".tscn") ? scene_path : scene_path + ".tscn";
-        var scene = GD.Load(scene_path) as PackedScene;
-        var packed_scene = scene.Instantiate();
-        Scene.Root.AddChild(packed_scene);
-        var script = packed_scene.GetNodeInChildren<T>();
-        return script;
-    }
-
-    public static T LoadSingleton<T>(string scene_path) where T : Node
+    public static T Load<T>(string scene_path) where T : Node
     {
         if (!TryGet<T>(out var singleton))
         {
             var type = typeof(T).Name;
-            singleton = LoadInstance<T>(scene_path);
+            singleton = GDHelper.Instantiate<T>(scene_path);
             _singletons.Add(type, singleton);
         }
 

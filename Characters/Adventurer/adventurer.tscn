@@ -1,5 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://xn86bcu7wvvr"]
+[gd_scene load_steps=3 format=3 uid="uid://xn86bcu7wvvr"]
 
+[ext_resource type="Script" path="res://Character/Mesh/HumanMesh.cs" id="2_stiha"]
 [ext_resource type="PackedScene" uid="uid://c0jnpk1herxhl" path="res://Assets/Quaternius/Ultimate Modular Women - April 2022/Individual Characters/glTF/Adventurer.gltf" id="3_dmoj4"]
 
 [node name="Adventurer" instance=ExtResource("3_dmoj4")]
+script = ExtResource("2_stiha")
+IdleAnimation = "Idle"
+MoveAnimation = "Run"

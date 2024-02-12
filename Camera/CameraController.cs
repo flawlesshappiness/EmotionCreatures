@@ -5,7 +5,7 @@ public partial class CameraController : Node
     public static CameraController Instance => Singleton.TryGet<CameraController>(out var instance) ? instance : Create();
 
     public static CameraController Create() =>
-        Singleton.CreateSingleton<CameraController>($"Camera/{nameof(CameraController)}");
+        Singleton.Create<CameraController>($"Camera/{nameof(CameraController)}");
 
     private Camera3D _camera;
     public Camera3D Camera => _camera ?? (_camera = FindCamera());

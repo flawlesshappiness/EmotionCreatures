@@ -9,7 +9,7 @@ public partial class BattleController : Node
     public static BattleController Instance => Singleton.TryGet<BattleController>(out var instance) ? instance : Create();
 
     public static BattleController Create() =>
-        Singleton.CreateSingleton<BattleController>($"Battle/{nameof(BattleController)}");
+        Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
 
     private BattleAnimationView AnimationView { get; set; }
 

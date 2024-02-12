@@ -32,8 +32,8 @@ public partial class Scene : NodeScript
         OnInitialize();
     }
 
-    public static T CreateInstance<T>(string path) where T : Scene =>
-        Singleton.LoadInstance<T>(path);
+    public static T Instantiate<T>(string path) where T : Scene =>
+        GDHelper.Instantiate<T>(path);
 
     #region DATA
     public virtual void SaveData()
@@ -76,7 +76,7 @@ public partial class Scene : NodeScript
             Current.QueueFree();
         }
 
-        Current = CreateInstance<Scene>($"Scenes/{scene_name}");
+        Current = Instantiate<Scene>($"Scenes/{scene_name}");
         Current.Data = GetOrCreateSceneData(scene_name);
         Current.LoadData();
         //Player.LoadData();

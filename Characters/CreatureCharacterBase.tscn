@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Character/CreatureCharacter.cs" id="1_o2d2t"]
 [ext_resource type="Script" path="res://Character/CreatureCombat.cs" id="2_hje3u"]
 [ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="3_tn3mb"]
-[ext_resource type="Script" path="res://Animation/CreatureAnimationController.cs" id="4_t8gtt"]
-[ext_resource type="Script" path="res://Navigation/CreatureNavigation.cs" id="5_u6eun"]
+[ext_resource type="Script" path="res://Character/Animation/CreatureAnimator.cs" id="4_rhkah"]
+[ext_resource type="Script" path="res://Character/Navigation/CreatureNavigation.cs" id="5_u6eun"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c3i13"]
 size = Vector3(0.751953, 0.80957, 0.849609)
@@ -38,12 +38,7 @@ shape = SubResource("BoxShape3D_c3i13")
 script = ExtResource("3_tn3mb")
 
 [node name="Animation" type="Node3D" parent="."]
-script = ExtResource("4_t8gtt")
-AttackAnimation = "Punch"
-HurtAnimation = "HitReact"
-DeadAnimation = "Death"
-IdleAnimation = "Idle"
-MoveAnimation = "Run"
+script = ExtResource("4_rhkah")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.662199, 0.0478231)

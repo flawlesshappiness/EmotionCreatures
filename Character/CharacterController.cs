@@ -6,7 +6,7 @@ public partial class CharacterController : Node
     public static CharacterController Instance => Singleton.TryGet<CharacterController>(out var instance) ? instance : Create();
 
     public static CharacterController Create() =>
-        Singleton.CreateSingleton<CharacterController>($"Character/{nameof(CharacterController)}");
+        Singleton.Create<CharacterController>($"Character/{nameof(CharacterController)}");
 
     private CharacterInfoCollection _collection;
     private CharacterInfoCollection Collection => _collection ?? (_collection = LoadCollection());
@@ -28,14 +28,14 @@ public partial class CharacterController : Node
         Debug.Trace($"Base character loaded: {base_character}");
 
         Debug.Trace($"Loading character: {info.Scene}");
-        var character = Singleton.LoadInstance<Node3D>(info.Scene);
-        Debug.Trace($"Character loaded: {character}");
+        var mesh = GDHelper.Instantiate<CharacterMesh>(info.Scene);
+        Debug.Trace($"Mesh loaded: {mesh}");
 
-        var animation = base_character.GetNodeInChildren<AnimationController>();
+        var animation = base_character.GetNodeInChildren<CharacterAnimator>();
         Debug.Trace($"Animation controller found: {animation}");
 
-        animation.SetModel(character);
-        Debug.Trace($"Character is now parented to AnimationController");
+        animation.SetMesh(mesh);
+        Debug.Trace($"Character is now parented to Animator");
 
         Debug.Indent--;
         return base_character;
@@ -58,7 +58,7 @@ public partial class CharacterController : Node
             Debug.LogError($"Found no base character matching type {type}");
         }
 
-        var character = Singleton.LoadInstance<Character>(path);
+        var character = GDHelper.Instantiate<Character>(path);
 
         Debug.Indent--;
         return character;

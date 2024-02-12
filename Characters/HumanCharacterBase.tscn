@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_ceiqt"]
 [ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="2_lkdhg"]
-[ext_resource type="Script" path="res://Animation/HumanAnimationController.cs" id="3_dynj1"]
-[ext_resource type="Script" path="res://Navigation/CharacterNavigation.cs" id="4_geetl"]
+[ext_resource type="Script" path="res://Character/Animation/HumanAnimator.cs" id="3_wyrur"]
+[ext_resource type="Script" path="res://Character/Navigation/CharacterNavigation.cs" id="4_geetl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
 radius = 0.194107
@@ -23,9 +23,7 @@ script = ExtResource("1_ceiqt")
 script = ExtResource("2_lkdhg")
 
 [node name="Animation" type="Node3D" parent="."]
-script = ExtResource("3_dynj1")
-IdleAnimation = "Idle"
-MoveAnimation = "Run"
+script = ExtResource("3_wyrur")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

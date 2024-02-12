@@ -6,7 +6,7 @@ public partial class ArenaController : Node
     public static ArenaController Instance => Singleton.TryGet<ArenaController>(out var instance) ? instance : Create();
 
     public static ArenaController Create() =>
-        Singleton.CreateSingleton<ArenaController>($"Arena/{nameof(ArenaController)}");
+        Singleton.Create<ArenaController>($"Arena/{nameof(ArenaController)}");
 
     public ArenaScene CurrentArena { get; private set; }
 
@@ -43,7 +43,7 @@ public partial class ArenaController : Node
         Debug.LogMethod(type);
         Debug.Indent++;
         var info = GetRandomArenaInfo(type);
-        var arena = Scene.CreateInstance<ArenaScene>(info.Scene);
+        var arena = Scene.Instantiate<ArenaScene>(info.Scene);
         arena.World.GlobalPosition = new Vector3(300, 0, 0);
         Debug.Indent--;
         Debug.Log($"Success: {arena}");

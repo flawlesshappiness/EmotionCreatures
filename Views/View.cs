@@ -14,11 +14,11 @@ public partial class View : ControlScript
         return path;
     }
 
-    public static T LoadInstance<T>() where T : View =>
-        Singleton.LoadInstance<T>(GetPath<T>());
+    public static T Instantiate<T>() where T : View =>
+        GDHelper.Instantiate<T>(GetPath<T>());
 
     public static T LoadSingleton<T>() where T : View =>
-        Singleton.LoadSingleton<T>(GetPath<T>());
+        Singleton.Load<T>(GetPath<T>());
 
     public static T Get<T>() where T : View =>
         Singleton.Get<T>();

@@ -8,7 +8,7 @@ public partial class SaveDataController : Node
     public static SaveDataController Instance => Singleton.TryGet<SaveDataController>(out var instance) ? instance : Create();
 
     public static SaveDataController Create() =>
-        Singleton.CreateSingleton<SaveDataController>($"Data/{nameof(SaveDataController)}");
+        Singleton.Create<SaveDataController>($"Data/{nameof(SaveDataController)}");
 
     private Dictionary<System.Type, SaveData> data_objects = new Dictionary<System.Type, SaveData>();
 

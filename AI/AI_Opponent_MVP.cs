@@ -68,7 +68,13 @@ public class AI_Opponent_MVP : AI_Battle
             State.Approach => Approach(),
             State.Hunt => Hunt(),
             State.Idle => Idle(),
+            _ => null
         };
+
+        if (cr_state == null)
+        {
+            Debug.LogError($"Unhandled state: {state}");
+        }
     }
 
     private void StopStateCoroutine()

@@ -5,7 +5,7 @@ public partial class ResourcePaths : Node
     public static ResourcePaths Instance => Singleton.TryGet<ResourcePaths>(out var instance) ? instance : Create();
 
     public static ResourcePaths Create() =>
-        Singleton.CreateSingleton<ResourcePaths>($"ResourcePaths/{nameof(ResourcePaths)}");
+        Singleton.Create<ResourcePaths>($"ResourcePaths/{nameof(ResourcePaths)}");
 
     private ResourcePathsCollection _collection;
     public ResourcePathsCollection Collection => _collection ?? (_collection = LoadCollection());

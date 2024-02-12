@@ -5,18 +5,18 @@ public class AnimationEvent
 {
     public string Name { get; private set; }
     public bool Finished { get; private set; }
-    public AnimationController Controller { get; private set; }
+    public CharacterAnimator Animator { get; private set; }
     public Animation Animation { get; private set; }
 
     private Action OnAnimationFinished;
 
-    public AnimationEvent(string name, AnimationController controller)
+    public AnimationEvent(string name, CharacterAnimator animator)
     {
         Name = name;
-        Controller = controller;
+        Animator = animator;
 
-        Animation = Controller.Animation.GetAnimation(name);
-        Controller.Animation.AnimationFinished += AnimationFinished;
+        Animation = Animator.Animation.GetAnimation(name);
+        Animator.Animation.AnimationFinished += AnimationFinished;
     }
 
     private void AnimationFinished(StringName animName)
@@ -39,7 +39,7 @@ public class AnimationEvent
 
     public void Play(Action onFinished = null)
     {
-        Controller.SetCurrentAnimation(this);
+        Animator.SetCurrentAnimation(this);
 
         if (onFinished != null)
         {
@@ -47,7 +47,7 @@ public class AnimationEvent
         }
 
         Finished = false;
-        Controller.Animation.Play(Name);
+        Animator.Animation.Play(Name);
     }
 
     public AnimationEvent Loop()

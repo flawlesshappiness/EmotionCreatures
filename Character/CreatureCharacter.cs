@@ -2,7 +2,7 @@ using System;
 
 public partial class CreatureCharacter : Character
 {
-    public CreatureAnimationController CreatureAnimation { get; private set; }
+    public CreatureAnimator CreatureAnimator { get; private set; }
     public CreatureCombat Combat { get; private set; }
 
     public int Health = 3;
@@ -22,7 +22,7 @@ public partial class CreatureCharacter : Character
         Combat = this.GetNodeInChildren<CreatureCombat>();
         Combat.SetBody(this);
 
-        CreatureAnimation = Animation as CreatureAnimationController;
+        CreatureAnimator = Animator as CreatureAnimator;
     }
 
     public override void BeginTarget()
@@ -46,14 +46,14 @@ public partial class CreatureCharacter : Character
     {
         if (IsDead) return;
 
-        var anim = CreatureAnimation.Attack;
+        var anim = CreatureAnimator.Attack;
 
-        if (Animation.CurrentAnimation.Name == anim.Name) return;
+        if (Animator.CurrentAnimation.Name == anim.Name) return;
 
         Movement.MovementLock.AddLock(anim.Name);
         anim.Play(() =>
         {
-            CreatureAnimation.PlayIdle();
+            CreatureAnimator.PlayIdle();
             Movement.MovementLock.RemoveLock(anim.Name);
         });
     }
@@ -78,12 +78,12 @@ public partial class CreatureCharacter : Character
     {
         if (IsDead) return;
 
-        var anim = CreatureAnimation.Hurt;
+        var anim = CreatureAnimator.Hurt;
 
         Movement.MovementLock.AddLock(anim.Name);
         anim.Play(() =>
         {
-            CreatureAnimation.PlayIdle();
+            CreatureAnimator.PlayIdle();
             Movement.MovementLock.RemoveLock(anim.Name);
         });
     }
@@ -95,7 +95,7 @@ public partial class CreatureCharacter : Character
         is_dead = true;
         Movement.MovementLock.AddLock("Death");
 
-        var anim = CreatureAnimation.Dead;
+        var anim = CreatureAnimator.Dead;
 
         Movement.MovementLock.AddLock(anim.Name);
         anim.Play(() =>

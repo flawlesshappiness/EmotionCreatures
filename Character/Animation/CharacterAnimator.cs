@@ -1,41 +1,35 @@
 using Godot;
 
-public partial class AnimationController : Node3DScript
+public partial class CharacterAnimator : Node3DScript
 {
-    [Export]
-    public string IdleAnimation;
-
-    [Export]
-    public string MoveAnimation;
-
-    public AnimationPlayer Animation { get; private set; }
-
     protected Character Character { get; private set; }
-
+    public CharacterMesh Mesh { get; private set; }
+    public AnimationPlayer Animation { get; private set; }
     public AnimationEvent CurrentAnimation { get; private set; }
 
     private AnimationEvent Idle, Move;
 
-    public virtual void SetModel(Node3D model)
-    {
-        model.SetParent(this);
-        Animation = model.GetNodeInChildren<AnimationPlayer>();
-
-        Idle = new AnimationEvent(IdleAnimation, this)
-            .Loop();
-        Move = new AnimationEvent(MoveAnimation, this)
-            .Loop();
-
-        OnMovingChanged(false);
-    }
-
-    public void Initialize(Character character)
+    public virtual void Initialize(Character character)
     {
         Character = character;
         Character.Movement.OnMoveStart += OnMoveStart;
         Character.Movement.OnMoveEnd += OnMoveEnd;
         Character.OnBeginTarget += OnBeginTarget;
         Character.OnEndTarget += OnEndTarget;
+    }
+
+    public virtual void SetMesh(CharacterMesh mesh)
+    {
+        Mesh = mesh;
+        Mesh.SetParent(this);
+        Animation = mesh.GetNodeInChildren<AnimationPlayer>();
+
+        Idle = new AnimationEvent(Mesh.IdleAnimation, this)
+            .Loop();
+        Move = new AnimationEvent(Mesh.MoveAnimation, this)
+            .Loop();
+
+        OnMovingChanged(false);
     }
 
     protected virtual void OnBeginTarget()

@@ -6,7 +6,7 @@ public partial class Character : CharacterBody3D
     public Action OnBeginTarget, OnEndTarget;
 
     public CharacterMovement Movement { get; private set; }
-    public AnimationController Animation { get; private set; }
+    public CharacterAnimator Animator { get; private set; }
     public CharacterNavigation Navigation { get; private set; }
     public AI AI { get; private set; }
 
@@ -19,8 +19,8 @@ public partial class Character : CharacterBody3D
         Movement = this.GetNodeInChildren<CharacterMovement>();
         Movement.Initialize(this);
 
-        Animation = this.GetNodeInChildren<AnimationController>();
-        Animation.Initialize(this);
+        Animator = this.GetNodeInChildren<CharacterAnimator>();
+        Animator.Initialize(this);
 
         Navigation = this.GetNodeInChildren<CharacterNavigation>();
         Navigation.Initialize(this);
