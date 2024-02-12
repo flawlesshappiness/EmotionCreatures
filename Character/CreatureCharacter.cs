@@ -1,19 +1,10 @@
-using System;
-
 public partial class CreatureCharacter : Character
 {
     public CreatureAnimator CreatureAnimator { get; private set; }
     public CreatureCombat Combat { get; private set; }
-
-    public int Health = 3;
-
-    private bool is_dead;
-
-    public bool IsAlive => !is_dead;
-
-    public bool IsDead => is_dead;
-
-    public Action OnDeath;
+    public Health Health { get; private set; }
+    public bool IsAlive => !Health.IsDead;
+    public bool IsDead => Health.IsDead;
 
     public override void _Ready()
     {
@@ -21,6 +12,9 @@ public partial class CreatureCharacter : Character
 
         Combat = this.GetNodeInChildren<CreatureCombat>();
         Combat.SetBody(this);
+
+        Health = new Health(3);
+        Health.OnValueChanged += OnHealthChanged;
 
         CreatureAnimator = Animator as CreatureAnimator;
     }
@@ -62,11 +56,14 @@ public partial class CreatureCharacter : Character
     {
         if (IsDead) return;
 
-        Health--;
+        Health.AdjustValue(-1);
+    }
 
-        if (Health <= 0)
+    private void OnHealthChanged()
+    {
+        if (Health.IsDead)
         {
-            Kill();
+            OnDeath();
         }
         else
         {
@@ -88,11 +85,8 @@ public partial class CreatureCharacter : Character
         });
     }
 
-    public void Kill()
+    private void OnDeath()
     {
-        if (IsDead) return;
-
-        is_dead = true;
         Movement.MovementLock.AddLock("Death");
 
         var anim = CreatureAnimator.Dead;
@@ -101,7 +95,5 @@ public partial class CreatureCharacter : Character
         anim.Play(() =>
         {
         });
-
-        OnDeath?.Invoke();
     }
 }

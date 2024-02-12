@@ -24,7 +24,7 @@ public class AI_Opponent_MVP : AI_Battle
         SetState(State.Idle);
 
         Creature = character as CreatureCharacter;
-        Creature.OnDeath += OnDeath;
+        Creature.Health.OnDeath += OnDeath;
 
         FindTarget();
     }
@@ -39,7 +39,7 @@ public class AI_Opponent_MVP : AI_Battle
     {
         if (target != null)
         {
-            target.OnDeath -= OnTargetDeath;
+            target.Health.OnDeath -= OnTargetDeath;
             target = null;
         }
 
@@ -47,7 +47,7 @@ public class AI_Opponent_MVP : AI_Battle
 
         if (target != null)
         {
-            target.OnDeath += OnTargetDeath;
+            target.Health.OnDeath += OnTargetDeath;
         }
     }
 

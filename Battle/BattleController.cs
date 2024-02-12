@@ -74,7 +74,7 @@ public partial class BattleController : Node
                 var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
                 creature.GlobalPosition = arena.PlayerStart.GlobalPosition;
                 PlayerController.Instance.SetTargetCharacter(creature);
-                creature.OnDeath += () => OnPlayerCreatureDeath(creature);
+                creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
 
                 PlayerCreatures.Add(creature);
                 BattleObjects.Add(creature);
@@ -86,7 +86,7 @@ public partial class BattleController : Node
                 var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
                 creature.GlobalPosition = arena.OpponentStart.GlobalPosition;
                 creature.SetAI(new AI_Opponent_MVP(arena));
-                creature.OnDeath += () => OnOpponentCreatureDeath(creature);
+                creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
 
                 OpponentCreatures.Add(creature);
                 BattleObjects.Add(creature);

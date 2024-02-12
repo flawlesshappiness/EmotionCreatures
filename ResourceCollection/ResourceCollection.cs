@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -30,7 +29,7 @@ public partial class ResourceCollection<T> : Resource where T : Resource
                 Debug.Trace("Resource loaded: " + path_file);
                 resources.Add(resource);
             }
-            catch (Exception e)
+            catch
             {
                 continue;
             }
