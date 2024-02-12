@@ -18,6 +18,9 @@ public partial class DebugView : View
     [NodeName("ContentSearch")]
     public DebugContentSearch ContentSearch;
 
+    [NodeName("ContentList")]
+    public DebugContentList ContentList;
+
     private Dictionary<string, Label> _categories = new();
 
     public override void _Ready()
@@ -31,6 +34,7 @@ public partial class DebugView : View
 
         CreateActionButtons();
         Debug.OnActionAdded += CreateAction;
+        Debug.RegisterDebugActions();
     }
 
     public override void _Input(InputEvent @event)
@@ -77,6 +81,7 @@ public partial class DebugView : View
     {
         Content.Visible = false;
         ContentSearch.Visible = false;
+        ContentList.Visible = false;
     }
 
     private void ToggleVisible() =>

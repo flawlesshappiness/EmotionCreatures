@@ -12,7 +12,7 @@ public partial class ArenaController : Node
 
     private ArenaInfoCollection _collection;
     private ArenaInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private ArenaInfoCollection LoadCollection() => GD.Load<ArenaInfoCollection>(ResourcePaths.Instance.Collection.ArenaInfoCollection);
+    private ArenaInfoCollection LoadCollection() => ArenaInfoCollection.Load<ArenaInfoCollection>(ResourcePaths.Instance.Collection.ArenaInfoCollection);
 
     public ArenaScene SetArena(ArenaType type)
     {

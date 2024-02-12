@@ -98,12 +98,6 @@ public static class Debug
         Trace(string.IsNullOrEmpty(message) ? $"{filename}.{caller}" : $"{filename}.{caller}: {message}");
     }
 
-    public static void RegisterAction(DebugAction action)
-    {
-        RegisteredActions.Add(action);
-        OnActionAdded?.Invoke(action);
-    }
-
     public static void WriteLogsToPersistentData()
     {
         LogMethod();
@@ -114,6 +108,44 @@ public static class Debug
         foreach (var log in _logs)
         {
             file.StoreLine(log.GetLogMessage());
+        }
+    }
+
+    public static void RegisterAction(DebugAction action)
+    {
+        RegisteredActions.Add(action);
+        OnActionAdded?.Invoke(action);
+    }
+
+    public static void RegisterDebugActions()
+    {
+        var category = "DEBUG";
+
+        Debug.RegisterAction(new DebugAction
+        {
+            Text = "Hide content",
+            Category = category,
+            Action = v => v.HideContent()
+        });
+
+        Debug.RegisterAction(new DebugAction
+        {
+            Text = "Log",
+            Category = category,
+            Action = DebugShowLog
+        });
+    }
+
+    private static void DebugShowLog(DebugView v)
+    {
+        v.HideContent();
+        v.Content.Show();
+        v.ContentList.Show();
+        v.ContentList.Clear();
+
+        foreach (var log in _logs)
+        {
+            v.ContentList.AddText(log.GetLogMessage());
         }
     }
 }

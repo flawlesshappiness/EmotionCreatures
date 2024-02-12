@@ -10,7 +10,7 @@ public partial class CharacterController : Node
 
     private CharacterInfoCollection _collection;
     private CharacterInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private CharacterInfoCollection LoadCollection() => GD.Load<CharacterInfoCollection>(ResourcePaths.Instance.Collection.CharacterInfoCollection);
+    private CharacterInfoCollection LoadCollection() => CharacterInfoCollection.Load<CharacterInfoCollection>(ResourcePaths.Instance.Collection.CharacterInfoCollection);
 
     public Character CreateCharacter(CharacterType type)
     {
