@@ -71,7 +71,7 @@ public partial class BattleController : Node
             // LOCAL HELPER METHODS
             CreatureCharacter CreatePlayerCreature(CharacterType type)
             {
-                var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
+                var creature = CreatureController.Instance.CreateCreature(type);
                 creature.GlobalPosition = arena.PlayerStart.GlobalPosition;
                 PlayerController.Instance.SetTargetCharacter(creature);
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
@@ -83,7 +83,7 @@ public partial class BattleController : Node
 
             CreatureCharacter CreateOpponentCreature(CharacterType type)
             {
-                var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
+                var creature = CreatureController.Instance.CreateCreature(type);
                 creature.GlobalPosition = arena.OpponentStart.GlobalPosition;
                 creature.SetAI(new AI_Opponent_MVP(arena));
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);

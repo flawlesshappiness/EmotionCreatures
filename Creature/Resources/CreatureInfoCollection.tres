@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="CreatureInfoCollection" load_steps=2 format=3 uid="uid://dlmkcw7br4el1"]
+
+[ext_resource type="Script" path="res://Creature/CreatureInfoCollection.cs" id="1_yxffp"]
+
+[resource]
+script = ExtResource("1_yxffp")

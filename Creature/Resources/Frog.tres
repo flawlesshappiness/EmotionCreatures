@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CreatureInfo" load_steps=2 format=3 uid="uid://yui77yvq00j3"]
+
+[ext_resource type="Script" path="res://Creature/CreatureInfo.cs" id="1_nq8cx"]
+
+[resource]
+script = ExtResource("1_nq8cx")
+CharacterType = 1
+HealthMin = 5.0
+HealthMax = 200.0
+ExperienceMin = 20.0
+ExperienceMax = 10000.0

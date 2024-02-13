@@ -3,6 +3,9 @@ public partial class CreatureCharacter : Character
     public CreatureAnimator CreatureAnimator { get; private set; }
     public CreatureCombat Combat { get; private set; }
     public Health Health { get; private set; }
+    public HealthBar HealthBar { get; private set; }
+    public CreatureInfo Info { get; private set; }
+    public CreatureStats Stats { get; private set; }
     public bool IsAlive => !Health.IsDead;
     public bool IsDead => Health.IsDead;
 
@@ -13,10 +16,21 @@ public partial class CreatureCharacter : Character
         Combat = this.GetNodeInChildren<CreatureCombat>();
         Combat.SetBody(this);
 
-        Health = new Health(3);
-        Health.OnValueChanged += OnHealthChanged;
+        HealthBar = this.GetNodeInChildren<HealthBar>();
 
         CreatureAnimator = Animator as CreatureAnimator;
+    }
+
+    public void SetInfo(CreatureInfo info)
+    {
+        var level = 1;
+        Info = info;
+        Stats = CreatureStats.FromLevel(info, level);
+        Stats.Trace();
+
+        Health = new Health(Stats.Health);
+        Health.OnValueChanged += OnHealthChanged;
+        HealthBar.SubscribeTo(Health);
     }
 
     public override void BeginTarget()

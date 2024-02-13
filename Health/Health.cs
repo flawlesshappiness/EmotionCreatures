@@ -1,43 +1,15 @@
 using System;
 
-public partial class Health
+public class Health : ClampedFloat
 {
-    private float value, max;
-    private bool dead;
-
-    public Action OnValueChanged;
     public Action OnDeath;
+    public bool IsDead => IsAtMin;
+    public bool IsAlive => !IsDead;
 
-    public float Value => value;
-    public float Max => max;
-    public bool IsDead => dead;
-
-    public Health(float max)
+    public Health(float max) : base(0, max, max)
     {
-        this.max = max;
-        value = max;
+        OnMin += OnDeath;
     }
 
-    public void SetValue(float value)
-    {
-        this.value = Math.Clamp(value, 0, max);
-
-        if (value == 0 && !dead)
-        {
-            dead = true;
-            OnDeath?.Invoke();
-        }
-
-        OnValueChanged?.Invoke();
-    }
-
-    public void AdjustValue(float adjust)
-    {
-        SetValue(value + adjust);
-    }
-
-    public void Kill()
-    {
-        SetValue(0);
-    }
+    public void Kill() => SetValueToMin();
 }

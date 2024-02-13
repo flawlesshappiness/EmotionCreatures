@@ -8,4 +8,7 @@ public partial class ResourcePathsCollection : Resource
 
     [Export(PropertyHint.File)]
     public string CharacterInfoCollection { get; set; }
+
+    [Export(PropertyHint.File)]
+    public string CreatureInfoCollection { get; set; }
 }

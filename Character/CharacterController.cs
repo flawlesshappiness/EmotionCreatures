@@ -4,9 +4,7 @@ using System.Linq;
 public partial class CharacterController : Node
 {
     public static CharacterController Instance => Singleton.TryGet<CharacterController>(out var instance) ? instance : Create();
-
-    public static CharacterController Create() =>
-        Singleton.Create<CharacterController>($"Character/{nameof(CharacterController)}");
+    public static CharacterController Create() => Singleton.Create<CharacterController>($"Character/{nameof(CharacterController)}");
 
     private CharacterInfoCollection _collection;
     private CharacterInfoCollection Collection => _collection ?? (_collection = LoadCollection());

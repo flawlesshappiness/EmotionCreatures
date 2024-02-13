@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://boncc0fcu7kkg"]
+
+[ext_resource type="Script" path="res://Health/HealthBar/HealthBar.cs" id="1_1us0s"]
+[ext_resource type="Texture2D" uid="uid://dm1lby0llghn5" path="res://Health/HealthBar/HealthBar_red.png" id="3_ss7bk"]
+[ext_resource type="Texture2D" uid="uid://bkohw5ttmpyxw" path="res://Health/HealthBar/HealthBar_white.png" id="4_jv0l3"]
+
+[node name="HealthBar" type="Sprite3D"]
+billboard = 1
+script = ExtResource("1_1us0s")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(128, 8)
+
+[node name="ProgressBarWhite" type="TextureProgressBar" parent="SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -4.0
+offset_right = 64.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.01
+value = 0.35
+stretch_margin_left = 64
+stretch_margin_top = 64
+stretch_margin_right = 64
+stretch_margin_bottom = 64
+texture_progress = ExtResource("4_jv0l3")
+
+[node name="ProgressBarRed" type="TextureProgressBar" parent="SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -4.0
+offset_right = 64.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.01
+value = 0.35
+stretch_margin_left = 64
+stretch_margin_top = 64
+stretch_margin_right = 64
+stretch_margin_bottom = 64
+texture_progress = ExtResource("3_ss7bk")
