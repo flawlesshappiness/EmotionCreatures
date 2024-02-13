@@ -16,7 +16,6 @@ public class CreatureStats
 
         stats.Level = level;
         stats.Health = Mathf.Lerp(info.HealthMin, info.HealthMax, t);
-        stats.Experience = Mathf.Lerp(info.ExperienceMin, info.ExperienceMax, t);
 
         return stats;
     }
