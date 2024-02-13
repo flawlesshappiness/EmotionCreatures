@@ -7,9 +7,7 @@ using System.Linq;
 public partial class BattleController : Node
 {
     public static BattleController Instance => Singleton.TryGet<BattleController>(out var instance) ? instance : Create();
-
-    public static BattleController Create() =>
-        Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
+    public static BattleController Create() => Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
 
     private BattleAnimationView AnimationView { get; set; }
 

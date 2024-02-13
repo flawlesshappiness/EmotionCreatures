@@ -8,7 +8,7 @@ public class Health : ClampedFloat
 
     public Health(float max) : base(0, max, max)
     {
-        OnMin += OnDeath;
+        OnMin += () => OnDeath?.Invoke();
     }
 
     public void Kill() => SetValueToMin();
