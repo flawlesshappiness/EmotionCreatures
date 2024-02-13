@@ -4,37 +4,31 @@ using System.Linq;
 
 public partial class DialogueView : View
 {
-    private bool _first_frame;
+    [NodeName(nameof(DialogueLabel))]
+    public RichTextLabel DialogueLabel;
 
-    private RichTextLabel dialogue_label;
-    private TextureButton dialogue_button;
+    [NodeName(nameof(DialogueButton))]
+    public TextureButton DialogueButton;
 
     private Coroutine _cr_dialogue_text;
 
-    private DialogueNode _current_node;
-
     private const ulong MSEC_PER_CHAR = 15;
 
+    private bool _first_frame;
     private double time_dialogue_sfx_play;
     private double duration_dialogue_sfx;
 
     public bool IsAnimatingDialogue => !(_cr_dialogue_text?.HasEnded ?? false);
 
-    public System.Action<string> OnDialogueStarted;
-    public System.Action<DialogueEndedArguments> OnDialogueEnded;
-
     public override void _Ready()
     {
         base._Ready();
-        dialogue_label = FindChild("DialogueLabel") as RichTextLabel;
-        dialogue_button = FindChild("DialogueButton") as TextureButton;
-
-        dialogue_button.ButtonUp += DialogueButtonUp;
+        DialogueButton.ButtonUp += DialogueButtonUp;
     }
 
     private void DialogueButtonUp()
     {
-        NextDialogueText();
+        DialogueController.Instance.NextDialogueText();
     }
 
     public override void _Input(InputEvent @event)
@@ -70,143 +64,44 @@ public partial class DialogueView : View
             }
             else
             {
-                NextDialogueText();
+                DialogueController.Instance.NextDialogueText();
             }
         }
     }
 
-    private void ShowDialogueBox()
+    public void ShowDialogueBox()
     {
         PlayerInput.Instance.MouseVisibleLock.AddLock(nameof(DialogueView));
-        Visible = true;
+        Show();
     }
 
-    private void HideDialogueBox()
+    public void HideDialogueBox()
     {
         PlayerInput.Instance.MouseVisibleLock.RemoveLock(nameof(DialogueView));
-        Visible = false;
+        Hide();
     }
 
-    private void ShowDialogueButton()
+    public void ShowDialogueButton()
     {
-        dialogue_button.Visible = true;
+        DialogueButton.Show();
     }
 
-    private void HideDialogueButton()
+    public void HideDialogueButton()
     {
-        dialogue_button.Visible = false;
-    }
-
-    public void SetDialogueNode(string id) =>
-         SetDialogueNode(DialogueController.Instance.GetNode(id));
-
-    public void SetDialogueNode(DialogueNode node)
-    {
-        Debug.TraceMethod(node?.Id);
-        Debug.Indent++;
-
-        if (_current_node == null && node != null)
-        {
-            StartDialogue(node);
-        }
-
-        var previous_node = _current_node;
-        _current_node = node;
-
-        if (_current_node == null)
-        {
-            Debug.Indent--;
-
-            EndDialogue(new DialogueEndedArguments
-            {
-                Node = previous_node
-            });
-
-            return;
-        }
-
-        Debug.Trace($"Dialogue node: {_current_node.Id}");
-
-        var text = new DialogueText(node);
-
-        ParseDialogueNode(node);
-        HideDialogueButton();
-        SetDialogueText(text);
-        AnimateDialogueText(text, MSEC_PER_CHAR);
-
-        Debug.Indent--;
-    }
-
-    private void ParseDialogueNode(DialogueNode node)
-    {
-        Debug.TraceMethod(node?.Id);
-        Debug.Indent++;
-
-        if (node == null)
-        {
-            Debug.LogError("Node was null");
-            Debug.Indent--;
-            return;
-        }
-
-        var id_character = string.IsNullOrEmpty(node.Character) ? "DEFAULT" : node.Character;
-        var character = DialogueController.Instance.GetOrCreateDialogueCharacterData(id_character);
-
-        if (!string.IsNullOrEmpty(node.Start))
-        {
-            Debug.Log($"node.Start: {node.Start}");
-            if (character == null)
-            {
-                Debug.LogError("Character was not found");
-            }
-            else
-            {
-                character.StartNode = node.Start;
-            }
-        }
-
-        Debug.Indent--;
-    }
-
-    private void StartDialogue(DialogueNode node)
-    {
-        Debug.TraceMethod(node?.Id);
-        Debug.Indent++;
-
-        OnDialogueStarted?.Invoke(node.Id);
-        ShowDialogueBox();
-
-        Debug.Indent--;
-    }
-
-    private void EndDialogue(DialogueEndedArguments args)
-    {
-        _current_node = null;
-        HideDialogueBox();
-
-        if (args != null)
-        {
-            Debug.TraceMethod(args.Node?.Id);
-            Debug.Indent++;
-
-            OnDialogueEnded?.Invoke(args);
-
-            Debug.Indent--;
-        }
+        DialogueButton.Hide();
     }
 
     public void SetDialogueText(DialogueText text)
     {
-        dialogue_label.Text = text.Text;
-        dialogue_label.VisibleCharacters = -1;
+        DialogueLabel.Text = text.Text;
+        DialogueLabel.VisibleCharacters = -1;
     }
 
-    private void NextDialogueText() =>
-        SetDialogueNode(_current_node.Next);
+    public Coroutine AnimateDialogueText(DialogueText text) => AnimateDialogueText(text, MSEC_PER_CHAR);
 
     private Coroutine AnimateDialogueText(DialogueText text, ulong msec_per_char)
     {
-        dialogue_label.VisibleCharacters = 0;
+        DialogueLabel.VisibleCharacters = 0;
         _first_frame = true;
 
         Coroutine.Stop(_cr_dialogue_text);
@@ -228,7 +123,7 @@ public partial class DialogueView : View
             while (i < max && time_current < Time.GetTicksMsec())
             {
                 i++;
-                dialogue_label.VisibleCharacters = i;
+                DialogueLabel.VisibleCharacters = i;
                 time_current += msec_per_char;
 
                 if (i > previous_visible_characters)
@@ -257,7 +152,7 @@ public partial class DialogueView : View
 
     private void OnAnimateDialogueTextEnd()
     {
-        dialogue_label.VisibleCharacters = -1;
+        DialogueLabel.VisibleCharacters = -1;
         ShowDialogueButton();
     }
 
@@ -272,6 +167,4 @@ public partial class DialogueView : View
 public class DialogueEndedArguments
 {
     public DialogueNode Node { get; set; }
-
-    public string UrlClicked { get; set; } = string.Empty;
 }

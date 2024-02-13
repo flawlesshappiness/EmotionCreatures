@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -13,7 +14,11 @@ public partial class DialogueController : Node
 
     private Dictionary<string, string> _overwrites = new();
 
+    private DialogueNode CurrentNode;
     public string SelectedUrlId { get; set; } = string.Empty;
+
+    public Action<string> OnDialogueStarted;
+    public Action<DialogueEndedArguments> OnDialogueEnded;
 
     public override void _Ready()
     {
@@ -39,6 +44,104 @@ public partial class DialogueController : Node
             node.Text = node.Text
                 .Replace("[url", "[color=yellow][url")
                 .Replace("[/url]", "[/url][/color]");
+        }
+    }
+
+    public void SetDialogueNode(string id) => SetDialogueNode(GetNode(id));
+    public void NextDialogueText() => SetDialogueNode(CurrentNode.Next);
+
+    public void SetDialogueNode(DialogueNode node)
+    {
+        Debug.TraceMethod(node?.Id);
+        Debug.Indent++;
+
+        if (CurrentNode == null && node != null)
+        {
+            StartDialogue(node);
+        }
+
+        var previous_node = CurrentNode;
+        CurrentNode = node;
+
+        if (CurrentNode == null)
+        {
+            Debug.Indent--;
+
+            EndDialogue(new DialogueEndedArguments
+            {
+                Node = previous_node
+            });
+
+            return;
+        }
+
+        Debug.Trace($"Dialogue node: {CurrentNode.Id}");
+
+        var text = new DialogueText(node);
+
+        ParseDialogueNode(node);
+        DialogueView.HideDialogueButton();
+        DialogueView.SetDialogueText(text);
+        DialogueView.AnimateDialogueText(text);
+
+        Debug.Indent--;
+    }
+
+    private void ParseDialogueNode(DialogueNode node)
+    {
+        Debug.TraceMethod(node?.Id);
+        Debug.Indent++;
+
+        if (node == null)
+        {
+            Debug.LogError("Node was null");
+            Debug.Indent--;
+            return;
+        }
+
+        var id_character = string.IsNullOrEmpty(node.Character) ? "DEFAULT" : node.Character;
+        var character = DialogueController.Instance.GetOrCreateDialogueCharacterData(id_character);
+
+        if (!string.IsNullOrEmpty(node.Start))
+        {
+            Debug.Log($"node.Start: {node.Start}");
+            if (character == null)
+            {
+                Debug.LogError("Character was not found");
+            }
+            else
+            {
+                character.StartNode = node.Start;
+            }
+        }
+
+        Debug.Indent--;
+    }
+
+    private void StartDialogue(DialogueNode node)
+    {
+        Debug.TraceMethod(node?.Id);
+        Debug.Indent++;
+
+        OnDialogueStarted?.Invoke(node.Id);
+        DialogueView.ShowDialogueBox();
+
+        Debug.Indent--;
+    }
+
+    private void EndDialogue(DialogueEndedArguments args)
+    {
+        CurrentNode = null;
+        DialogueView.HideDialogueBox();
+
+        if (args != null)
+        {
+            Debug.TraceMethod(args.Node?.Id);
+            Debug.Indent++;
+
+            OnDialogueEnded?.Invoke(args);
+
+            Debug.Indent--;
         }
     }
 
