@@ -4,6 +4,7 @@ public partial class CreatureCharacter : Character
     public CreatureCombat Combat { get; private set; }
     public Health Health { get; private set; }
     public HealthBar HealthBar { get; private set; }
+    public CreatureData Data { get; private set; }
     public CreatureInfo Info { get; private set; }
     public CreatureStats Stats { get; private set; }
     public bool IsAlive => !Health.IsDead;
@@ -21,9 +22,14 @@ public partial class CreatureCharacter : Character
         CreatureAnimator = Animator as CreatureAnimator;
     }
 
+    public void SetData(CreatureData data)
+    {
+        Data = data;
+    }
+
     public void SetInfo(CreatureInfo info)
     {
-        var level = 1;
+        var level = 1; // TODO: Get from core
         Info = info;
         Stats = CreatureStats.FromLevel(info, level);
         Stats.Trace();

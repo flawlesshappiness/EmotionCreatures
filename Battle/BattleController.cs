@@ -53,13 +53,12 @@ public partial class BattleController : Node
             AnimationView.Visible = true;
             yield return AnimationView.AnimateDefaultBattleOpening();
             // Create arena
-            var arena = ArenaController.Instance.SetArena(arena_type);
+            var arena = CreateArena();
             // Create creatures
-            var player_creature = CreatePlayerCreature(CharacterType.Frog);
-            var opponent_creature = CreateOpponentCreature(CharacterType.Frog);
+            CreateCreatures();
             // Move camera
             var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
-            camera_follow.SetTarget(player_creature);
+            camera_follow.SetTarget(PlayerCreatures.First());
             // Fade to arena
             AnimationView.Background.Color = Colors.Transparent;
             AnimationView.Label.Visible = false;
@@ -69,9 +68,22 @@ public partial class BattleController : Node
             Debug.Indent--;
 
             // LOCAL HELPER METHODS
-            CreatureCharacter CreatePlayerCreature(CharacterType type)
+            ArenaScene CreateArena()
             {
-                var creature = CreatureController.Instance.CreateCreature(type);
+                return ArenaController.Instance.SetArena(arena_type);
+            }
+
+            void CreateCreatures()
+            {
+                var debug_player_data = new CreatureData { CharacterType = CharacterType.Frog }; // TODO
+                var debug_opponent_data = new CreatureData { CharacterType = CharacterType.Frog }; // TODO
+                var player_creature = CreatePlayerCreature(debug_player_data);
+                var opponent_creature = CreateOpponentCreature(debug_opponent_data);
+            }
+
+            CreatureCharacter CreatePlayerCreature(CreatureData data)
+            {
+                var creature = CreatureController.Instance.CreateCreature(data);
                 creature.GlobalPosition = arena.PlayerStart.GlobalPosition;
                 PlayerController.Instance.SetTargetCharacter(creature);
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
@@ -81,9 +93,9 @@ public partial class BattleController : Node
                 return creature;
             }
 
-            CreatureCharacter CreateOpponentCreature(CharacterType type)
+            CreatureCharacter CreateOpponentCreature(CreatureData data)
             {
-                var creature = CreatureController.Instance.CreateCreature(type);
+                var creature = CreatureController.Instance.CreateCreature(data);
                 creature.GlobalPosition = arena.OpponentStart.GlobalPosition;
                 creature.SetAI(new AI_Opponent_MVP(arena));
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);

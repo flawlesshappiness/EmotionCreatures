@@ -23,24 +23,25 @@ public partial class CreatureController : Node
         return info;
     }
 
-    public CreatureCharacter CreateCreature(CharacterType type)
+    public CreatureCharacter CreateCreature(CreatureData data)
     {
-        Debug.TraceMethod(type);
+        Debug.TraceMethod();
 
-        var info = GetInfo(type);
+        var info = GetInfo(data.CharacterType);
         if (info == null)
         {
-            Debug.LogError($"Unable to create creature with type: {type}, no CreatureInfo found for type");
+            Debug.LogError($"Unable to create creature with type: {data.CharacterType}, no CreatureInfo found for type");
             return null;
         }
 
-        var creature = CharacterController.Instance.CreateCharacter(type) as CreatureCharacter;
+        var creature = CharacterController.Instance.CreateCharacter(data.CharacterType) as CreatureCharacter;
         if (creature == null)
         {
-            Debug.LogError($"Unable to create creature with type: {type}, not a CreatureCharacter");
+            Debug.LogError($"Unable to create creature with type: {data.CharacterType}, not a CreatureCharacter");
             return null;
         }
 
+        creature.SetData(data);
         creature.SetInfo(info);
 
         return creature;
