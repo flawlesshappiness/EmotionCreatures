@@ -8,4 +8,9 @@ public static class ListExtensions
         rng ??= new RandomNumberGenerator();
         return list[rng.RandiRange(0, list.Count - 1)];
     }
+
+    public static T GetClamped<T>(this List<T> list, int index)
+    {
+        return list[Mathf.Clamp(index, 0, list.Count - 1)];
+    }
 }

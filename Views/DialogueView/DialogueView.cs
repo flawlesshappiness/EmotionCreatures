@@ -1,14 +1,18 @@
 using Godot;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public partial class DialogueView : View
 {
+    [NodeName(nameof(DialogueArrow))]
+    public Control DialogueArrow;
+
     [NodeName(nameof(DialogueLabel))]
     public RichTextLabel DialogueLabel;
 
-    [NodeName(nameof(DialogueButton))]
-    public TextureButton DialogueButton;
+    [NodeName(nameof(DialogueOptions))]
+    public DialogueOptionContainer DialogueOptions;
 
     private Coroutine _cr_dialogue_text;
 
@@ -23,25 +27,23 @@ public partial class DialogueView : View
     public override void _Ready()
     {
         base._Ready();
-        DialogueButton.ButtonUp += DialogueButtonUp;
-    }
-
-    private void DialogueButtonUp()
-    {
-        DialogueController.Instance.NextDialogueText();
+        DialogueOptions.Hide();
     }
 
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
         InputMouseButton(@event as InputEventMouseButton);
-        InputAction();
+        PressSubmit();
+        PressUp();
+        PressDown();
     }
 
     private void InputMouseButton(InputEventMouseButton e)
     {
         if (e == null) return;
         if (!Visible) return;
+        if (DialogueOptions.HasOptions) return;
 
         if (e.IsReleased() && e.ButtonIndex == MouseButton.Left)
         {
@@ -52,7 +54,7 @@ public partial class DialogueView : View
         }
     }
 
-    private void InputAction()
+    private void PressSubmit()
     {
         if (!Visible) return;
 
@@ -62,10 +64,30 @@ public partial class DialogueView : View
             {
                 EndAnimateDialogueText();
             }
+            else if (DialogueOptions.HasOptions)
+            {
+                DialogueOptions.Submit();
+            }
             else
             {
                 DialogueController.Instance.NextDialogueText();
             }
+        }
+    }
+
+    private void PressUp()
+    {
+        if (Input.IsActionJustPressed(PlayerControls.Forward))
+        {
+            DialogueOptions.PreviousOption();
+        }
+    }
+
+    private void PressDown()
+    {
+        if (Input.IsActionJustPressed(PlayerControls.Back))
+        {
+            DialogueOptions.NextOption();
         }
     }
 
@@ -81,14 +103,26 @@ public partial class DialogueView : View
         Hide();
     }
 
-    public void ShowDialogueButton()
+    public void SetDialogueNode(DialogueNode node)
     {
-        DialogueButton.Show();
+        var text = new DialogueText(node);
+        DialogueArrow.Hide();
+        DialogueOptions.Hide();
+        SetDialogueText(text);
+        AnimateDialogueText(text);
+        SetDialogueOptions(node.Options);
     }
 
-    public void HideDialogueButton()
+    private void SetDialogueOptions(List<DialogueNodeOption> options)
     {
-        DialogueButton.Hide();
+        if (options.Count == 0)
+        {
+            DialogueOptions.Clear();
+        }
+        else
+        {
+            DialogueOptions.CreateOptions(options);
+        }
     }
 
     public void SetDialogueText(DialogueText text)
@@ -153,7 +187,15 @@ public partial class DialogueView : View
     private void OnAnimateDialogueTextEnd()
     {
         DialogueLabel.VisibleCharacters = -1;
-        ShowDialogueButton();
+
+        if (DialogueOptions.HasOptions)
+        {
+            DialogueOptions.Show();
+        }
+        else
+        {
+            DialogueArrow.Show();
+        }
     }
 
     private void EndAnimateDialogueText()

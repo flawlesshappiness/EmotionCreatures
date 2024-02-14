@@ -130,6 +130,86 @@ transform = Transform3D(0.878656, 0, 1.79665, 0, 2, 0, -1.79665, 0, 0.878656, 4.
 mesh = ExtResource("7_so8k8")
 skeleton = NodePath("../../..")
 
+[node name="Rock1" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -6.34516, 4.76837e-07, 7.00183)
+mesh = ExtResource("7_jlw7k")
+skeleton = NodePath("../../..")
+
+[node name="Rock3" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(0.547314, 0, -1.92365, 0, 2, 0, 1.92365, 0, 0.547314, 1.95162, 4.76837e-07, 7.44435)
+mesh = ExtResource("7_jlw7k")
+skeleton = NodePath("../../..")
+
+[node name="Rock2" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(0.499983, 0, -1.9365, 0, 2, 0, 1.9365, 0, 0.499983, -0.445005, 0, 6.22629)
+mesh = ExtResource("8_5lnic")
+skeleton = NodePath("../../..")
+
+[node name="WoodLog" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(0.103243, 0, -1.99733, 0, 2, 0, 1.99733, 0, 0.103243, 2.60191, 0, 5.92056)
+mesh = ExtResource("9_mauh0")
+skeleton = NodePath("../../..")
+
+[node name="WoodLog2" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(-0.141115, 0, -1.99502, 0, 2, 0, 1.99502, 0, -0.141115, -8.35123, 0, 5.93862)
+mesh = ExtResource("9_mauh0")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss3" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88632, 0, 6.57369)
+mesh = ExtResource("10_w26fa")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss4" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(0.586104, 0, 0.810236, 0, 1, 0, -0.810236, 0, 0.586104, -4.25239, 0, 5.63375)
+mesh = ExtResource("11_ommn7")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss13" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(-0.17736, 0, 0.984146, 0, 1, 0, -0.984146, 0, -0.17736, -0.82781, 0, 9.49195)
+mesh = ExtResource("11_ommn7")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss8" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.94734, 0, 6.27441)
+mesh = ExtResource("11_ommn7")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss5" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(0.293996, 0, -1.97827, 0, 2, 0, 1.97827, 0, 0.293996, -3.81627, -0.164711, 6.90388)
+mesh = ExtResource("12_trc80")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss9" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(-0.312076, 0, -1.9755, 0, 2, 0, 1.9755, 0, -0.312076, 4.05775, -0.164711, 7.11549)
+mesh = ExtResource("12_trc80")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss10" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(-0.616706, 0, -1.90254, 0, 2, 0, 1.90254, 0, -0.616706, -10.5068, -0.164711, 7.81509)
+mesh = ExtResource("12_trc80")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss6" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.53756, 0, 6.29974)
+mesh = ExtResource("13_u24xw")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss11" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.7515, 0, 7.09821)
+mesh = ExtResource("13_u24xw")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss12" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(-0.650721, 0, 0.759317, 0, 1, 0, -0.759317, 0, -0.650721, -6.60289, 0, 9.59349)
+mesh = ExtResource("13_u24xw")
+skeleton = NodePath("../../..")
+
+[node name="RockMoss7" type="MeshInstance3D" parent="World/Trees"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28468, 0, 5.81303)
+mesh = ExtResource("14_316t8")
+skeleton = NodePath("../../..")
+
 [node name="Colliders" type="StaticBody3D" parent="World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.71988, 4.90935, 7.50908)
 
@@ -148,67 +228,3 @@ shape = SubResource("BoxShape3D_wi05b")
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="World/Colliders"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.1284, 0.369717, -7.13037)
 shape = SubResource("BoxShape3D_wi05b")
-
-[node name="Rock1" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -6.34516, 4.76837e-07, 7.00183)
-mesh = ExtResource("7_jlw7k")
-
-[node name="Rock3" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.547314, 0, -1.92365, 0, 2, 0, 1.92365, 0, 0.547314, 1.95162, 4.76837e-07, 7.44435)
-mesh = ExtResource("7_jlw7k")
-
-[node name="Rock2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.499983, 0, -1.9365, 0, 2, 0, 1.9365, 0, 0.499983, -0.445005, 0, 6.22629)
-mesh = ExtResource("8_5lnic")
-
-[node name="WoodLog" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.103243, 0, -1.99733, 0, 2, 0, 1.99733, 0, 0.103243, 2.60191, 0, 5.92056)
-mesh = ExtResource("9_mauh0")
-
-[node name="WoodLog2" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.141115, 0, -1.99502, 0, 2, 0, 1.99502, 0, -0.141115, -8.35123, 0, 5.93862)
-mesh = ExtResource("9_mauh0")
-
-[node name="RockMoss3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88632, 0, 6.57369)
-mesh = ExtResource("10_w26fa")
-
-[node name="RockMoss4" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.586104, 0, 0.810236, 0, 1, 0, -0.810236, 0, 0.586104, -4.25239, 0, 5.63375)
-mesh = ExtResource("11_ommn7")
-
-[node name="RockMoss13" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.17736, 0, 0.984146, 0, 1, 0, -0.984146, 0, -0.17736, -0.82781, 0, 9.49195)
-mesh = ExtResource("11_ommn7")
-
-[node name="RockMoss8" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.94734, 0, 6.27441)
-mesh = ExtResource("11_ommn7")
-
-[node name="RockMoss5" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.293996, 0, -1.97827, 0, 2, 0, 1.97827, 0, 0.293996, -3.81627, -0.164711, 6.90388)
-mesh = ExtResource("12_trc80")
-
-[node name="RockMoss9" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.312076, 0, -1.9755, 0, 2, 0, 1.9755, 0, -0.312076, 4.05775, -0.164711, 7.11549)
-mesh = ExtResource("12_trc80")
-
-[node name="RockMoss10" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.616706, 0, -1.90254, 0, 2, 0, 1.90254, 0, -0.616706, -10.5068, -0.164711, 7.81509)
-mesh = ExtResource("12_trc80")
-
-[node name="RockMoss6" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.53756, 0, 6.29974)
-mesh = ExtResource("13_u24xw")
-
-[node name="RockMoss11" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.7515, 0, 7.09821)
-mesh = ExtResource("13_u24xw")
-
-[node name="RockMoss12" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.650721, 0, 0.759317, 0, 1, 0, -0.759317, 0, -0.650721, -6.60289, 0, 9.59349)
-mesh = ExtResource("13_u24xw")
-
-[node name="RockMoss7" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28468, 0, 5.81303)
-mesh = ExtResource("14_316t8")

@@ -27,7 +27,7 @@ public class DialogueText
         Node = node;
         ParseText(Node.Text);
         OverwriteText();
-        Debug.Log("Text: " + Text);
+        Debug.Trace("Text: " + Text);
     }
 
     private void OverwriteText()

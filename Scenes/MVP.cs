@@ -21,8 +21,6 @@ public partial class MVP : Scene
         PlayerController.Instance.SetTargetCharacter(player);
 
         BattleArea.BodyEntered += OnEnterBattleArea;
-
-        DialogueController.Instance.SetDialogueNode("##TEST_001##");
     }
 
     private void OnEnterBattleArea(Node3D body)

@@ -35,3 +35,7 @@ script = ExtResource("4_geetl")
 [node name="DebugSphere" type="MeshInstance3D" parent="Navigation"]
 mesh = SubResource("SphereMesh_0uexq")
 surface_material_override/0 = SubResource("StandardMaterial3D_5666w")
+
+[node name="RayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0, 0.75)

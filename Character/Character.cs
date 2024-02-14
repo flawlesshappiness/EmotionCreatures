@@ -16,6 +16,8 @@ public partial class Character : CharacterBody3D
     {
         base._Ready();
 
+        NodeScript.FindNodesFromAttribute(this, GetType());
+
         Movement = this.GetNodeInChildren<CharacterMovement>();
         Movement.Initialize(this);
 

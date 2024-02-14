@@ -6,6 +6,24 @@
 	},
 	{
 		"id": "##TEST_002##",
-		"text": "Test 2"
+		"text": "Test 2",
+		"options": [
+			{
+				"next": "##TEST_003##",
+				"text": "Test option 3"
+			},
+			{
+				"next": "##TEST_004##",
+				"text": "Test option 4"
+			}
+		]
+	},
+	{
+		"id": "##TEST_003##",
+		"text": "Test 3"
+	},
+	{
+		"id": "##TEST_004##",
+		"text": "Test 4"
 	}
 ]

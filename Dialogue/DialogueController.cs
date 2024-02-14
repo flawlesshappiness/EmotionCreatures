@@ -77,12 +77,8 @@ public partial class DialogueController : Node
 
         Debug.Trace($"Dialogue node: {CurrentNode.Id}");
 
-        var text = new DialogueText(node);
-
         ParseDialogueNode(node);
-        DialogueView.HideDialogueButton();
-        DialogueView.SetDialogueText(text);
-        DialogueView.AnimateDialogueText(text);
+        DialogueView.SetDialogueNode(node);
 
         Debug.Indent--;
     }
@@ -99,12 +95,19 @@ public partial class DialogueController : Node
             return;
         }
 
+        ParseCharacter(node);
+
+        Debug.Indent--;
+    }
+
+    private void ParseCharacter(DialogueNode node)
+    {
         var id_character = string.IsNullOrEmpty(node.Character) ? "DEFAULT" : node.Character;
-        var character = DialogueController.Instance.GetOrCreateDialogueCharacterData(id_character);
+        var character = GetOrCreateDialogueCharacterData(id_character);
 
         if (!string.IsNullOrEmpty(node.Start))
         {
-            Debug.Log($"node.Start: {node.Start}");
+            Debug.Trace($"node.Start: {node.Start}");
             if (character == null)
             {
                 Debug.LogError("Character was not found");
@@ -114,8 +117,6 @@ public partial class DialogueController : Node
                 character.StartNode = node.Start;
             }
         }
-
-        Debug.Indent--;
     }
 
     private void StartDialogue(DialogueNode node)
@@ -147,12 +148,12 @@ public partial class DialogueController : Node
 
     public DialogueCharacterData GetOrCreateDialogueCharacterData(string id)
     {
-        Debug.Log($"DialogueView.GetOrCreateDialogueCharacterdata: {id}");
+        Debug.TraceMethod(id);
         Debug.Indent++;
 
         if (string.IsNullOrEmpty(id))
         {
-            Debug.Log("id was null or empty");
+            Debug.Trace("id was null or empty");
             Debug.Indent--;
             return null;
         }
@@ -176,12 +177,12 @@ public partial class DialogueController : Node
         if (_overwrites.ContainsKey(key))
         {
             _overwrites[key] = overwrite;
-            Debug.Log($"Set dialogue overwrite {key} to {overwrite}");
+            Debug.Trace($"Set dialogue overwrite {key} to {overwrite}");
         }
         else
         {
             _overwrites.Add(key, overwrite);
-            Debug.Log($"Added dialogue overwrite {key} to {overwrite}");
+            Debug.Trace($"Added dialogue overwrite {key} to {overwrite}");
         }
     }
 

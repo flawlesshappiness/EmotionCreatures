@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 public class DialogueNode
@@ -16,4 +17,16 @@ public class DialogueNode
 
     [JsonPropertyName("start")]
     public string Start { get; set; }
+
+    [JsonPropertyName("options")]
+    public List<DialogueNodeOption> Options { get; set; } = new();
+}
+
+public class DialogueNodeOption
+{
+    [JsonPropertyName("next")]
+    public string Next { get; set; }
+
+    [JsonPropertyName("text")]
+    public string Text { get; set; }
 }
