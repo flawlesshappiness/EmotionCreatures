@@ -1,9 +1,15 @@
 public partial class CreatureCharacter : Character
 {
-    public CreatureAnimator CreatureAnimator { get; private set; }
-    public CreatureCombat Combat { get; private set; }
+    [NodeType(typeof(CreatureAnimator))]
+    public CreatureAnimator CreatureAnimator;
+
+    [NodeType(typeof(HealthBar))]
+    public HealthBar HealthBar;
+
+    [NodeType(typeof(CreatureCombat))]
+    public CreatureCombat Combat;
+
     public Health Health { get; private set; }
-    public HealthBar HealthBar { get; private set; }
     public CreatureData Data { get; private set; }
     public CreatureInfo Info { get; private set; }
     public CreatureStats Stats { get; private set; }
@@ -14,11 +20,7 @@ public partial class CreatureCharacter : Character
     {
         base._Ready();
 
-        Combat = this.GetNodeInChildren<CreatureCombat>();
         Combat.SetBody(this);
-
-        HealthBar = this.GetNodeInChildren<HealthBar>();
-
         CreatureAnimator = Animator as CreatureAnimator;
     }
 

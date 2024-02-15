@@ -55,6 +55,14 @@ public partial class NodeScript : Node
             field.SetValue(root, node);
             return node;
         }
+        else if (Attribute.GetCustomAttribute(field, typeof(NodeTypeAttribute)) as NodeTypeAttribute is var nodeTypeAtt && nodeTypeAtt != null)
+        {
+            var node = root.GetNodeInChildren(nodeTypeAtt.Type);
+            _ = node ?? throw new NullReferenceException("Node was null");
+
+            field.SetValue(root, node);
+            return node;
+        }
 
         return null;
         //throw new NullReferenceException($"No valid attribute was found");

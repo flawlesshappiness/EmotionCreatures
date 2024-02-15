@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 public static partial class NodeExtensions
@@ -41,6 +42,25 @@ public static partial class NodeExtensions
         }
 
         return null;
+    }
+
+    public static Node GetNodeInChildren(this Node node, Type type)
+    {
+        if (IsSameOrSubclass(type, node.GetType())) return node;
+
+        foreach (var child in node.GetChildren())
+        {
+            var childNode = child.GetNodeInChildren(type);
+            if (childNode != null)
+                return childNode;
+        }
+
+        return null;
+    }
+
+    private static bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
+    {
+        return potentialDescendant.IsSubclassOf(potentialBase) || potentialDescendant == potentialBase;
     }
 
     public static List<T> GetNodesInChildren<T>(this Node node) where T : Node
