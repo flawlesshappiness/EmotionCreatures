@@ -10,6 +10,8 @@ public partial class CharacterMovement : Node
     private bool _moving;
     private float _time;
 
+    private Node3D look_at_target;
+
     public MultiLock MovementLock { get; private set; } = new MultiLock();
 
     public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -30,6 +32,11 @@ public partial class CharacterMovement : Node
     {
         base._PhysicsProcess(delta);
         _time = Convert.ToSingle(delta);
+
+        if (look_at_target != null)
+        {
+            RotateTowards(look_at_target.GlobalPosition);
+        }
     }
 
     public void Stop()
@@ -100,4 +107,11 @@ public partial class CharacterMovement : Node
         var dir = Body.GlobalPosition.DirectionTo(position);
         Rotate(dir);
     }
+
+    public void StartLookingAt(Node3D node)
+    {
+        look_at_target = node;
+    }
+
+    public void StopLookingAt() => StartLookingAt(null);
 }

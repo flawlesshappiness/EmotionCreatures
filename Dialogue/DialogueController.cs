@@ -17,8 +17,9 @@ public partial class DialogueController : Node
     private DialogueNode CurrentNode;
     public string SelectedUrlId { get; set; } = string.Empty;
 
-    public Action<string> OnDialogueStarted;
+    public Action<DialogueStartedArguments> OnDialogueStarted;
     public Action<DialogueEndedArguments> OnDialogueEnded;
+    public Action<DialogueEndedArguments> OnDialogueEndedTemp;
 
     public override void _Ready()
     {
@@ -50,14 +51,14 @@ public partial class DialogueController : Node
     public void SetDialogueNode(string id) => SetDialogueNode(GetNode(id));
     public void NextDialogueText() => SetDialogueNode(CurrentNode.Next);
 
-    public void SetDialogueNode(DialogueNode node)
+    private void SetDialogueNode(DialogueNode node)
     {
         Debug.TraceMethod(node?.Id);
         Debug.Indent++;
 
         if (CurrentNode == null && node != null)
         {
-            StartDialogue(node);
+            DialogueView.ShowDialogueBox();
         }
 
         var previous_node = CurrentNode;
@@ -119,13 +120,13 @@ public partial class DialogueController : Node
         }
     }
 
-    private void StartDialogue(DialogueNode node)
+    public void StartDialogue(DialogueStartedArguments args)
     {
-        Debug.TraceMethod(node?.Id);
+        Debug.TraceMethod(args?.Node?.Id);
         Debug.Indent++;
 
-        OnDialogueStarted?.Invoke(node.Id);
-        DialogueView.ShowDialogueBox();
+        OnDialogueStarted?.Invoke(args);
+        SetDialogueNode(args.Node);
 
         Debug.Indent--;
     }
@@ -141,6 +142,8 @@ public partial class DialogueController : Node
             Debug.Indent++;
 
             OnDialogueEnded?.Invoke(args);
+            OnDialogueEndedTemp?.Invoke(args);
+            OnDialogueEndedTemp = null;
 
             Debug.Indent--;
         }
@@ -198,4 +201,16 @@ public partial class DialogueController : Node
 
         return s;
     }
+}
+
+public class DialogueStartedArguments
+{
+    public DialogueNode Node { get; set; }
+
+    public Interactable Interactable { get; set; }
+}
+
+public class DialogueEndedArguments
+{
+    public DialogueNode Node { get; set; }
 }

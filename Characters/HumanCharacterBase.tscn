@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Character/Navigation/CharacterNavigation.cs" id="4_geetl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
-radius = 0.194107
+radius = 0.3
 
 [sub_resource type="SphereMesh" id="SphereMesh_0uexq"]
 radius = 0.1
@@ -39,3 +39,5 @@ surface_material_override/0 = SubResource("StandardMaterial3D_5666w")
 [node name="RayCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(0, 0, 0.75)
+collision_mask = 2
+hit_from_inside = true

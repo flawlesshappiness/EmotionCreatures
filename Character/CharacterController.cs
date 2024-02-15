@@ -57,6 +57,12 @@ public partial class CharacterController : Node
         }
 
         var character = GDHelper.Instantiate<Character>(path);
+        character.SetParent(Scene.Current);
+
+        var rng = new RandomNumberGenerator();
+        var x = rng.RandfRange(-0.1f, 0.1f);
+        var z = rng.RandfRange(-0.1f, 0.1f);
+        character.GlobalPosition = new Vector3(x, 0, z);
 
         Debug.Indent--;
         return character;

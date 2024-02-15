@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bs2uec3bxwmen"]
+[gd_scene load_steps=25 format=3 uid="uid://bs2uec3bxwmen"]
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
 [ext_resource type="Script" path="res://Camera/TopDownCameraFollow.cs" id="2_fla0r"]
@@ -14,6 +14,10 @@
 [ext_resource type="ArrayMesh" uid="uid://dwgf401oqyilo" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_5.obj" id="12_trc80"]
 [ext_resource type="ArrayMesh" uid="uid://cek50ousxl4nb" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_6.obj" id="13_u24xw"]
 [ext_resource type="ArrayMesh" uid="uid://c283hcnmwqm7k" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_7.obj" id="14_316t8"]
+[ext_resource type="Script" path="res://Spawn/CharacterSpawn.cs" id="15_v34xy"]
+[ext_resource type="PackedScene" uid="uid://xn86bcu7wvvr" path="res://Characters/Adventurer/adventurer.tscn" id="16_adpuj"]
+[ext_resource type="Script" path="res://Interact/InteractableDialogueCharacter.cs" id="17_ansl3"]
+[ext_resource type="Script" path="res://Dialogue/DialogueBattle.cs" id="18_t8wdv"]
 
 [sub_resource type="Environment" id="Environment_l0ktl"]
 background_mode = 1
@@ -28,11 +32,10 @@ albedo_color = Color(0.152941, 0.454902, 0.129412, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ki12o"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xogqd"]
-size = Vector3(5.50126, 1, 1.97559)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_wi05b"]
 size = Vector3(27.6018, 10.5186, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uxsfv"]
 
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_e8mri")
@@ -63,20 +66,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_k3hhn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_ki12o")
-
-[node name="Battle Area" type="Node3D" parent="World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1218, 0.0692785, -0.199995)
-
-[node name="BattleArea" type="Area3D" parent="World/Battle Area"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Battle Area/BattleArea"]
-shape = SubResource("BoxShape3D_xogqd")
-
-[node name="Label3D" type="Label3D" parent="World/Battle Area"]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-text = "BATTLE"
-font_size = 267
-outline_size = 42
 
 [node name="Trees" type="Node3D" parent="World"]
 
@@ -228,3 +217,28 @@ shape = SubResource("BoxShape3D_wi05b")
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="World/Colliders"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.1284, 0.369717, -7.13037)
 shape = SubResource("BoxShape3D_wi05b")
+
+[node name="NPC" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.53081, 0, -2.19679)
+script = ExtResource("15_v34xy")
+
+[node name="Debug" type="Node3D" parent="World/NPC"]
+
+[node name="Adventurer" parent="World/NPC/Debug" instance=ExtResource("16_adpuj")]
+
+[node name="Dialogue" type="Node3D" parent="World/NPC"]
+script = ExtResource("17_ansl3")
+Id = "Default"
+DefaultNode = "##TEST_BATTLE_001##"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/NPC/Dialogue"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/NPC/Dialogue/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_uxsfv")
+
+[node name="Battle" type="Node3D" parent="World/NPC"]
+script = ExtResource("18_t8wdv")
+DialogueNodeEnd = "##TEST_BATTLE_002##"

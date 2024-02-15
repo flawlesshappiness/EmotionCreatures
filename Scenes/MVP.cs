@@ -2,9 +2,6 @@ using Godot;
 
 public partial class MVP : Scene
 {
-    [NodeName(nameof(BattleArea))]
-    public Area3D BattleArea;
-
     private TopDownCameraFollow camera_follow;
     private Character player;
 
@@ -14,13 +11,14 @@ public partial class MVP : Scene
 
         BattleController.Instance.OnBattleEnd += OnBattleEnd;
 
+        var spawns = this.GetNodesInChildren<WorldSpawn>();
+        spawns.ForEach(x => x.Spawn());
+
         player = CharacterController.Instance.CreateCharacter(CharacterType.Adventurer);
         camera_follow = this.GetNodeInChildren<TopDownCameraFollow>();
         camera_follow.SetTarget(player);
 
         PlayerController.Instance.SetTargetCharacter(player);
-
-        BattleArea.BodyEntered += OnEnterBattleArea;
     }
 
     private void OnEnterBattleArea(Node3D body)

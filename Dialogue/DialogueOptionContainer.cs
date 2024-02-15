@@ -29,6 +29,7 @@ public partial class DialogueOptionContainer : ControlScript
     {
         options.ForEach(x => x.Element.QueueFree());
         options.Clear();
+        selected = null;
     }
 
     public void CreateOptions(List<DialogueNodeOption> node_options)
@@ -62,6 +63,7 @@ public partial class DialogueOptionContainer : ControlScript
 
     public void SetSelected(int idx)
     {
+        if (options.Count == 0) return;
         var next_option = options.GetClamped(idx);
 
         if (selected == next_option)

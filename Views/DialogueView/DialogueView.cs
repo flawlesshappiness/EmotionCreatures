@@ -205,8 +205,3 @@ public partial class DialogueView : View
         OnAnimateDialogueTextEnd();
     }
 }
-
-public class DialogueEndedArguments
-{
-    public DialogueNode Node { get; set; }
-}

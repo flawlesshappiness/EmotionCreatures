@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class CharacterMesh : Node
+public partial class CharacterMesh : Node3D
 {
     [Export]
     public string IdleAnimation;

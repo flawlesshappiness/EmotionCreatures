@@ -26,6 +26,9 @@ public partial class Character : CharacterBody3D
         Movement.Initialize(this);
         Animator.Initialize(this);
         Navigation.Initialize(this);
+
+        DialogueController.Instance.OnDialogueStarted += OnDialogueStarted;
+        DialogueController.Instance.OnDialogueEnded += OnDialogueEnded;
     }
 
     public override void _Process(double delta)
@@ -52,5 +55,20 @@ public partial class Character : CharacterBody3D
     {
         AI = ai;
         AI.Initialize(this);
+    }
+
+    private void OnDialogueStarted(DialogueStartedArguments args)
+    {
+        if (!IsPlayer) return;
+
+        Movement.StartLookingAt(args.Interactable);
+        Movement.Stop();
+    }
+
+    private void OnDialogueEnded(DialogueEndedArguments args)
+    {
+        if (!IsPlayer) return;
+
+        Movement.StopLookingAt();
     }
 }

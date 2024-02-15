@@ -22,6 +22,7 @@ public partial class CreatureCharacter : Character
 
         Combat.SetBody(this);
         CreatureAnimator = Animator as CreatureAnimator;
+        HealthBar.Hide();
     }
 
     public void SetData(CreatureData data)
@@ -39,6 +40,11 @@ public partial class CreatureCharacter : Character
         Health = new Health(Stats.Health);
         Health.OnValueChanged += OnHealthChanged;
         HealthBar.SubscribeTo(Health);
+    }
+
+    public void PrepareForBattle()
+    {
+        HealthBar.Show();
     }
 
     public override void BeginTarget()

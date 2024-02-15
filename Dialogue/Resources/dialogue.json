@@ -1,29 +1,24 @@
 [
 	{
-		"id": "##TEST_001##",
-		"next": "##TEST_002##",
-		"text": "Test 1"
-	},
-	{
-		"id": "##TEST_002##",
-		"text": "Test 2",
+		"id": "##TEST_BATTLE_001##",
+		"text": "Hello, would you like to battle?",
 		"options": [
 			{
-				"next": "##TEST_003##",
-				"text": "Test option 3"
+				"next": "##TEST_BATTLE_002##",
+				"text": "Yes"
 			},
 			{
-				"next": "##TEST_004##",
-				"text": "Test option 4"
+				"next": "##TEST_BATTLE_003##",
+				"text": "No"
 			}
 		]
 	},
 	{
-		"id": "##TEST_003##",
-		"text": "Test 3"
+		"id": "##TEST_BATTLE_002##",
+		"text": "Cool, let's do it!"
 	},
 	{
-		"id": "##TEST_004##",
-		"text": "Test 4"
+		"id": "##TEST_BATTLE_003##",
+		"text": "Oh, ok."
 	}
 ]

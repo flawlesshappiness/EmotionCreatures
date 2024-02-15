@@ -22,6 +22,9 @@ public partial class CharacterAnimator : Node3DScript
     {
         Mesh = mesh;
         Mesh.SetParent(this);
+        Mesh.GlobalPosition = GlobalPosition;
+        Mesh.Rotation = Vector3.Zero;
+
         Animation = mesh.GetNodeInChildren<AnimationPlayer>();
 
         Idle = new AnimationEvent(Mesh.IdleAnimation, this)
