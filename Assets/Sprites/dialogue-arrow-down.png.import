@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bp6k61h7wvcf8"
-path="res://.godot/imported/dialogue-arrow-right.png-fc3db9f0b9e04111f8f0746feab87cd4.ctex"
+uid="uid://b7wtql8prmpfm"
+path="res://.godot/imported/dialogue-arrow-down.png-fc52fd72c5512283ec0a17b9c1d7da39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Dialogue/Sprites/dialogue-arrow-right.png"
-dest_files=["res://.godot/imported/dialogue-arrow-right.png-fc3db9f0b9e04111f8f0746feab87cd4.ctex"]
+source_file="res://Assets/Sprites/dialogue-arrow-down.png"
+dest_files=["res://.godot/imported/dialogue-arrow-down.png-fc52fd72c5512283ec0a17b9c1d7da39.ctex"]
 
 [params]
 

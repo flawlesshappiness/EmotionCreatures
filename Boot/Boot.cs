@@ -28,11 +28,10 @@ public partial class Boot : Node
         _initialized = true;
         InitializeScene();
         View.LoadSingleton<DebugView>();
+        View.LoadSingleton<GameMenuView>();
         LoadScene();
 
         SaveDataController.Instance.SaveAll();
-
-        PlayerInput.Instance.Pause.OnPressed += Game.Quit;
     }
 
     private void InitializeScene()

@@ -1,50 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cwjljblblxfxs"]
+[gd_scene load_steps=6 format=3 uid="uid://cwjljblblxfxs"]
 
 [ext_resource type="Script" path="res://Views/DialogueView/DialogueView.cs" id="1_dnkai"]
-[ext_resource type="PackedScene" uid="uid://dynuv5vngbqtf" path="res://Views/DialogueView/DialogueContainer.tscn" id="2_6tqki"]
-[ext_resource type="Texture2D" uid="uid://b7wtql8prmpfm" path="res://Dialogue/Sprites/dialogue-arrow-down.png" id="2_lkga2"]
-[ext_resource type="Script" path="res://Dialogue/DialogueOptionContainer.cs" id="3_4iev5"]
-[ext_resource type="Script" path="res://Dialogue/DialogueOption.cs" id="3_74t0m"]
-[ext_resource type="Texture2D" uid="uid://bp6k61h7wvcf8" path="res://Dialogue/Sprites/dialogue-arrow-right.png" id="3_ocnvr"]
-[ext_resource type="Texture2D" uid="uid://boklpvrdy846x" path="res://Dialogue/Sprites/button.png" id="6_ua5l8"]
-
-[sub_resource type="Animation" id="Animation_dj7x8"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = false
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1095, 55)]
-}
-
-[sub_resource type="Animation" id="Animation_age3a"]
-resource_name = "idle"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = false
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1095, 55), Vector2(1095, 60)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mujoq"]
-_data = {
-"RESET": SubResource("Animation_dj7x8"),
-"idle": SubResource("Animation_age3a")
-}
+[ext_resource type="PackedScene" uid="uid://dynuv5vngbqtf" path="res://Views/Menu/MenuPanel.tscn" id="2_6tqki"]
+[ext_resource type="Texture2D" uid="uid://b7wtql8prmpfm" path="res://Assets/Sprites/dialogue-arrow-down.png" id="2_lkga2"]
+[ext_resource type="PackedScene" uid="uid://bpoprp2uuoega" path="res://Views/Menu/MenuOptionsContainer.tscn" id="4_s5hvm"]
+[ext_resource type="AudioStream" uid="uid://xkoqdo05tmam" path="res://Audio/UI/Beeps/C_short_beep_001.wav" id="8_j00k1"]
 
 [node name="DialogueView" type="Control"]
 process_mode = 3
@@ -79,78 +39,8 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 alignment = 2
 
-[node name="DialogueOptions" parent="Dialogue/MarginContainer/VBoxContainer" instance=ExtResource("2_6tqki")]
+[node name="MenuOptionsContainer" parent="Dialogue/MarginContainer/VBoxContainer" instance=ExtResource("4_s5hvm")]
 layout_mode = 2
-size_flags_horizontal = 8
-script = ExtResource("3_4iev5")
-
-[node name="Options" type="VBoxContainer" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content" index="0"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-alignment = 2
-
-[node name="DialogueOption" type="MarginContainer" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options"]
-layout_mode = 2
-script = ExtResource("3_74t0m")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption"]
-layout_mode = 2
-
-[node name="ArrowContainer" type="Control" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption/HBoxContainer"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-
-[node name="Arrow" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption/HBoxContainer/ArrowContainer"]
-modulate = Color(0.2, 0.266667, 0.478431, 1)
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -12.5
-offset_right = 12.5
-offset_bottom = 12.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-texture = ExtResource("3_ocnvr")
-expand_mode = 1
-
-[node name="Shadow" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption/HBoxContainer/ArrowContainer/Arrow"]
-modulate = Color(0, 0, 0, 0.145098)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 2.0
-offset_right = 1.0
-offset_bottom = 2.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_ocnvr")
-expand_mode = 1
-
-[node name="Label" type="Label" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption/HBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.266667, 0.478431, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.294118)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 25
-text = "Option"
-vertical_alignment = 1
-
-[node name="Button" type="TextureButton" parent="Dialogue/MarginContainer/VBoxContainer/DialogueOptions/MarginContainer/MarginContainer/Content/Options/DialogueOption"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-texture_normal = ExtResource("6_ua5l8")
-ignore_texture_size = true
-stretch_mode = 0
 
 [node name="DialogueContainer" parent="Dialogue/MarginContainer/VBoxContainer" instance=ExtResource("2_6tqki")]
 custom_minimum_size = Vector2(0, 110)
@@ -168,10 +58,10 @@ text = "This is text This is text This is text This is text This is text This is
 scroll_active = false
 meta_underlined = false
 
-[node name="DialogueArrow" type="Control" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content" index="1"]
+[node name="ArrowContainer" type="Control" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content" index="1"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content/DialogueArrow"]
+[node name="DialogueArrow" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content/ArrowContainer"]
 modulate = Color(0.2, 0.266667, 0.478431, 1)
 layout_mode = 1
 anchors_preset = 3
@@ -179,22 +69,25 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -27.0
-offset_top = -24.0
-offset_right = -2.0
-offset_bottom = 1.00098
+offset_left = -20.0
+offset_top = -17.0
+offset_right = 5.0
+offset_bottom = 8.00098
 grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("2_lkga2")
 expand_mode = 1
 
-[node name="Shadow" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content/DialogueArrow/TextureRect"]
+[node name="Shadow" type="TextureRect" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content/ArrowContainer/DialogueArrow"]
 modulate = Color(0, 0, 0, 0.145098)
 show_behind_parent = true
+custom_minimum_size = Vector2(25, 25)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = 1.0
 offset_top = 2.0
 offset_right = 1.0
@@ -204,12 +97,8 @@ grow_vertical = 2
 texture = ExtResource("2_lkga2")
 expand_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content/DialogueArrow/TextureRect"]
-active = false
-libraries = {
-"": SubResource("AnimationLibrary_mujoq")
-}
-autoplay = "idle"
+[node name="SFXText" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_j00k1")
+volume_db = -15.0
 
-[editable path="Dialogue/MarginContainer/VBoxContainer/DialogueOptions"]
 [editable path="Dialogue/MarginContainer/VBoxContainer/DialogueContainer"]

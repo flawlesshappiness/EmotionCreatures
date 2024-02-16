@@ -5,14 +5,17 @@ using System.Linq;
 
 public partial class DialogueView : View
 {
+    [NodeName(nameof(SFXText))]
+    public AudioStreamPlayer SFXText;
+
     [NodeName(nameof(DialogueArrow))]
     public Control DialogueArrow;
 
     [NodeName(nameof(DialogueLabel))]
     public RichTextLabel DialogueLabel;
 
-    [NodeName(nameof(DialogueOptions))]
-    public DialogueOptionContainer DialogueOptions;
+    [NodeType(typeof(MenuOptionsContainer))]
+    public MenuOptionsContainer Options;
 
     private Coroutine _cr_dialogue_text;
 
@@ -20,14 +23,14 @@ public partial class DialogueView : View
 
     private bool _first_frame;
     private double time_dialogue_sfx_play;
-    private double duration_dialogue_sfx;
+    private double duration_dialogue_sfx = 0.07;
 
     public bool IsAnimatingDialogue => !(_cr_dialogue_text?.HasEnded ?? false);
 
     public override void _Ready()
     {
         base._Ready();
-        DialogueOptions.Hide();
+        Options.Hide();
     }
 
     public override void _Input(InputEvent @event)
@@ -35,15 +38,13 @@ public partial class DialogueView : View
         base._Input(@event);
         InputMouseButton(@event as InputEventMouseButton);
         PressSubmit();
-        PressUp();
-        PressDown();
     }
 
     private void InputMouseButton(InputEventMouseButton e)
     {
         if (e == null) return;
         if (!Visible) return;
-        if (DialogueOptions.HasOptions) return;
+        if (Options.HasOptions) return;
 
         if (e.IsReleased() && e.ButtonIndex == MouseButton.Left)
         {
@@ -64,30 +65,14 @@ public partial class DialogueView : View
             {
                 EndAnimateDialogueText();
             }
-            else if (DialogueOptions.HasOptions)
+            else if (Options.HasOptions)
             {
-                DialogueOptions.Submit();
+                // Do nothing
             }
             else
             {
                 DialogueController.Instance.NextDialogueText();
             }
-        }
-    }
-
-    private void PressUp()
-    {
-        if (Input.IsActionJustPressed(PlayerControls.Forward))
-        {
-            DialogueOptions.PreviousOption();
-        }
-    }
-
-    private void PressDown()
-    {
-        if (Input.IsActionJustPressed(PlayerControls.Back))
-        {
-            DialogueOptions.NextOption();
         }
     }
 
@@ -107,7 +92,7 @@ public partial class DialogueView : View
     {
         var text = new DialogueText(node);
         DialogueArrow.Hide();
-        DialogueOptions.Hide();
+        Options.Hide();
         SetDialogueText(text);
         AnimateDialogueText(text);
         SetDialogueOptions(node.Options);
@@ -117,11 +102,11 @@ public partial class DialogueView : View
     {
         if (options.Count == 0)
         {
-            DialogueOptions.Clear();
+            Options.Clear();
         }
         else
         {
-            DialogueOptions.CreateOptions(options);
+            Options.CreateDialogueOptions(options);
         }
     }
 
@@ -162,6 +147,7 @@ public partial class DialogueView : View
 
                 if (i > previous_visible_characters)
                 {
+                    PlayDialogueSFX();
                     previous_visible_characters = i;
                 }
 
@@ -188,9 +174,9 @@ public partial class DialogueView : View
     {
         DialogueLabel.VisibleCharacters = -1;
 
-        if (DialogueOptions.HasOptions)
+        if (Options.HasOptions)
         {
-            DialogueOptions.Show();
+            Options.Show();
         }
         else
         {
@@ -203,5 +189,15 @@ public partial class DialogueView : View
         if (_first_frame) return;
         Coroutine.Stop(_cr_dialogue_text);
         OnAnimateDialogueTextEnd();
+    }
+
+    private void PlayDialogueSFX()
+    {
+        var time = Time.GetUnixTimeFromSystem();
+        if (time > time_dialogue_sfx_play)
+        {
+            time_dialogue_sfx_play = time + duration_dialogue_sfx;
+            SFXText.Play();
+        }
     }
 }

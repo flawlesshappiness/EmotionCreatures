@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class DialogueOption : ControlScript
+public partial class MenuOption : ControlScript
 {
     [NodeName(nameof(Arrow))]
     public Control Arrow;

@@ -29,6 +29,7 @@ public partial class Character : CharacterBody3D
 
         DialogueController.Instance.OnDialogueStarted += OnDialogueStarted;
         DialogueController.Instance.OnDialogueEnded += OnDialogueEnded;
+        PlayerInput.Instance.InputLock.OnLocked += OnInputLocked;
     }
 
     public override void _Process(double delta)
@@ -62,7 +63,6 @@ public partial class Character : CharacterBody3D
         if (!IsPlayer) return;
 
         Movement.StartLookingAt(args.Interactable);
-        Movement.Stop();
     }
 
     private void OnDialogueEnded(DialogueEndedArguments args)
@@ -70,5 +70,12 @@ public partial class Character : CharacterBody3D
         if (!IsPlayer) return;
 
         Movement.StopLookingAt();
+    }
+
+    private void OnInputLocked()
+    {
+        if (!IsPlayer) return;
+
+        Movement.Stop();
     }
 }

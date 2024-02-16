@@ -47,6 +47,8 @@ public partial class PlayerInput : Node
         InitializeInputActions();
         DialogueController.Instance.OnDialogueStarted += _ => InputLock.AddLock(nameof(DialogueView));
         DialogueController.Instance.OnDialogueEnded += _ => InputLock.RemoveLock(nameof(DialogueView));
+        Game.OnMenuOpen += () => InputLock.AddLock(nameof(GameMenuView));
+        Game.OnMenuClose += () => InputLock.RemoveLock(nameof(GameMenuView));
     }
 
     private void InitializeMouse()
