@@ -28,8 +28,14 @@ public partial class TeamController : Node
     {
         Save.Game.Team.Creatures = new List<CreatureData>
         {
-            new CreatureData { CharacterType = CharacterType.Frog },
-            new CreatureData { CharacterType = CharacterType.Frog },
+            new CreatureData {
+                CharacterType = CharacterType.Frog,
+                Core = null,
+                Moveset = new MovesetData
+                {
+                    Moves = new(){ MoveType.Punch, MoveType.Projectile }
+                }
+            },
         };
 
         Game.Save();

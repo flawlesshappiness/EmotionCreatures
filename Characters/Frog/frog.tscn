@@ -6,7 +6,8 @@
 [node name="Frog" instance=ExtResource("1_hd0hr")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("2_luve2")
-AttackAnimation = "Punch"
+MeleeAttackAnimation = "Punch"
+ProjectileAttackAnimation = "Weapon"
 HurtAnimation = "HitReact"
 DeathAnimation = "Death"
 IdleAnimation = "Idle"

@@ -10,6 +10,7 @@ public partial class BattleController : Node
     public static BattleController Create() => Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
 
     private BattleAnimationView AnimationView { get; set; }
+    private BattleView BattleView { get; set; }
 
     public Action OnBattleStart, OnBattleEnd;
 
@@ -17,11 +18,22 @@ public partial class BattleController : Node
     private List<CreatureCharacter> PlayerCreatures { get; set; } = new();
     private List<Node> BattleObjects { get; set; } = new();
 
+    private CreatureData DebugOpponentCreature = new()
+    {
+        CharacterType = CharacterType.Frog,
+        Core = new() { Level = 1 },
+        Moveset = new()
+        {
+            Moves = new() { MoveType.Punch }
+        }
+    };
+
     public override void _Ready()
     {
         base._Ready();
 
         AnimationView = View.LoadSingleton<BattleAnimationView>();
+        BattleView = View.LoadSingleton<BattleView>();
     }
 
     public void Clear()
@@ -62,6 +74,7 @@ public partial class BattleController : Node
             AnimationView.Label.Visible = false;
             AnimationView.Visible = false;
             // Begin battle
+            BattleView.Show();
             OnBattleStart?.Invoke();
             Debug.Indent--;
 
@@ -73,8 +86,8 @@ public partial class BattleController : Node
 
             void CreateCreatures()
             {
-                var debug_player_data = new CreatureData { CharacterType = CharacterType.Frog }; // TODO
-                var debug_opponent_data = new CreatureData { CharacterType = CharacterType.Frog }; // TODO
+                var debug_player_data = Save.Game.Team.Creatures.First();
+                var debug_opponent_data = DebugOpponentCreature;
                 var player_creature = CreatePlayerCreature(debug_player_data);
                 var opponent_creature = CreateOpponentCreature(debug_opponent_data);
             }
@@ -116,6 +129,8 @@ public partial class BattleController : Node
     {
         OpponentCreatures.ForEach(x => x.AI?.Stop());
         PlayerCreatures.ForEach(x => x.AI?.Stop());
+
+        BattleView.Hide();
 
         Coroutine.Start(Cr);
         IEnumerator Cr()

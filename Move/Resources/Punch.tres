@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveInfo" load_steps=2 format=3 uid="uid://cbsu02074qlgd"]
+
+[ext_resource type="Script" path="res://Move/MoveInfo.cs" id="1_j1b5k"]
+
+[resource]
+script = ExtResource("1_j1b5k")
+Type = 0
+Name = "Punch"
+Cooldown = 2.0
+Damage = 1.0
+AnimationType = 0
+MeleeHitboxPosition = Vector3(0, 0.6, 0.6)
+MeleeHitboxSize = Vector3(0.8, 0.8, 0.8)

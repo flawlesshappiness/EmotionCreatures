@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckxwa65egvu72"]
+[gd_scene load_steps=3 format=3 uid="uid://ckxwa65egvu72"]
 
 [ext_resource type="Script" path="res://Views/BattleView/BattleView.cs" id="1_4cixu"]
+[ext_resource type="PackedScene" uid="uid://cwo1dumfk1fjc" path="res://Views/BattleView/BattleMoveControl.tscn" id="2_hcr73"]
 
 [node name="BattleView" type="Control"]
 layout_mode = 3
@@ -10,3 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4cixu")
+
+[node name="Moves" parent="." instance=ExtResource("2_hcr73")]
+layout_mode = 1

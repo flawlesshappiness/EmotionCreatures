@@ -56,4 +56,11 @@ layout_mode = 2
 text = "1"
 horizontal_alignment = 1
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="MenuPanel/MarginContainer/MarginContainer/Content/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MovesOption" parent="MenuPanel/MarginContainer/MarginContainer/Content/VBoxContainer/HBoxContainer2" instance=ExtResource("4_3l3bs")]
+layout_mode = 2
+
 [editable path="MenuPanel"]

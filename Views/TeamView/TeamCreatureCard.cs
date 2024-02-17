@@ -11,6 +11,9 @@ public partial class TeamCreatureCard : ControlScript
     [NodeName(nameof(CoreLabel))]
     public Label CoreLabel;
 
+    [NodeName(nameof(MovesOption))]
+    public MenuOption MovesOption;
+
     [NodeName(nameof(Origin))]
     public Node3D Origin;
 
@@ -20,13 +23,14 @@ public partial class TeamCreatureCard : ControlScript
     {
         base._Ready();
         Clear();
+        CoreOption.Text = "Core level: ";
+        MovesOption.Text = "Moves";
     }
 
     public void Clear()
     {
         ClearCreature();
         NameLabel.Text = string.Empty;
-        CoreOption.Text = "Core level: ";
         CoreLabel.Text = "1";
     }
 

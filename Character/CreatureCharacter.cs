@@ -9,12 +9,16 @@ public partial class CreatureCharacter : Character
     [NodeType(typeof(CreatureCombat))]
     public CreatureCombat Combat;
 
+    [NodeType(typeof(CreatureMoves))]
+    public CreatureMoves Moves;
+
     public Health Health { get; private set; }
     public CreatureData Data { get; private set; }
     public CreatureInfo Info { get; private set; }
     public CreatureStats Stats { get; private set; }
     public bool IsAlive => !Health.IsDead;
     public bool IsDead => Health.IsDead;
+    public int Level => Data.Core?.Level ?? 1;
 
     public override void _Ready()
     {
@@ -28,13 +32,13 @@ public partial class CreatureCharacter : Character
     public void SetData(CreatureData data)
     {
         Data = data;
+        Moves.LoadMoves(data.Moveset);
     }
 
     public void SetInfo(CreatureInfo info)
     {
-        var level = 1; // TODO: Get from core
         Info = info;
-        Stats = CreatureStats.FromLevel(info, level);
+        Stats = CreatureStats.FromLevel(info, Level);
         Stats.Trace();
 
         Health = new Health(Stats.Health);
@@ -61,23 +65,29 @@ public partial class CreatureCharacter : Character
 
     private void AttackPressed()
     {
-        Attack();
+        UseSelectedMove();
     }
 
-    public void Attack()
+    public void UseSelectedMove()
     {
         if (IsDead) return;
 
-        var anim = CreatureAnimator.Attack;
-
-        if (Animator.CurrentAnimation.Name == anim.Name) return;
-
-        Movement.MovementLock.AddLock(anim.Name);
-        anim.Play(() =>
+        if (Moves.TryUseSelectedMove())
         {
-            CreatureAnimator.PlayIdle();
-            Movement.MovementLock.RemoveLock(anim.Name);
-        });
+            var move = Moves.SelectedMove;
+            var anim = CreatureAnimator.GetAttackAnimationEvent(move.Info.AnimationType);
+
+            if (Animator.CurrentAnimation.Name == anim.Name) return;
+
+            Combat.CurrentMove = move;
+
+            Movement.MovementLock.AddLock(anim.Name);
+            anim.Play(() =>
+            {
+                CreatureAnimator.PlayIdle();
+                Movement.MovementLock.RemoveLock(anim.Name);
+            });
+        }
     }
 
     public void Damage()

@@ -1,14 +1,22 @@
 public partial class CreatureAnimator : CharacterAnimator
 {
-    public AnimationEvent Attack, Hurt, Dead;
+    public AnimationEvent MeleeAttack, ProjectileAttack, Hurt, Dead;
 
     public override void SetMesh(CharacterMesh mesh)
     {
         base.SetMesh(mesh);
 
         var cm = Mesh as CreatureMesh;
-        Attack = new AnimationEvent(cm.AttackAnimation, this);
+        MeleeAttack = new AnimationEvent(cm.MeleeAttackAnimation, this);
+        ProjectileAttack = new AnimationEvent(cm.ProjectileAttackAnimation, this);
         Hurt = new AnimationEvent(cm.HurtAnimation, this);
         Dead = new AnimationEvent(cm.DeathAnimation, this);
     }
+
+    public AnimationEvent GetAttackAnimationEvent(MoveAnimationType type) => type switch
+    {
+        MoveAnimationType.Melee => MeleeAttack,
+        MoveAnimationType.Projectile => ProjectileAttack,
+        _ => null
+    };
 }

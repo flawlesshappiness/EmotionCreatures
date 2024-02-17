@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwo1dumfk1fjc"]
+
+[ext_resource type="Script" path="res://Views/BattleView/BattleMoveControl.cs" id="1_aedy0"]
+[ext_resource type="PackedScene" uid="uid://ix8gmgoicbni" path="res://Views/BattleView/MoveControl.tscn" id="2_u87vs"]
+
+[node name="BattleMoveControl" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aedy0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Upper" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MoveControlNorth" parent="VBoxContainer/MarginContainer/VBoxContainer/Upper" instance=ExtResource("2_u87vs")]
+layout_mode = 2
+
+[node name="Middle" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="MoveControlWest" parent="VBoxContainer/MarginContainer/VBoxContainer/Middle" instance=ExtResource("2_u87vs")]
+layout_mode = 2
+
+[node name="MoveControlEast" parent="VBoxContainer/MarginContainer/VBoxContainer/Middle" instance=ExtResource("2_u87vs")]
+layout_mode = 2
+
+[node name="Lower" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MoveControlSouth" parent="VBoxContainer/MarginContainer/VBoxContainer/Lower" instance=ExtResource("2_u87vs")]
+layout_mode = 2

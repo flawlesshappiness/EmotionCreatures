@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ddv1jhrxiuj4l"]
+[gd_scene load_steps=12 format=3 uid="uid://ddv1jhrxiuj4l"]
 
 [ext_resource type="Script" path="res://Character/CreatureCharacter.cs" id="1_o2d2t"]
 [ext_resource type="Script" path="res://Character/CreatureCombat.cs" id="2_hje3u"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Character/Animation/CreatureAnimator.cs" id="4_rhkah"]
 [ext_resource type="Script" path="res://Character/Navigation/CreatureNavigation.cs" id="5_u6eun"]
 [ext_resource type="PackedScene" uid="uid://boncc0fcu7kkg" path="res://Health/HealthBar/HealthBar.tscn" id="6_yyqmr"]
+[ext_resource type="Script" path="res://Creature/CreatureMoves.cs" id="7_sk8qg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c3i13"]
 size = Vector3(0.751953, 0.80957, 0.849609)
@@ -25,14 +26,16 @@ albedo_color = Color(1, 0, 0, 1)
 [node name="CreatureBase" type="CharacterBody3D"]
 script = ExtResource("1_o2d2t")
 
+[node name="Moves" type="Node3D" parent="."]
+script = ExtResource("7_sk8qg")
+
 [node name="Combat" type="Node3D" parent="."]
 script = ExtResource("2_hje3u")
 
-[node name="MeleeAttackArea" type="Area3D" parent="Combat"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69259, 0.580385)
+[node name="MeleeHitbox" type="Area3D" parent="Combat"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Combat/MeleeAttackArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0112908)
+[node name="MeleeHitboxShape" type="CollisionShape3D" parent="Combat/MeleeHitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0.6)
 shape = SubResource("BoxShape3D_c3i13")
 
 [node name="Movement" type="Node3D" parent="."]

@@ -141,7 +141,7 @@ public class AI_Opponent_MVP : AI_Battle
                 if (target_dist < 1f)
                 {
                     Navigation.NavigationLock.RemoveLock(state.ToString());
-                    Creature.Attack();
+                    Creature.UseSelectedMove();
                     SetState(State.Idle);
                 }
 

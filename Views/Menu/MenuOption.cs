@@ -22,6 +22,7 @@ public partial class MenuOption : ControlScript
     public bool ShowArrow { get => Arrow.Visible; set => Arrow.Visible = value; }
 
     private static MenuOption selected;
+    private bool HasSelected => IsInstanceValid(selected) && selected != null && selected.IsVisibleInTree();
 
     public override void _Ready()
     {
@@ -33,7 +34,7 @@ public partial class MenuOption : ControlScript
         Button.FocusExited += Deselect;
     }
 
-    public void GrabFocus()
+    public new void GrabFocus()
     {
         Button.GrabFocus();
     }
@@ -43,7 +44,7 @@ public partial class MenuOption : ControlScript
         ShowArrow = true;
         OnSelected?.Invoke();
 
-        if (selected != null && selected.IsVisibleInTree())
+        if (HasSelected)
         {
             SFXSelect.Play();
         }

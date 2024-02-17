@@ -14,4 +14,7 @@ public partial class CreatureInfo : Resource
 
     [Export(PropertyHint.Range, "1,10000,1")]
     public float HealthMax { get; set; }
+
+    [Export]
+    public Godot.Collections.Array<MoveType> Moves { get; set; }
 }

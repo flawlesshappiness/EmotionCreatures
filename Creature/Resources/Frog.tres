@@ -8,3 +8,4 @@ CharacterType = 1
 Name = "Frog"
 HealthMin = 5.0
 HealthMax = 200.0
+Moves = Array[int]([0])

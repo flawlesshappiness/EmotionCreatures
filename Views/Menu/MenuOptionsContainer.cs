@@ -23,7 +23,7 @@ public partial class MenuOptionsContainer : ControlScript
         OptionPrefab.Hide();
     }
 
-    public void GrabFocus()
+    public new void GrabFocus()
     {
         var option = options.FirstOrDefault();
         if (option != null)

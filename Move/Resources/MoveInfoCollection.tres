@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="MoveInfoCollection" load_steps=2 format=3 uid="uid://bgjngnowa1ufg"]
+
+[ext_resource type="Script" path="res://Move/MoveInfoCollection.cs" id="1_hj3rf"]
+
+[resource]
+script = ExtResource("1_hj3rf")

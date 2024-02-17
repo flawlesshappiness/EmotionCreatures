@@ -2,10 +2,15 @@ using Godot;
 
 public partial class CreatureCombat : NodeScript
 {
-    [NodeName(nameof(MeleeAttackArea))]
-    public Area3D MeleeAttackArea;
+    [NodeName(nameof(MeleeHitbox))]
+    public Area3D MeleeHitbox;
+
+    [NodeName(nameof(MeleeHitboxShape))]
+    public CollisionShape3D MeleeHitboxShape;
 
     private CharacterBody3D Body { get; set; }
+
+    public CreatureMove CurrentMove { get; set; }
 
     public void SetBody(CharacterBody3D body)
     {
@@ -14,10 +19,21 @@ public partial class CreatureCombat : NodeScript
 
     public void Attack()
     {
+        if (CurrentMove == null)
+        {
+            Debug.LogError("CreatureCombat.CurrentMove is not set");
+            return;
+        }
+
         Debug.LogMethod();
         Debug.Indent++;
 
-        var bodies = MeleeAttackArea.GetOverlappingBodies();
+        MeleeHitboxShape.Position = CurrentMove.Info.MeleeHitboxPosition;
+
+        var shape = MeleeHitboxShape.Shape as BoxShape3D;
+        shape.Size = CurrentMove.Info.MeleeHitboxPosition;
+
+        var bodies = MeleeHitbox.GetOverlappingBodies();
         foreach (var body in bodies)
         {
             if (body == Body) continue;

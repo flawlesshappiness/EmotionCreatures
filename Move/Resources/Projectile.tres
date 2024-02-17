@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MoveInfo" load_steps=2 format=3 uid="uid://dd852foncj2bl"]
+
+[ext_resource type="Script" path="res://Move/MoveInfo.cs" id="1_0d68h"]
+
+[resource]
+script = ExtResource("1_0d68h")
+Type = 1
+Name = "Projectile"
+Cooldown = 4.0
+Damage = 3.0
+AnimationType = 1
+MeleePosition = Vector3(0, 0, 0)
+MeleeSize = Vector3(0, 0, 0)

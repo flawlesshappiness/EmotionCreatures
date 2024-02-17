@@ -21,6 +21,10 @@ public partial class PlayerInput : Node
     public readonly InputAction Back = new InputAction(PlayerControls.Back);
     public readonly InputAction Left = new InputAction(PlayerControls.Left);
     public readonly InputAction Right = new InputAction(PlayerControls.Right);
+    public readonly InputAction MoveNorth = new InputAction(PlayerControls.MoveNorth);
+    public readonly InputAction MoveEast = new InputAction(PlayerControls.MoveEast);
+    public readonly InputAction MoveSouth = new InputAction(PlayerControls.MoveSouth);
+    public readonly InputAction MoveWest = new InputAction(PlayerControls.MoveWest);
 
     private List<InputAction> input_actions = new();
 
@@ -76,6 +80,10 @@ public partial class PlayerInput : Node
         input_actions.Add(Back);
         input_actions.Add(Left);
         input_actions.Add(Right);
+        input_actions.Add(MoveNorth);
+        input_actions.Add(MoveEast);
+        input_actions.Add(MoveSouth);
+        input_actions.Add(MoveWest);
     }
 
     public override void _PhysicsProcess(double delta)

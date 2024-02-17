@@ -3,7 +3,10 @@ using Godot;
 public partial class CreatureMesh : CharacterMesh
 {
     [Export]
-    public string AttackAnimation;
+    public string MeleeAttackAnimation;
+
+    [Export]
+    public string ProjectileAttackAnimation;
 
     [Export]
     public string HurtAnimation;
