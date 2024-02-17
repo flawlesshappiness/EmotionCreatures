@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://mki82abikx8y"]
+[gd_scene load_steps=5 format=3 uid="uid://mki82abikx8y"]
 
 [ext_resource type="Script" path="res://Views/GameMenuView/GameMenuView.cs" id="1_t0cyp"]
+[ext_resource type="AudioStream" uid="uid://dwbi03ovli5tl" path="res://Audio/UI/Beeps/C2_short_beep_001.wav" id="3_1qymg"]
 [ext_resource type="PackedScene" uid="uid://bpoprp2uuoega" path="res://Views/Menu/MenuOptionsContainer.tscn" id="3_ul7jj"]
+[ext_resource type="AudioStream" uid="uid://xkoqdo05tmam" path="res://Audio/UI/Beeps/C_short_beep_001.wav" id="4_00mlo"]
 
 [node name="GameMenu" type="Control"]
 layout_mode = 3
@@ -36,3 +38,11 @@ grow_vertical = 2
 [node name="MenuOptionsContainer" parent="Menu/HBoxContainer" instance=ExtResource("3_ul7jj")]
 layout_mode = 2
 size_flags_vertical = 4
+
+[node name="SFXOpen" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_1qymg")
+volume_db = -15.0
+
+[node name="SFXClose" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_00mlo")
+volume_db = -15.0

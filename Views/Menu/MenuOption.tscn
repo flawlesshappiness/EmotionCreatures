@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dtgnv1s1na2q6"]
+[gd_scene load_steps=6 format=3 uid="uid://dtgnv1s1na2q6"]
 
 [ext_resource type="Script" path="res://Views/Menu/MenuOption.cs" id="1_570ab"]
 [ext_resource type="Texture2D" uid="uid://bp6k61h7wvcf8" path="res://Assets/Sprites/dialogue-arrow-right.png" id="2_0hpuq"]
 [ext_resource type="Texture2D" uid="uid://boklpvrdy846x" path="res://Assets/Sprites/button.png" id="3_d30r8"]
+[ext_resource type="PackedScene" uid="uid://b27ohd68bniul" path="res://Views/Menu/MenuLabel.tscn" id="3_qks8b"]
+[ext_resource type="AudioStream" uid="uid://dhv8jby3lqclt" path="res://Audio/UI/Beeps/G_short_beep_001.wav" id="5_bkokr"]
 
 [node name="MenuOption" type="MarginContainer"]
 script = ExtResource("1_570ab")
@@ -49,15 +51,8 @@ grow_vertical = 2
 texture = ExtResource("2_0hpuq")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" parent="HBoxContainer" instance=ExtResource("3_qks8b")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2, 0.266667, 0.478431, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.294118)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 25
-text = "Option"
-vertical_alignment = 1
 
 [node name="Button" type="TextureButton" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -65,3 +60,7 @@ layout_mode = 2
 texture_normal = ExtResource("3_d30r8")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="SFXSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_bkokr")
+volume_db = -15.0

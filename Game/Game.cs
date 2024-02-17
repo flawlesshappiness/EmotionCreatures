@@ -11,4 +11,9 @@ public static class Game
         Debug.WriteLogsToPersistentData();
         Scene.Tree.Quit();
     }
+
+    public static void Save()
+    {
+        SaveDataController.Instance.SaveAll();
+    }
 }

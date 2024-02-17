@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpoprp2uuoega"]
+[gd_scene load_steps=4 format=3 uid="uid://bpoprp2uuoega"]
 
 [ext_resource type="PackedScene" uid="uid://dtgnv1s1na2q6" path="res://Views/Menu/MenuOption.tscn" id="1_nqoh3"]
 [ext_resource type="Script" path="res://Views/Menu/MenuOptionsContainer.cs" id="1_onnlf"]
 [ext_resource type="PackedScene" uid="uid://dynuv5vngbqtf" path="res://Views/Menu/MenuPanel.tscn" id="2_imsr8"]
-[ext_resource type="AudioStream" uid="uid://dhv8jby3lqclt" path="res://Audio/UI/Beeps/G_short_beep_001.wav" id="4_v80q7"]
 
 [node name="MenuOptionsContainer" type="MarginContainer"]
 script = ExtResource("1_onnlf")
@@ -17,9 +16,5 @@ layout_mode = 2
 
 [node name="MenuOption" parent="DialogueOptionsContainer/MarginContainer/MarginContainer/Content/VBoxContainer" instance=ExtResource("1_nqoh3")]
 layout_mode = 2
-
-[node name="SFXSelect" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_v80q7")
-volume_db = -15.0
 
 [editable path="DialogueOptionsContainer"]

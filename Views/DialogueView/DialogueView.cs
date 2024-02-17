@@ -177,6 +177,7 @@ public partial class DialogueView : View
         if (Options.HasOptions)
         {
             Options.Show();
+            Options.GrabFocus();
         }
         else
         {

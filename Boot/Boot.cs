@@ -29,6 +29,7 @@ public partial class Boot : Node
         InitializeScene();
         View.LoadSingleton<DebugView>();
         View.LoadSingleton<GameMenuView>();
+        View.LoadSingleton<TeamView>();
         LoadScene();
 
         SaveDataController.Instance.SaveAll();

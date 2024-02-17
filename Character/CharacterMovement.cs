@@ -10,14 +10,15 @@ public partial class CharacterMovement : Node
     private bool _moving;
     private float _time;
 
+    public Action OnMoveStart;
+    public Action OnMoveEnd;
+
     private Node3D look_at_target;
 
+    public MultiLock GravityLock { get; private set; } = new MultiLock();
     public MultiLock MovementLock { get; private set; } = new MultiLock();
 
     public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
-    public Action OnMoveStart;
-    public Action OnMoveEnd;
 
     public CharacterBody3D Body { get; private set; }
 
@@ -56,7 +57,7 @@ public partial class CharacterMovement : Node
 
         // Add the gravity.
         if (!Body.IsOnFloor())
-            velocity.Y -= Gravity * _time;
+            velocity.Y -= GravityLock.IsLocked ? 0 : Gravity * _time;
 
         if (direction != Vector3.Zero)
         {

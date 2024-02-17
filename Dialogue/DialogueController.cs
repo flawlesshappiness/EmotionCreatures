@@ -15,7 +15,8 @@ public partial class DialogueController : Node
     private Dictionary<string, string> _overwrites = new();
 
     private DialogueNode CurrentNode;
-    public string SelectedUrlId { get; set; } = string.Empty;
+
+    public bool IsDialogueActive { get; private set; }
 
     public Action<DialogueStartedArguments> OnDialogueStarted;
     public Action<DialogueEndedArguments> OnDialogueEnded;
@@ -125,6 +126,8 @@ public partial class DialogueController : Node
         Debug.TraceMethod(args?.Node?.Id);
         Debug.Indent++;
 
+        IsDialogueActive = true;
+
         OnDialogueStarted?.Invoke(args);
         SetDialogueNode(args.Node);
 
@@ -135,6 +138,8 @@ public partial class DialogueController : Node
     {
         CurrentNode = null;
         DialogueView.HideDialogueBox();
+
+        IsDialogueActive = false;
 
         if (args != null)
         {

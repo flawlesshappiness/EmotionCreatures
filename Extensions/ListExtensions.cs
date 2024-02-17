@@ -13,4 +13,10 @@ public static class ListExtensions
     {
         return list[Mathf.Clamp(index, 0, list.Count - 1)];
     }
+
+    public static T Get<T>(this List<T> list, int index)
+    {
+        if (index < 0 || index >= list.Count) return default(T);
+        return list[index];
+    }
 }

@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_nq8cx")
 CharacterType = 1
+Name = "Frog"
 HealthMin = 5.0
 HealthMax = 200.0
-ExperienceMin = 20.0
-ExperienceMax = 10000.0

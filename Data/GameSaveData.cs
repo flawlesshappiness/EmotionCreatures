@@ -6,4 +6,5 @@ public class GameSaveData : SaveData
     public List<SceneData> Scenes { get; set; } = new();
     public Dictionary<string, bool> DialogueFlags { get; set; } = new();
     public Dictionary<string, DialogueCharacterData> DialogueCharacters { get; set; } = new();
+    public TeamData Team { get; set; } = new();
 }

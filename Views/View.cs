@@ -5,6 +5,7 @@ public partial class View : ControlScript
         base._Ready();
         ProcessMode = ProcessModeEnum.Always;
         Visible = false;
+        VisibilityChanged += OnVisibilityChanged;
     }
 
     private static string GetPath<T>() where T : View
@@ -22,4 +23,22 @@ public partial class View : ControlScript
 
     public static T Get<T>() where T : View =>
         Singleton.Get<T>();
+
+    public static void Show<T>() where T : View =>
+        Get<T>().Show();
+
+    protected virtual void OnVisibilityChanged()
+    {
+        if (Visible)
+        {
+            OnShow();
+        }
+        else
+        {
+            OnHide();
+        }
+    }
+
+    protected virtual void OnShow() { }
+    protected virtual void OnHide() { }
 }
