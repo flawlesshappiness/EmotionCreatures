@@ -3,6 +3,12 @@ using System.Collections;
 
 public partial class HealthBar : Sprite3D
 {
+    [Export]
+    public Texture2D TextureProgressRed;
+
+    [Export]
+    public Texture2D TextureProgressBlue;
+
     [NodeName(nameof(ProgressBarRed))]
     public TextureProgressBar ProgressBarRed;
 
@@ -23,6 +29,9 @@ public partial class HealthBar : Sprite3D
 
         Texture = SubViewport.GetTexture();
     }
+
+    public void SetBlue() => ProgressBarRed.TextureProgress = TextureProgressBlue;
+    public void SetRed() => ProgressBarRed.TextureProgress = TextureProgressRed;
 
     public void SubscribeTo(Health health)
     {

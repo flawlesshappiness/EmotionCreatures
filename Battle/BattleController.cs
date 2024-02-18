@@ -109,6 +109,7 @@ public partial class BattleController : Node
                 creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition + offset;
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
                 creature.SetAI(new AI_Battle_Default(BattleArgs));
+                creature.HealthBar.SetBlue();
 
                 BattleArgs.PlayerCreatures.Add(creature);
                 BattleObjects.Add(creature);
@@ -126,6 +127,7 @@ public partial class BattleController : Node
                 creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition + offset;
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
                 creature.SetAI(new AI_Battle_Default(BattleArgs));
+                creature.HealthBar.SetRed();
 
                 BattleArgs.OpponentCreatures.Add(creature);
                 BattleObjects.Add(creature);
