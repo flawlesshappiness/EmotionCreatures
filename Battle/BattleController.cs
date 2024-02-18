@@ -12,21 +12,12 @@ public partial class BattleController : Node
     private BattleAnimationView AnimationView { get; set; }
     private BattleView BattleView { get; set; }
 
-    public Action OnBattleStart, OnBattleEnd;
+    public Action<StartBattleArgs> OnBattleStart;
+    public Action<EndBattleArgs> OnBattleEnd;
 
-    private List<CreatureCharacter> OpponentCreatures { get; set; } = new();
-    private List<CreatureCharacter> PlayerCreatures { get; set; } = new();
     private List<Node> BattleObjects { get; set; } = new();
 
-    private CreatureData DebugOpponentCreature = new()
-    {
-        CharacterType = CharacterType.Frog,
-        Core = new() { Level = 1 },
-        Moveset = new()
-        {
-            Moves = new() { MoveType.Punch }
-        }
-    };
+    public BattleArgs BattleArgs { get; private set; }
 
     public override void _Ready()
     {
@@ -38,68 +29,76 @@ public partial class BattleController : Node
 
     public void Clear()
     {
-        OpponentCreatures.Clear();
-        PlayerCreatures.Clear();
-
         foreach (var obj in BattleObjects.ToList())
         {
             obj.QueueFree();
         }
 
         BattleObjects.Clear();
+
+        BattleArgs = null;
     }
 
-    public void StartBattle(ArenaType arena_type)
+    public void StartBattle(StartBattleArgs args)
     {
         Clear();
+        BattleArgs = new BattleArgs();
+
+        args.PlayerTeam = Save.Game.Team; // TODO: Pick from menu after transition
+
         Coroutine.Start(Cr);
         IEnumerator Cr()
         {
-            Debug.LogMethod(arena_type);
+            Debug.LogMethod(args.ArenaType);
             Debug.Indent++;
-            // Stop player
+
             PlayerController.Instance.RemoveTargetCharacter();
-            // Show UI animation
             AnimationView.Visible = true;
             yield return AnimationView.AnimateDefaultBattleOpening();
-            // Create arena
-            var arena = CreateArena();
-            // Create creatures
+            BattleArgs.Arena = CreateArena();
             CreateCreatures();
+
             // Move camera
             var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
-            camera_follow.SetTarget(PlayerCreatures.First());
+            camera_follow.SetTarget(BattleArgs.PlayerCreatures.First());
+
             // Fade to arena
             AnimationView.Background.Color = Colors.Transparent;
             AnimationView.Label.Visible = false;
             AnimationView.Visible = false;
+
             // Begin battle
             BattleView.Show();
-            OnBattleStart?.Invoke();
+            OnBattleStart?.Invoke(args);
             Debug.Indent--;
 
             // LOCAL HELPER METHODS
             ArenaScene CreateArena()
             {
-                return ArenaController.Instance.SetArena(arena_type);
+                return ArenaController.Instance.SetArena(args.ArenaType);
             }
 
             void CreateCreatures()
             {
-                var debug_player_data = Save.Game.Team.Creatures.First();
-                var debug_opponent_data = DebugOpponentCreature;
-                var player_creature = CreatePlayerCreature(debug_player_data);
-                var opponent_creature = CreateOpponentCreature(debug_opponent_data);
+                foreach (var data in args.PlayerTeam.Creatures)
+                {
+                    var creature = CreatePlayerCreature(data);
+                }
+
+                foreach (var data in args.OpponentTeam.Creatures)
+                {
+                    var creature = CreateOpponentCreature(data);
+                }
             }
 
             CreatureCharacter CreatePlayerCreature(CreatureData data)
             {
                 var creature = CreateCreature(data);
-                creature.GlobalPosition = arena.PlayerStart.GlobalPosition;
+                creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition;
                 PlayerController.Instance.SetTargetCharacter(creature);
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
 
-                PlayerCreatures.Add(creature);
+                BattleArgs.PlayerCreatures.Add(creature);
                 BattleObjects.Add(creature);
                 return creature;
             }
@@ -107,11 +106,11 @@ public partial class BattleController : Node
             CreatureCharacter CreateOpponentCreature(CreatureData data)
             {
                 var creature = CreateCreature(data);
-                creature.GlobalPosition = arena.OpponentStart.GlobalPosition;
-                creature.SetAI(new AI_Opponent_MVP(arena));
+                creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition;
+                creature.SetAI(new AI_Opponent_MVP(BattleArgs, true));
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
 
-                OpponentCreatures.Add(creature);
+                BattleArgs.OpponentCreatures.Add(creature);
                 BattleObjects.Add(creature);
                 return creature;
             }
@@ -127,8 +126,13 @@ public partial class BattleController : Node
 
     private void EndBattle()
     {
-        OpponentCreatures.ForEach(x => x.AI?.Stop());
-        PlayerCreatures.ForEach(x => x.AI?.Stop());
+        var args = new EndBattleArgs
+        {
+
+        };
+
+        BattleArgs.PlayerCreatures.ForEach(x => x.AI?.Stop());
+        BattleArgs.OpponentCreatures.ForEach(x => x.AI?.Stop());
 
         BattleView.Hide();
 
@@ -137,7 +141,7 @@ public partial class BattleController : Node
         {
             AnimationView.Visible = true;
             yield return AnimationView.AnimateBackgroundFade(true, 1f);
-            OnBattleEnd?.Invoke();
+            OnBattleEnd?.Invoke(args);
             yield return AnimationView.AnimateBackgroundFade(false, 1.0f);
             AnimationView.Visible = false;
         }
@@ -145,7 +149,7 @@ public partial class BattleController : Node
 
     private void OnOpponentCreatureDeath(CreatureCharacter creature)
     {
-        var all_dead = OpponentCreatures.All(x => x.IsDead);
+        var all_dead = BattleArgs.OpponentCreatures.All(x => x.IsDead);
         if (!all_dead) return;
 
         Coroutine.Start(Cr);
@@ -158,7 +162,7 @@ public partial class BattleController : Node
 
     private void OnPlayerCreatureDeath(CreatureCharacter creature)
     {
-        var all_dead = PlayerCreatures.All(x => x.IsDead);
+        var all_dead = BattleArgs.PlayerCreatures.All(x => x.IsDead);
         if (!all_dead) return;
 
         Coroutine.Start(Cr);
@@ -168,4 +172,22 @@ public partial class BattleController : Node
             EndBattle();
         }
     }
+}
+
+public class StartBattleArgs
+{
+    public ArenaType ArenaType { get; set; }
+    public TeamData PlayerTeam { get; set; }
+    public TeamData OpponentTeam { get; set; }
+}
+
+public class EndBattleArgs
+{
+}
+
+public class BattleArgs
+{
+    public ArenaScene Arena { get; set; }
+    public List<CreatureCharacter> OpponentCreatures { get; set; } = new();
+    public List<CreatureCharacter> PlayerCreatures { get; set; } = new();
 }

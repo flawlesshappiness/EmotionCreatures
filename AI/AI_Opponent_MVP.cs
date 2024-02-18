@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections;
+using System.Linq;
 
 public class AI_Opponent_MVP : AI_Battle
 {
@@ -7,15 +8,20 @@ public class AI_Opponent_MVP : AI_Battle
     private State state;
     private Coroutine cr_state;
 
+    private bool is_opponent;
+    private BattleArgs battle;
+    private CreatureCharacter creature;
     private CreatureCharacter target;
 
+    private MoveType previous_move_type;
+
     private Vector3 TargetPosition => target.GlobalPosition;
+    private float TargetDistance => creature.GlobalPosition.DistanceTo(TargetPosition);
 
-    private CreatureCharacter Creature;
-
-    public AI_Opponent_MVP(ArenaScene arena) : base(arena)
+    public AI_Opponent_MVP(BattleArgs battle, bool is_opponent) : base(battle.Arena)
     {
-
+        this.is_opponent = is_opponent;
+        this.battle = battle;
     }
 
     public override void Initialize(Character character)
@@ -23,8 +29,8 @@ public class AI_Opponent_MVP : AI_Battle
         base.Initialize(character);
         SetState(State.Idle);
 
-        Creature = character as CreatureCharacter;
-        Creature.Health.OnDeath += OnDeath;
+        creature = character as CreatureCharacter;
+        creature.Health.OnDeath += OnDeath;
 
         FindTarget();
     }
@@ -43,11 +49,53 @@ public class AI_Opponent_MVP : AI_Battle
             target = null;
         }
 
-        target = PlayerController.Instance.TargetCharacter as CreatureCharacter;
+        var creatures = is_opponent ? battle.PlayerCreatures.ToList() : battle.OpponentCreatures.ToList();
+        var closest = creatures
+            .OrderBy(c => creature.GlobalPosition.DistanceTo(c.GlobalPosition))
+            .FirstOrDefault();
 
+        target = closest;
         if (target != null)
         {
             target.Health.OnDeath += OnTargetDeath;
+        }
+    }
+
+    private void SelectMove()
+    {
+        CreatureMove move = null;
+        var valid_moves = creature.Moves.Moves.Where(x => !x.IsOnCooldown);
+        var rnd = new RandomNumberGenerator();
+
+        // Try select melee move
+        if (move == null && TargetDistance < 5f)
+        {
+            move = valid_moves.FirstOrDefault(x => x.Info.AnimationType == MoveAnimationType.Melee);
+        }
+
+        // Try select projectile move
+        if (move == null && TargetDistance > 5f)
+        {
+            move = valid_moves.FirstOrDefault(x => x.Info.AnimationType == MoveAnimationType.Projectile);
+        }
+
+        // Try to skip if selected same move as previous
+        if (move != null && move.Info.Type == previous_move_type && rnd.RandfRange(0, 1) < 0.5f)
+        {
+            move = null;
+        }
+
+        // Try select any valid move
+        if (move == null)
+        {
+            move = valid_moves.ToList().Random();
+        }
+
+        // Select move
+        if (move != null)
+        {
+            creature.Moves.SelectMove(move);
+            previous_move_type = move.Info.Type;
         }
     }
 
@@ -141,7 +189,7 @@ public class AI_Opponent_MVP : AI_Battle
                 if (target_dist < 1f)
                 {
                     Navigation.NavigationLock.RemoveLock(state.ToString());
-                    Creature.UseSelectedMove();
+                    creature.UseSelectedMove();
                     SetState(State.Idle);
                 }
 
@@ -173,7 +221,16 @@ public class AI_Opponent_MVP : AI_Battle
                 }
             }
 
-            SetState(State.Approach);
+            SelectMove();
+            if (creature.Moves.SelectedMove.Info.AnimationType == MoveAnimationType.Melee)
+            {
+                SetState(State.Approach);
+            }
+            else
+            {
+                creature.UseSelectedMove();
+                SetState(State.Idle);
+            }
         }
     }
 }

@@ -21,16 +21,7 @@ public partial class MVP : Scene
         PlayerController.Instance.SetTargetCharacter(player);
     }
 
-    private void OnEnterBattleArea(Node3D body)
-    {
-        var character = body.GetNodeInParents<Character>();
-
-        if (!character.IsPlayer) return;
-
-        BattleController.Instance.StartBattle(ArenaType.MVP);
-    }
-
-    private void OnBattleEnd()
+    private void OnBattleEnd(EndBattleArgs args)
     {
         camera_follow.SetTarget(player);
         PlayerController.Instance.SetTargetCharacter(player);

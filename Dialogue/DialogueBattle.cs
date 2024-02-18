@@ -15,7 +15,27 @@ public partial class DialogueBattle : Node
     {
         if (args.Node.Id == DialogueNodeEnd)
         {
-            BattleController.Instance.StartBattle(ArenaType.MVP);
+            var battle_args = new StartBattleArgs
+            {
+                ArenaType = ArenaType.MVP,
+
+                OpponentTeam = new() // TODO
+                {
+                    Creatures = new()
+                    {
+                        new()
+                        {
+                            CharacterType = CharacterType.Frog,
+                            Moveset = new()
+                            {
+                                Moves = new(){ MoveType.Punch, MoveType.Projectile }
+                            }
+                        }
+                    }
+                },
+            };
+
+            BattleController.Instance.StartBattle(battle_args);
         }
     }
 }

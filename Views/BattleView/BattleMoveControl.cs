@@ -52,6 +52,7 @@ public partial class BattleMoveControl : ControlScript
             var control = MoveControls.Get(i);
             var move = Creature.Moves.Moves.Get(i);
             control.Text = move?.Info?.Name ?? "";
+            control.Deselect();
 
             if (move != null)
             {
