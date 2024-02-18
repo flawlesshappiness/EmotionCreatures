@@ -151,8 +151,6 @@ public partial class CreatureCharacter : Character
 
     private void OnDeath()
     {
-        Debug.Log("On death");
-
         Movement.MovementLock.AddLock("Death");
         Movement.GravityLock.AddLock("Death");
         Collider.Disabled = true;

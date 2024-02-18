@@ -26,7 +26,6 @@ public partial class NodeScript : Node
             try
             {
                 FindNodeFromAttribute(root, field);
-                Debug.Trace($"Found value for field: {field.Name}");
             }
             catch (Exception e)
             {

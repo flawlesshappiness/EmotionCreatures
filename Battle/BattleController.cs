@@ -21,13 +21,14 @@ public partial class BattleController : Node
     public BattleArgs BattleArgs { get; private set; }
     public bool HasActiveBattle => BattleArgs != null;
 
-    public CreatureCharacter TargetPlayerCharacter { get; private set; }
+    public CreatureCharacter TargetPlayerCreature { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
 
         PlayerInput.Instance.ToggleAI.OnPressed += TogglePlayerAI;
+        PlayerInput.Instance.MoveDirection.OnStarted += ChangePlayerTarget;
     }
 
     public void Clear()
@@ -70,9 +71,7 @@ public partial class BattleController : Node
 
             // Move camera
             SetPlayerTarget(BattleArgs.PlayerCreatures.First());
-            PlayerController.Instance.SetTargetCharacter(TargetPlayerCharacter);
-            var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
-            camera_follow.SetTarget(TargetPlayerCharacter);
+            PlayerController.Instance.SetTargetCharacter(TargetPlayerCreature);
 
             // Begin battle
             BattleView.Show();
@@ -101,8 +100,13 @@ public partial class BattleController : Node
 
             CreatureCharacter CreatePlayerCreature(CreatureData data)
             {
+                var rnd = new RandomNumberGenerator();
+                var x = rnd.RandfRange(-0.1f, 0.1f);
+                var z = rnd.RandfRange(-0.1f, 0.1f);
+                var offset = new Vector3(x, 0, z);
+
                 var creature = CreateCreature(data, TeamType.Player);
-                creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition;
+                creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition + offset;
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
                 creature.SetAI(new AI_Battle_Default(BattleArgs));
 
@@ -113,8 +117,13 @@ public partial class BattleController : Node
 
             CreatureCharacter CreateOpponentCreature(CreatureData data)
             {
+                var rnd = new RandomNumberGenerator();
+                var x = rnd.RandfRange(-0.1f, 0.1f);
+                var z = rnd.RandfRange(-0.1f, 0.1f);
+                var offset = new Vector3(x, 0, z);
+
                 var creature = CreateCreature(data, TeamType.Opponent);
-                creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition;
+                creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition + offset;
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
                 creature.SetAI(new AI_Battle_Default(BattleArgs));
 
@@ -183,17 +192,46 @@ public partial class BattleController : Node
 
     private void SetPlayerTarget(CreatureCharacter creature)
     {
-        TargetPlayerCharacter = creature;
+        TargetPlayerCreature = creature;
+
+        var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
+        camera_follow.SetTarget(TargetPlayerCreature);
+    }
+
+    private void ChangePlayerTarget(Vector2 input)
+    {
+        if (!HasActiveBattle) return;
+        if (TargetPlayerCreature == null) return;
+        if (!TargetPlayerCreature.AI.Active) return;
+
+        var direction = new Vector3(input.X, 0, input.Y).Normalized();
+        var position = TargetPlayerCreature.GlobalPosition;
+        var best_dot = -1f;
+        var best_creature = TargetPlayerCreature;
+
+        foreach (var creature in BattleArgs.PlayerCreatures)
+        {
+            var dir_to_creature = (creature.GlobalPosition - position).Normalized();
+            var dot = direction.Dot(dir_to_creature);
+            var better = dot > best_dot;
+            best_dot = better ? dot : best_dot;
+            best_creature = better ? creature : best_creature;
+        }
+
+        if (best_dot > 0)
+        {
+            SetPlayerTarget(best_creature);
+        }
     }
 
     private void TogglePlayerAI()
     {
         if (!HasActiveBattle) return;
-        TargetPlayerCharacter.AI.Toggle();
+        TargetPlayerCreature.AI.Toggle();
 
-        if (!TargetPlayerCharacter.AI.Active)
+        if (!TargetPlayerCreature.AI.Active)
         {
-            PlayerController.Instance.SetTargetCharacter(TargetPlayerCharacter);
+            PlayerController.Instance.SetTargetCharacter(TargetPlayerCreature);
         }
 
         OnToggleAI?.Invoke();

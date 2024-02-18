@@ -9,6 +9,19 @@ public partial class PlayerController : Node
 
     public Character TargetCharacter { get; private set; }
 
+    public override void _Ready()
+    {
+        base._Ready();
+        PlayerInput.Instance.MoveDirection.OnHeld += InputMove;
+    }
+
+    private void InputMove(Vector2 direction)
+    {
+        if (TargetCharacter == null) return;
+        if (!TargetCharacter.CanControl) return;
+        TargetCharacter.Movement.Move(direction);
+    }
+
     public void SetTargetCharacter(Character target)
     {
         Debug.LogMethod(target);

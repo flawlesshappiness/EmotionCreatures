@@ -127,6 +127,7 @@ public partial class DialogueController : Node
         Debug.Indent++;
 
         IsDialogueActive = true;
+        PlayerInput.Instance.InputLock.AddLock(nameof(DialogueController));
 
         OnDialogueStarted?.Invoke(args);
         SetDialogueNode(args.Node);
@@ -140,6 +141,7 @@ public partial class DialogueController : Node
         DialogueView.HideDialogueBox();
 
         IsDialogueActive = false;
+        PlayerInput.Instance.InputLock.RemoveLock(nameof(DialogueController));
 
         if (args != null)
         {

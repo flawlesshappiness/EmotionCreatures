@@ -39,7 +39,7 @@ public partial class BattleView : View
 
     private void OnToggleAI()
     {
-        var active = BattleController.Instance.TargetPlayerCharacter.AI.Active;
+        var active = BattleController.Instance.TargetPlayerCreature.AI.Active;
         var sActive = active ? "AI" : "Player";
         AIControl_Value.Text = sActive;
     }

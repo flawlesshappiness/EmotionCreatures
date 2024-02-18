@@ -8,10 +8,7 @@ public partial class PlayerInput : Node
 
     public static PlayerInput Instance { get; private set; }
 
-    private Character Target => PlayerController.Instance.TargetCharacter;
-
     private bool init;
-    private bool HasTarget => Target != null;
 
     public readonly InputAction Attack = new InputAction(PlayerControls.Attack);
     public readonly InputAction Pause = new InputAction(PlayerControls.Pause);
@@ -26,8 +23,10 @@ public partial class PlayerInput : Node
     public readonly InputAction MoveSouth = new InputAction(PlayerControls.MoveSouth);
     public readonly InputAction MoveWest = new InputAction(PlayerControls.MoveWest);
     public readonly InputAction ToggleAI = new InputAction(PlayerControls.ToggleAI);
+    public readonly InputDirection MoveDirection = new InputDirection(PlayerControls.Left, PlayerControls.Right, PlayerControls.Forward, PlayerControls.Back);
 
     private List<InputAction> input_actions = new();
+    private List<InputDirection> input_directions = new();
 
     public override void _Ready()
     {
@@ -44,16 +43,21 @@ public partial class PlayerInput : Node
             Initialize();
             init = true;
         }
+
+        input_directions.ForEach(x => x.ProcessInput());
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (InputLock.IsLocked) return;
+        base._Input(@event);
+        input_actions.ForEach(x => x.ProcessInput(@event));
     }
 
     private void Initialize()
     {
         InitializeMouse();
         InitializeInputActions();
-        DialogueController.Instance.OnDialogueStarted += _ => InputLock.AddLock(nameof(DialogueView));
-        DialogueController.Instance.OnDialogueEnded += _ => InputLock.RemoveLock(nameof(DialogueView));
-        Game.OnMenuOpen += () => InputLock.AddLock(nameof(GameMenuView));
-        Game.OnMenuClose += () => InputLock.RemoveLock(nameof(GameMenuView));
     }
 
     private void InitializeMouse()
@@ -86,30 +90,8 @@ public partial class PlayerInput : Node
         input_actions.Add(MoveSouth);
         input_actions.Add(MoveWest);
         input_actions.Add(ToggleAI);
-    }
 
-    public override void _PhysicsProcess(double delta)
-    {
-        base._PhysicsProcess(delta);
-        if (Scene.Root == null) return;
-
-        ProcessInputTargetCharacter();
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (InputLock.IsLocked) return;
-        base._Input(@event);
-        input_actions.ForEach(x => x.ProcessInput(@event));
-    }
-
-    private void ProcessInputTargetCharacter()
-    {
-        if (InputLock.IsLocked) return;
-        if (!HasTarget) return;
-        if (!Target.CanControl) return;
-        var input = Input.GetVector(PlayerControls.Left, PlayerControls.Right, PlayerControls.Forward, PlayerControls.Back);
-        Target.Movement.Move(input);
+        input_directions.Add(MoveDirection);
     }
 
     public PlayerInput()
