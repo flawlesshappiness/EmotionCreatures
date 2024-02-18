@@ -51,7 +51,7 @@ public partial class GameMenuView : View
             {
                 Hide();
             }
-            else
+            else if (CanShow())
             {
                 Show();
             }
@@ -69,5 +69,12 @@ public partial class GameMenuView : View
     {
         Hide();
         Show<TeamView>();
+    }
+
+    private bool CanShow()
+    {
+        var has_battle = BattleController.Instance.HasActiveBattle;
+        var invalid = has_battle;
+        return !invalid;
     }
 }

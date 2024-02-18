@@ -48,6 +48,7 @@ public partial class Boot : Node
         View.LoadSingleton<BattleAnimationView>();
         View.LoadSingleton<BattleView>();
         View.LoadSingleton<TeamView>();
+        View.LoadSingleton<CreatureSelectView>();
     }
 
     private void LoadScene()

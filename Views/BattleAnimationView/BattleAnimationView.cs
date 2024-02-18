@@ -12,7 +12,11 @@ public partial class BattleAnimationView : View
     public override void _Ready()
     {
         base._Ready();
+        Clear();
+    }
 
+    public void Clear()
+    {
         Background.Color = Colors.Transparent;
         Label.Visible = false;
     }

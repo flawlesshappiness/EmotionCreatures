@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwjljblblxfxs"]
+[gd_scene load_steps=7 format=3 uid="uid://cwjljblblxfxs"]
 
 [ext_resource type="Script" path="res://Views/DialogueView/DialogueView.cs" id="1_dnkai"]
 [ext_resource type="PackedScene" uid="uid://dynuv5vngbqtf" path="res://Views/Menu/MenuPanel.tscn" id="2_6tqki"]
 [ext_resource type="Texture2D" uid="uid://b7wtql8prmpfm" path="res://Assets/Sprites/dialogue-arrow-down.png" id="2_lkga2"]
+[ext_resource type="Theme" uid="uid://cfi8v7r7swqvn" path="res://Themes/MainTheme.tres" id="4_4ixsl"]
 [ext_resource type="PackedScene" uid="uid://bpoprp2uuoega" path="res://Views/Menu/MenuOptionsContainer.tscn" id="4_s5hvm"]
 [ext_resource type="AudioStream" uid="uid://xkoqdo05tmam" path="res://Audio/UI/Beeps/C_short_beep_001.wav" id="8_j00k1"]
 
@@ -48,11 +49,7 @@ layout_mode = 2
 
 [node name="DialogueLabel" type="RichTextLabel" parent="Dialogue/MarginContainer/VBoxContainer/DialogueContainer/MarginContainer/MarginContainer/Content" index="0"]
 layout_mode = 2
-theme_override_colors/default_color = Color(0.2, 0.266667, 0.478431, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.294118)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/normal_font_size = 25
+theme = ExtResource("4_4ixsl")
 bbcode_enabled = true
 text = "This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text This is text "
 scroll_active = false
@@ -99,6 +96,6 @@ expand_mode = 1
 
 [node name="SFXText" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_j00k1")
-volume_db = -15.0
+bus = &"UI"
 
 [editable path="Dialogue/MarginContainer/VBoxContainer/DialogueContainer"]

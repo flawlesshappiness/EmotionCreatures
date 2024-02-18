@@ -8,6 +8,13 @@ public partial class CreatureMoves : Node
 
     public CreatureMove SelectedMove;
 
+    public CreatureCharacter Creature { get; private set; }
+
+    public void Initialize(CreatureCharacter creature)
+    {
+        Creature = creature;
+    }
+
     public void LoadMoves(MovesetData data)
     {
         Debug.TraceMethod(data);
@@ -26,6 +33,7 @@ public partial class CreatureMoves : Node
             var move = new CreatureMove
             {
                 Info = info,
+                Creature = Creature,
             };
 
             Moves.Add(move);
@@ -40,7 +48,6 @@ public partial class CreatureMoves : Node
     {
         if (move == null)
         {
-            Debug.LogError("Could not select move: Move was null");
             return;
         }
 

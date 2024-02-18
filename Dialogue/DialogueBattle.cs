@@ -30,7 +30,15 @@ public partial class DialogueBattle : Node
                             {
                                 Moves = new(){ MoveType.Punch, MoveType.Projectile }
                             }
-                        }
+                        },
+                        new()
+                        {
+                            CharacterType = CharacterType.Mushnub,
+                            Moveset = new()
+                            {
+                                Moves = new(){ MoveType.Punch, MoveType.Projectile }
+                            }
+                        },
                     }
                 },
             };

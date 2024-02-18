@@ -80,10 +80,7 @@ public partial class CreatureCombat : NodeScript
         projectile.SetParent(Scene.Current);
         projectile.GlobalPosition = Creature.GlobalPosition + direction * 1.0f;
         projectile.Sender = Creature;
-        projectile.Effect = new MoveEffect
-        {
-            Damage = CurrentMove.Info.Damage,
-        };
+        projectile.Effect = CurrentMove.Effect;
 
         projectile.Fire(direction, CurrentMove.Info.ProjectileSpeed);
 

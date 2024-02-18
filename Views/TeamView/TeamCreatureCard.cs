@@ -14,8 +14,8 @@ public partial class TeamCreatureCard : ControlScript
     [NodeName(nameof(MovesOption))]
     public MenuOption MovesOption;
 
-    [NodeName(nameof(Origin))]
-    public Node3D Origin;
+    [NodeType(typeof(WorldObjectControl))]
+    public WorldObjectControl WorldObject;
 
     private CreatureCharacter creature;
 
@@ -29,7 +29,7 @@ public partial class TeamCreatureCard : ControlScript
 
     public void Clear()
     {
-        ClearCreature();
+        WorldObject.Clear();
         NameLabel.Text = string.Empty;
         CoreLabel.Text = "1";
     }
@@ -43,28 +43,8 @@ public partial class TeamCreatureCard : ControlScript
 
         var info = CreatureController.Instance.GetInfo(data.CharacterType);
 
-        LoadCharacter(data);
-
         NameLabel.Text = info.Name;
         CoreLabel.Text = $"{data.Core?.Level ?? 1}";
-    }
-
-    private void ClearCreature()
-    {
-        if (creature != null)
-        {
-            creature.QueueFree();
-            creature = null;
-        }
-    }
-
-    private void LoadCharacter(CreatureData data)
-    {
-        ClearCreature();
-        creature = CreatureController.Instance.CreateCreature(data);
-        creature.SetParent(Origin);
-        creature.GlobalPosition = Origin.GlobalPosition;
-        creature.GlobalRotation = Origin.GlobalRotation;
-        creature.Movement.GravityLock.AddLock(nameof(TeamCreatureCard));
+        WorldObject.LoadCreature(data);
     }
 }

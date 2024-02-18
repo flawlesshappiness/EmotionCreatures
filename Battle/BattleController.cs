@@ -11,6 +11,7 @@ public partial class BattleController : Node
 
     private BattleAnimationView AnimationView => View.Get<BattleAnimationView>();
     private BattleView BattleView => View.Get<BattleView>();
+    private CreatureSelectView CreatureSelectView => View.Get<CreatureSelectView>();
 
     public Action<StartBattleArgs> OnBattleStart;
     public Action<EndBattleArgs> OnBattleEnd;
@@ -46,8 +47,6 @@ public partial class BattleController : Node
         Clear();
         BattleArgs = new BattleArgs();
 
-        args.PlayerTeam = Save.Game.Team; // TODO: Pick from menu after transition
-
         Coroutine.Start(Cr);
         IEnumerator Cr()
         {
@@ -55,9 +54,18 @@ public partial class BattleController : Node
             Debug.Indent++;
 
             PlayerController.Instance.RemoveTargetCharacter();
-            AnimationView.Visible = true;
+            AnimationView.Clear();
+            AnimationView.Show();
             yield return AnimationView.AnimateDefaultBattleOpening();
             BattleArgs.Arena = CreateArena();
+
+            // Select team
+            AnimationView.Hide();
+            CreatureSelectView.Show();
+            yield return CreatureSelectView.WaitForPlayerToPickTeam(Save.Game.Team, args.OpponentTeam.Creatures.Count);
+            args.PlayerTeam = CreatureSelectView.SelectedTeam;
+
+            // Create creatures
             CreateCreatures();
 
             // Move camera
@@ -65,11 +73,6 @@ public partial class BattleController : Node
             PlayerController.Instance.SetTargetCharacter(TargetPlayerCharacter);
             var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
             camera_follow.SetTarget(TargetPlayerCharacter);
-
-            // Fade to arena
-            AnimationView.Background.Color = Colors.Transparent;
-            AnimationView.Label.Visible = false;
-            AnimationView.Visible = false;
 
             // Begin battle
             BattleView.Show();
@@ -142,12 +145,13 @@ public partial class BattleController : Node
         Coroutine.Start(Cr);
         IEnumerator Cr()
         {
-            AnimationView.Visible = true;
+            AnimationView.Clear();
+            AnimationView.Show();
             yield return AnimationView.AnimateBackgroundFade(true, 1f);
             BattleView.Hide();
             OnBattleEnd?.Invoke(args);
             yield return AnimationView.AnimateBackgroundFade(false, 1.0f);
-            AnimationView.Visible = false;
+            AnimationView.Hide();
         }
     }
 

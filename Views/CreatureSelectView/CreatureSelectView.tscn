@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://jiemgfau4tgd"]
+
+[ext_resource type="Script" path="res://Views/CreatureSelectView/CreatureSelectView.cs" id="1_afvpq"]
+[ext_resource type="PackedScene" uid="uid://cxgiwupx6a232" path="res://Views/CreatureSelectView/CreatureSelectCard.tscn" id="2_6ovtf"]
+[ext_resource type="PackedScene" uid="uid://bpoprp2uuoega" path="res://Views/Menu/MenuOptionsContainer.tscn" id="3_nph23"]
+[ext_resource type="AudioStream" uid="uid://0sye1051jj8a" path="res://Audio/UI/Beeps/D_short_beep_001.wav" id="4_esiip"]
+
+[node name="CreatureSelectView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_afvpq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Select creatures:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ValidSelectedCountLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.9, 0.36, 1)
+text = "0/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InvalidSelectedCountLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.27, 0.27, 1)
+text = "0/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CreatureSelectCard" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_6ovtf")]
+layout_mode = 2
+
+[node name="OtherOptions" parent="." instance=ExtResource("3_nph23")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -77.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SFXInvalid" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_esiip")
+bus = &"UI"

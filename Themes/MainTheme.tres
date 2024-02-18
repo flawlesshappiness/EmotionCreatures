@@ -1,0 +1,14 @@
+[gd_resource type="Theme" format=3 uid="uid://cfi8v7r7swqvn"]
+
+[resource]
+default_font_size = 25
+/colors/Text = Color(0.2, 0.266667, 0.478431, 1)
+/colors/TextShadow = Color(0, 0, 0, 0.392157)
+Label/colors/font_color = Color(0.2, 0.266667, 0.478431, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.294118)
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 2
+RichTextLabel/colors/default_color = Color(0.2, 0.266667, 0.478431, 1)
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0.294118)
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 2

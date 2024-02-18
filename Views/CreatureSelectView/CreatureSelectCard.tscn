@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://cxgiwupx6a232"]
+
+[ext_resource type="Theme" uid="uid://cfi8v7r7swqvn" path="res://Themes/MainTheme.tres" id="1_d3k5b"]
+[ext_resource type="Script" path="res://Views/CreatureSelectView/CreatureSelectCard.cs" id="1_jekeg"]
+[ext_resource type="Texture2D" uid="uid://cxkgudmyfpywn" path="res://Assets/Sprites/circle-256.png" id="2_a7354"]
+[ext_resource type="PackedScene" uid="uid://bpma5uedpp72g" path="res://Views/CommonControls/WorldObjectControl.tscn" id="3_0n0ib"]
+[ext_resource type="Texture2D" uid="uid://boklpvrdy846x" path="res://Assets/Sprites/button.png" id="4_o3d2w"]
+[ext_resource type="AudioStream" uid="uid://dhv8jby3lqclt" path="res://Audio/UI/Beeps/G_short_beep_001.wav" id="6_o8kco"]
+[ext_resource type="AudioStream" uid="uid://dwbi03ovli5tl" path="res://Audio/UI/Beeps/C2_short_beep_001.wav" id="7_v11mf"]
+[ext_resource type="AudioStream" uid="uid://xkoqdo05tmam" path="res://Audio/UI/Beeps/C_short_beep_001.wav" id="8_kqqg8"]
+
+[node name="CreatureSelectCard" type="MarginContainer"]
+script = ExtResource("1_jekeg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_d3k5b")
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HoverTexture" type="TextureRect" parent="VBoxContainer/MarginContainer/Control"]
+modulate = Color(0.1025, 0.136917, 0.25, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -125.0
+offset_right = 125.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(128, 128)
+texture = ExtResource("2_a7354")
+expand_mode = 1
+
+[node name="SelectedTexture" type="TextureRect" parent="VBoxContainer/MarginContainer/Control"]
+modulate = Color(0.2, 0.266667, 0.478431, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 100)
+texture = ExtResource("2_a7354")
+expand_mode = 1
+
+[node name="WorldObjectControl" parent="VBoxContainer/MarginContainer" instance=ExtResource("3_0n0ib")]
+layout_mode = 2
+
+[node name="Button" type="TextureButton" parent="VBoxContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture_normal = ExtResource("4_o3d2w")
+stretch_mode = 0
+
+[node name="SFXHover" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_o8kco")
+bus = &"UI"
+
+[node name="SFXSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_v11mf")
+bus = &"UI"
+
+[node name="SFXDeselect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_kqqg8")
+bus = &"UI"

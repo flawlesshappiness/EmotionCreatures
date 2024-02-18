@@ -25,6 +25,7 @@ public partial class CreatureCharacter : Character
     {
         base._Ready();
 
+        Moves.Initialize(this);
         Combat.Initialize(this);
         CreatureAnimator = Animator as CreatureAnimator;
         HealthBar.Hide();
@@ -96,9 +97,20 @@ public partial class CreatureCharacter : Character
 
     public void ApplyEffect(MoveEffect effect)
     {
-        if (IsDead) return;
-        if (effect.Sender == this) return; // Don't hit self
-        if (Team == effect.Team) return; // Don't friendly fire
+        if (IsDead) // They're already dead, silly
+        {
+            return;
+        }
+
+        if (effect.Sender == this) // Don't hit self, doofus
+        {
+            return;
+        }
+
+        if (Team == effect.Team) // Don't friendly fire, idiot
+        {
+            return;
+        }
 
         if (effect.Damage > 0)
         {

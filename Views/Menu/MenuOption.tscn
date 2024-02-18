@@ -63,4 +63,4 @@ stretch_mode = 0
 
 [node name="SFXSelect" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_bkokr")
-volume_db = -15.0
+bus = &"UI"

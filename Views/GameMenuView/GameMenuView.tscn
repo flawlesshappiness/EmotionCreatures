@@ -41,8 +41,8 @@ size_flags_vertical = 4
 
 [node name="SFXOpen" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_1qymg")
-volume_db = -15.0
+bus = &"UI"
 
 [node name="SFXClose" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_00mlo")
-volume_db = -15.0
+bus = &"UI"
