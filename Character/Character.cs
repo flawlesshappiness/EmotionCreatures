@@ -16,6 +16,7 @@ public partial class Character : CharacterBody3D
     public AI AI { get; private set; }
 
     public bool IsPlayer => PlayerController.Instance.TargetCharacter == this;
+    public bool CanControl => !(AI != null && AI.Active);
 
     public override void _Ready()
     {

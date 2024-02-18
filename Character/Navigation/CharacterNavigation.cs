@@ -9,6 +9,7 @@ public partial class CharacterNavigation : NavigationAgent3D
     protected Character Character { get; set; }
     private bool IsReady { get; set; }
 
+    private bool is_at_destination;
     private Node3D _navNode;
 
     public override void _Ready()
@@ -35,7 +36,6 @@ public partial class CharacterNavigation : NavigationAgent3D
         }
 
         if (NavigationLock.IsLocked) return;
-        if (Character.IsPlayer) return;
 
         ProcessMoveTowardsTarget();
     }
@@ -44,7 +44,11 @@ public partial class CharacterNavigation : NavigationAgent3D
     {
         if (IsNavigationFinished())
         {
-            Character.Movement.Stop();
+            if (!is_at_destination)
+            {
+                is_at_destination = true;
+                Character.Movement.Stop();
+            }
             return;
         }
 
@@ -59,6 +63,7 @@ public partial class CharacterNavigation : NavigationAgent3D
 
     public void NavigatoTo(Vector3 position)
     {
+        is_at_destination = false;
         TargetPosition = position;
     }
 

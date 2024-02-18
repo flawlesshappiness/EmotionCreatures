@@ -2,7 +2,7 @@ using Godot;
 using System.Collections;
 using System.Linq;
 
-public class AI_Opponent_MVP : AI_Battle
+public partial class AI_Battle_Default : AI_Battle
 {
     private enum State { Approach, Hunt, Idle }
     private State state;
@@ -18,7 +18,7 @@ public class AI_Opponent_MVP : AI_Battle
     private Vector3 TargetPosition => target.GlobalPosition;
     private float TargetDistance => creature.GlobalPosition.DistanceTo(TargetPosition);
 
-    public AI_Opponent_MVP(BattleArgs battle, bool is_opponent) : base(battle.Arena)
+    public AI_Battle_Default(BattleArgs battle, bool is_opponent) : base(battle.Arena)
     {
         this.is_opponent = is_opponent;
         this.battle = battle;
@@ -27,11 +27,15 @@ public class AI_Opponent_MVP : AI_Battle
     public override void Initialize(Character character)
     {
         base.Initialize(character);
-        SetState(State.Idle);
 
         creature = character as CreatureCharacter;
         creature.Health.OnDeath += OnDeath;
+    }
 
+    public override void Start()
+    {
+        base.Start();
+        SetState(State.Idle);
         FindTarget();
     }
 
@@ -43,6 +47,9 @@ public class AI_Opponent_MVP : AI_Battle
 
     private void FindTarget()
     {
+        Debug.TraceMethod();
+        Debug.Indent++;
+
         if (target != null)
         {
             target.Health.OnDeath -= OnTargetDeath;
@@ -58,6 +65,20 @@ public class AI_Opponent_MVP : AI_Battle
         if (target != null)
         {
             target.Health.OnDeath += OnTargetDeath;
+        }
+        else
+        {
+            Debug.Log("Found no target");
+        }
+
+        Debug.Indent--;
+    }
+
+    private void LookAtTarget()
+    {
+        if (target != null)
+        {
+            Character.Movement.RotateTowards(target.GlobalPosition);
         }
     }
 
@@ -216,7 +237,7 @@ public class AI_Opponent_MVP : AI_Battle
                 var time = CurrentTime + rnd.RandfRange(0.2f, 1f);
                 while (CurrentTime < time)
                 {
-                    Character.Movement.RotateTowards(target.GlobalPosition);
+                    LookAtTarget();
                     yield return null;
                 }
             }

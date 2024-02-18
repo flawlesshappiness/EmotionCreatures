@@ -9,22 +9,24 @@ public partial class BattleController : Node
     public static BattleController Instance => Singleton.TryGet<BattleController>(out var instance) ? instance : Create();
     public static BattleController Create() => Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
 
-    private BattleAnimationView AnimationView { get; set; }
-    private BattleView BattleView { get; set; }
+    private BattleAnimationView AnimationView => View.Get<BattleAnimationView>();
+    private BattleView BattleView => View.Get<BattleView>();
 
     public Action<StartBattleArgs> OnBattleStart;
     public Action<EndBattleArgs> OnBattleEnd;
+    public Action OnToggleAI;
 
     private List<Node> BattleObjects { get; set; } = new();
-
     public BattleArgs BattleArgs { get; private set; }
+    public bool HasActiveBattle => BattleArgs != null;
+
+    public CreatureCharacter TargetPlayerCharacter { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
 
-        AnimationView = View.LoadSingleton<BattleAnimationView>();
-        BattleView = View.LoadSingleton<BattleView>();
+        PlayerInput.Instance.ToggleAI.OnPressed += TogglePlayerAI;
     }
 
     public void Clear()
@@ -59,8 +61,10 @@ public partial class BattleController : Node
             CreateCreatures();
 
             // Move camera
+            SetPlayerTarget(BattleArgs.PlayerCreatures.First());
+            PlayerController.Instance.SetTargetCharacter(TargetPlayerCharacter);
             var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
-            camera_follow.SetTarget(BattleArgs.PlayerCreatures.First());
+            camera_follow.SetTarget(TargetPlayerCharacter);
 
             // Fade to arena
             AnimationView.Background.Color = Colors.Transparent;
@@ -69,6 +73,7 @@ public partial class BattleController : Node
 
             // Begin battle
             BattleView.Show();
+            BattleArgs.StartBattle();
             OnBattleStart?.Invoke(args);
             Debug.Indent--;
 
@@ -95,8 +100,8 @@ public partial class BattleController : Node
             {
                 var creature = CreateCreature(data);
                 creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition;
-                PlayerController.Instance.SetTargetCharacter(creature);
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
+                creature.SetAI(new AI_Battle_Default(BattleArgs, false));
 
                 BattleArgs.PlayerCreatures.Add(creature);
                 BattleObjects.Add(creature);
@@ -107,8 +112,8 @@ public partial class BattleController : Node
             {
                 var creature = CreateCreature(data);
                 creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition;
-                creature.SetAI(new AI_Opponent_MVP(BattleArgs, true));
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
+                creature.SetAI(new AI_Battle_Default(BattleArgs, true));
 
                 BattleArgs.OpponentCreatures.Add(creature);
                 BattleObjects.Add(creature);
@@ -131,16 +136,15 @@ public partial class BattleController : Node
 
         };
 
-        BattleArgs.PlayerCreatures.ForEach(x => x.AI?.Stop());
-        BattleArgs.OpponentCreatures.ForEach(x => x.AI?.Stop());
-
-        BattleView.Hide();
+        BattleArgs.StopBattle();
+        BattleArgs = null;
 
         Coroutine.Start(Cr);
         IEnumerator Cr()
         {
             AnimationView.Visible = true;
             yield return AnimationView.AnimateBackgroundFade(true, 1f);
+            BattleView.Hide();
             OnBattleEnd?.Invoke(args);
             yield return AnimationView.AnimateBackgroundFade(false, 1.0f);
             AnimationView.Visible = false;
@@ -172,6 +176,24 @@ public partial class BattleController : Node
             EndBattle();
         }
     }
+
+    private void SetPlayerTarget(CreatureCharacter creature)
+    {
+        TargetPlayerCharacter = creature;
+    }
+
+    private void TogglePlayerAI()
+    {
+        if (!HasActiveBattle) return;
+        TargetPlayerCharacter.AI.Toggle();
+
+        if (!TargetPlayerCharacter.AI.Active)
+        {
+            PlayerController.Instance.SetTargetCharacter(TargetPlayerCharacter);
+        }
+
+        OnToggleAI?.Invoke();
+    }
 }
 
 public class StartBattleArgs
@@ -190,4 +212,16 @@ public class BattleArgs
     public ArenaScene Arena { get; set; }
     public List<CreatureCharacter> OpponentCreatures { get; set; } = new();
     public List<CreatureCharacter> PlayerCreatures { get; set; } = new();
+
+    public void StartBattle()
+    {
+        OpponentCreatures.ForEach(x => x.AI.Start());
+        PlayerCreatures.ForEach(x => x.AI.Start());
+    }
+
+    public void StopBattle()
+    {
+        OpponentCreatures.ForEach(x => x.AI.Stop());
+        PlayerCreatures.ForEach(x => x.AI.Stop());
+    }
 }

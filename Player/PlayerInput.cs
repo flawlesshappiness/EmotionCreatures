@@ -25,6 +25,7 @@ public partial class PlayerInput : Node
     public readonly InputAction MoveEast = new InputAction(PlayerControls.MoveEast);
     public readonly InputAction MoveSouth = new InputAction(PlayerControls.MoveSouth);
     public readonly InputAction MoveWest = new InputAction(PlayerControls.MoveWest);
+    public readonly InputAction ToggleAI = new InputAction(PlayerControls.ToggleAI);
 
     private List<InputAction> input_actions = new();
 
@@ -84,6 +85,7 @@ public partial class PlayerInput : Node
         input_actions.Add(MoveEast);
         input_actions.Add(MoveSouth);
         input_actions.Add(MoveWest);
+        input_actions.Add(ToggleAI);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -105,6 +107,7 @@ public partial class PlayerInput : Node
     {
         if (InputLock.IsLocked) return;
         if (!HasTarget) return;
+        if (!Target.CanControl) return;
         var input = Input.GetVector(PlayerControls.Left, PlayerControls.Right, PlayerControls.Forward, PlayerControls.Back);
         Target.Movement.Move(input);
     }

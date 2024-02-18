@@ -27,10 +27,7 @@ public partial class Boot : Node
     {
         _initialized = true;
         InitializeScene();
-        View.LoadSingleton<DebugView>();
-        View.LoadSingleton<GameMenuView>();
-        View.LoadSingleton<BattleView>();
-        View.LoadSingleton<TeamView>();
+        InitializeViews();
         LoadScene();
 
         SaveDataController.Instance.SaveAll();
@@ -42,6 +39,15 @@ public partial class Boot : Node
         Scene.Root = Scene.Tree.Root;
         Scene.PauseLock.OnLocked += () => Scene.Tree.Paused = true;
         Scene.PauseLock.OnFree += () => Scene.Tree.Paused = false;
+    }
+
+    private void InitializeViews()
+    {
+        View.LoadSingleton<DebugView>();
+        View.LoadSingleton<GameMenuView>();
+        View.LoadSingleton<BattleAnimationView>();
+        View.LoadSingleton<BattleView>();
+        View.LoadSingleton<TeamView>();
     }
 
     private void LoadScene()

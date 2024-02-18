@@ -14,4 +14,5 @@ public partial class PlayerControls : Node
     public const string MoveEast = "move_east";
     public const string MoveSouth = "move_south";
     public const string MoveWest = "move_west";
+    public const string ToggleAI = "toggle_ai";
 }
