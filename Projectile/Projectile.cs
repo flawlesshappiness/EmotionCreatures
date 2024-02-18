@@ -6,7 +6,7 @@ public partial class Projectile : CharacterBody3D
     [NodeType(typeof(CollisionShape3D))]
     public CollisionShape3D Collider;
 
-    public MoveInfo Info { get; set; }
+    public MoveEffect Effect { get; set; }
     public CreatureCharacter Sender { get; set; }
 
     private float Speed { get; set; }
@@ -21,9 +21,9 @@ public partial class Projectile : CharacterBody3D
         NodeScript.FindNodesFromAttribute(this, GetType());
     }
 
-    public void Fire(Vector3 direction)
+    public void Fire(Vector3 direction, float speed)
     {
-        Speed = Info.ProjectileSpeed;
+        Speed = speed;
         Direction = direction;
         _fired = true;
     }
@@ -70,7 +70,7 @@ public partial class Projectile : CharacterBody3D
             if (creature == null) continue;
             if (creature == Sender) continue;
 
-            creature.Damage(Info.Damage);
+            creature.ApplyEffect(Effect);
             valid_hit = true;
             break;
         }

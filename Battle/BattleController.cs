@@ -98,10 +98,10 @@ public partial class BattleController : Node
 
             CreatureCharacter CreatePlayerCreature(CreatureData data)
             {
-                var creature = CreateCreature(data);
+                var creature = CreateCreature(data, TeamType.Player);
                 creature.GlobalPosition = BattleArgs.Arena.PlayerStart.GlobalPosition;
                 creature.Health.OnDeath += () => OnPlayerCreatureDeath(creature);
-                creature.SetAI(new AI_Battle_Default(BattleArgs, false));
+                creature.SetAI(new AI_Battle_Default(BattleArgs));
 
                 BattleArgs.PlayerCreatures.Add(creature);
                 BattleObjects.Add(creature);
@@ -110,20 +110,20 @@ public partial class BattleController : Node
 
             CreatureCharacter CreateOpponentCreature(CreatureData data)
             {
-                var creature = CreateCreature(data);
+                var creature = CreateCreature(data, TeamType.Opponent);
                 creature.GlobalPosition = BattleArgs.Arena.OpponentStart.GlobalPosition;
                 creature.Health.OnDeath += () => OnOpponentCreatureDeath(creature);
-                creature.SetAI(new AI_Battle_Default(BattleArgs, true));
+                creature.SetAI(new AI_Battle_Default(BattleArgs));
 
                 BattleArgs.OpponentCreatures.Add(creature);
                 BattleObjects.Add(creature);
                 return creature;
             }
 
-            CreatureCharacter CreateCreature(CreatureData data)
+            CreatureCharacter CreateCreature(CreatureData data, TeamType team)
             {
                 var creature = CreatureController.Instance.CreateCreature(data);
-                creature.PrepareForBattle();
+                creature.PrepareForBattle(team);
                 return creature;
             }
         }

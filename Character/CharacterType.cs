@@ -7,5 +7,7 @@ public enum CharacterBaseType
 public enum CharacterType
 {
     Adventurer,
-    Frog
+    Frog,
+    Mushnub,
+    Ghost
 }

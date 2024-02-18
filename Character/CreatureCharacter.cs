@@ -12,6 +12,7 @@ public partial class CreatureCharacter : Character
     [NodeType(typeof(CreatureMoves))]
     public CreatureMoves Moves;
 
+    public TeamType Team { get; private set; }
     public Health Health { get; private set; }
     public CreatureData Data { get; private set; }
     public CreatureInfo Info { get; private set; }
@@ -48,8 +49,9 @@ public partial class CreatureCharacter : Character
         Movement.Speed = Info.Speed;
     }
 
-    public void PrepareForBattle()
+    public void PrepareForBattle(TeamType team)
     {
+        Team = team;
         HealthBar.Show();
     }
 
@@ -92,11 +94,16 @@ public partial class CreatureCharacter : Character
         }
     }
 
-    public void Damage(float amount)
+    public void ApplyEffect(MoveEffect effect)
     {
         if (IsDead) return;
+        if (effect.Sender == this) return; // Don't hit self
+        if (Team == effect.Team) return; // Don't friendly fire
 
-        Health.AdjustValue(-amount);
+        if (effect.Damage > 0)
+        {
+            Health.AdjustValue(-effect.Damage);
+        }
     }
 
     private void OnHealthChanged()

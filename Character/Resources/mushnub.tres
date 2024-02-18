@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterInfo" load_steps=2 format=3 uid="uid://tdm1dpd1cqqf"]
+
+[ext_resource type="Script" path="res://Character/CharacterInfo.cs" id="1_fuhw4"]
+
+[resource]
+script = ExtResource("1_fuhw4")
+Scene = "res://Characters/MushnubEvolved/MushnubEvolved.tscn"
+BaseType = 1
+CharacterType = 2

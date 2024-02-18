@@ -9,4 +9,4 @@ Name = "Frog"
 HealthMin = 5.0
 HealthMax = 200.0
 Speed = 3.0
-Moves = Array[int]([0])
+Moves = Array[int]([0, 1])

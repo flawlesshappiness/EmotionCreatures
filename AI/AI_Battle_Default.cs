@@ -8,7 +8,6 @@ public partial class AI_Battle_Default : AI_Battle
     private State state;
     private Coroutine cr_state;
 
-    private bool is_opponent;
     private BattleArgs battle;
     private CreatureCharacter creature;
     private CreatureCharacter target;
@@ -18,9 +17,8 @@ public partial class AI_Battle_Default : AI_Battle
     private Vector3 TargetPosition => target.GlobalPosition;
     private float TargetDistance => creature.GlobalPosition.DistanceTo(TargetPosition);
 
-    public AI_Battle_Default(BattleArgs battle, bool is_opponent) : base(battle.Arena)
+    public AI_Battle_Default(BattleArgs battle) : base(battle.Arena)
     {
-        this.is_opponent = is_opponent;
         this.battle = battle;
     }
 
@@ -56,7 +54,7 @@ public partial class AI_Battle_Default : AI_Battle
             target = null;
         }
 
-        var creatures = is_opponent ? battle.PlayerCreatures.ToList() : battle.OpponentCreatures.ToList();
+        var creatures = creature.Team == TeamType.Opponent ? battle.PlayerCreatures.ToList() : battle.OpponentCreatures.ToList();
         var closest = creatures
             .OrderBy(c => creature.GlobalPosition.DistanceTo(c.GlobalPosition))
             .FirstOrDefault();

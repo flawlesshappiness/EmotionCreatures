@@ -36,6 +36,24 @@ public partial class TeamController : Node
                     Moves = new(){ MoveType.Punch, MoveType.Projectile }
                 }
             },
+
+            new CreatureData {
+                CharacterType = CharacterType.Mushnub,
+                Core = null,
+                Moveset = new MovesetData
+                {
+                    Moves = new(){ MoveType.Punch, MoveType.Projectile }
+                }
+            },
+
+            new CreatureData {
+                CharacterType = CharacterType.Ghost,
+                Core = null,
+                Moveset = new MovesetData
+                {
+                    Moves = new(){ MoveType.Punch, MoveType.Projectile }
+                }
+            },
         };
 
         Game.Save();

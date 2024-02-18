@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://n23ocl8qg3rk"]
+
+[ext_resource type="PackedScene" uid="uid://hmmr5jrakja8" path="res://Assets/Quaternius/Ultimate Monsters/Blob/glTF/Mushnub_Evolved.gltf" id="1_mrclq"]
+[ext_resource type="Script" path="res://Character/Mesh/CreatureMesh.cs" id="2_e0suy"]
+
+[node name="Mushnub_Evolved" instance=ExtResource("1_mrclq")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+script = ExtResource("2_e0suy")
+MeleeAttackAnimation = "Bite_Front"
+ProjectileAttackAnimation = "Dance"
+HurtAnimation = "HitRecieve"
+DeathAnimation = "Death"
+IdleAnimation = "Idle"
+MoveAnimation = "Walk"
+
+[node name="Skeleton3D" parent="CharacterArmature" index="0"]
+bones/1/position = Vector3(3.55932e-17, 1.1842, 0.239751)
+bones/1/rotation = Quaternion(0.0240545, 8.27181e-25, -8.87046e-18, 0.999711)
+bones/3/rotation = Quaternion(0.0904669, 0.000185394, -0.000912667, 0.995899)

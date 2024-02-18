@@ -57,7 +57,7 @@ public partial class CreatureCombat : NodeScript
             Debug.Trace("Creature: " + creature);
             if (creature == null) continue;
 
-            creature.Damage(CurrentMove.Info.Damage);
+            creature.ApplyEffect(CurrentMove.Effect);
         }
 
         Debug.Indent--;
@@ -79,10 +79,13 @@ public partial class CreatureCombat : NodeScript
 
         projectile.SetParent(Scene.Current);
         projectile.GlobalPosition = Creature.GlobalPosition + direction * 1.0f;
-        projectile.Info = CurrentMove.Info;
         projectile.Sender = Creature;
+        projectile.Effect = new MoveEffect
+        {
+            Damage = CurrentMove.Info.Damage,
+        };
 
-        projectile.Fire(direction);
+        projectile.Fire(direction, CurrentMove.Info.ProjectileSpeed);
 
         Debug.Indent--;
     }

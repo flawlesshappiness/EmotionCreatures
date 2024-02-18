@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterInfo" load_steps=2 format=3 uid="uid://7ycdemt3mo1n"]
+
+[ext_resource type="Script" path="res://Character/CharacterInfo.cs" id="1_684xj"]
+
+[resource]
+script = ExtResource("1_684xj")
+Scene = "res://Characters/Ghost/Ghost.tscn"
+BaseType = 1
+CharacterType = 3

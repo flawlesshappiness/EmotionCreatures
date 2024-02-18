@@ -72,13 +72,17 @@ public partial class CreatureMoves : Node
 public class CreatureMove
 {
     public MoveInfo Info { get; set; }
+    public CreatureCharacter Creature { get; set; }
     public float TimeCooldownStart { get; set; }
     public float TimeCooldownEnd { get; set; }
     public int TimesUsed { get; set; }
 
+    public MoveEffect Effect => effect ?? (effect = CreateEffect());
     public bool IsOnCooldown => TimeHelper.CurrentTime < TimeCooldownEnd;
 
     public Action OnSelected, OnDeselected;
+
+    private MoveEffect effect;
 
     public void Use()
     {
@@ -91,4 +95,11 @@ public class CreatureMove
 
         Debug.Indent--;
     }
+
+    private MoveEffect CreateEffect() => new MoveEffect
+    {
+        Team = Creature.Team,
+        Sender = Creature,
+        Damage = Info.Damage
+    };
 }
