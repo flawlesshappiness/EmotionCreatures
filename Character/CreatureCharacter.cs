@@ -1,3 +1,5 @@
+using Godot;
+
 public partial class CreatureCharacter : Character
 {
     [NodeType(typeof(CreatureAnimator))]
@@ -11,6 +13,9 @@ public partial class CreatureCharacter : Character
 
     [NodeType(typeof(CreatureMoves))]
     public CreatureMoves Moves;
+
+    [NodeName(nameof(Collider))]
+    public CollisionShape3D Collider;
 
     public TeamType Team { get; private set; }
     public Health Health { get; private set; }
@@ -149,6 +154,8 @@ public partial class CreatureCharacter : Character
         Debug.Log("On death");
 
         Movement.MovementLock.AddLock("Death");
+        Movement.GravityLock.AddLock("Death");
+        Collider.Disabled = true;
 
         var anim = CreatureAnimator.Dead;
 
