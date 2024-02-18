@@ -24,7 +24,7 @@ public partial class CreatureCharacter : Character
     {
         base._Ready();
 
-        Combat.SetBody(this);
+        Combat.Initialize(this);
         CreatureAnimator = Animator as CreatureAnimator;
         HealthBar.Hide();
     }
@@ -44,6 +44,8 @@ public partial class CreatureCharacter : Character
         Health = new Health(Stats.Health);
         Health.OnValueChanged += OnHealthChanged;
         HealthBar.SubscribeTo(Health);
+
+        Movement.Speed = Info.Speed;
     }
 
     public void PrepareForBattle()
@@ -90,11 +92,11 @@ public partial class CreatureCharacter : Character
         }
     }
 
-    public void Damage()
+    public void Damage(float amount)
     {
         if (IsDead) return;
 
-        Health.AdjustValue(-1);
+        Health.AdjustValue(-amount);
     }
 
     private void OnHealthChanged()
@@ -125,6 +127,8 @@ public partial class CreatureCharacter : Character
 
     private void OnDeath()
     {
+        Debug.Log("On death");
+
         Movement.MovementLock.AddLock("Death");
 
         var anim = CreatureAnimator.Dead;

@@ -8,16 +8,31 @@ public partial class CreatureCombat : NodeScript
     [NodeName(nameof(MeleeHitboxShape))]
     public CollisionShape3D MeleeHitboxShape;
 
-    private CharacterBody3D Body { get; set; }
+    private CreatureCharacter Creature { get; set; }
 
     public CreatureMove CurrentMove { get; set; }
 
-    public void SetBody(CharacterBody3D body)
+    public void Initialize(CreatureCharacter creature)
     {
-        Body = body;
+        Creature = creature;
+
+        if (Creature.Animator.Mesh != null)
+        {
+            SetMesh(Creature.Animator.Mesh as CreatureMesh);
+        }
+        else
+        {
+            Creature.CreatureAnimator.OnMeshSet += m => SetMesh(m as CreatureMesh);
+        }
     }
 
-    public void Attack()
+    private void SetMesh(CreatureMesh mesh)
+    {
+        mesh.OnAnimationMeleeHit += MeleeHit;
+        mesh.OnAnimationProjectileFire += ProjectileFire;
+    }
+
+    public void MeleeHit()
     {
         if (CurrentMove == null)
         {
@@ -36,14 +51,38 @@ public partial class CreatureCombat : NodeScript
         var bodies = MeleeHitbox.GetOverlappingBodies();
         foreach (var body in bodies)
         {
-            if (body == Body) continue;
+            if (body == Creature) continue;
             Debug.Trace("Body: " + body);
             var creature = body.GetNodeInChildren<CreatureCharacter>();
             Debug.Trace("Creature: " + creature);
             if (creature == null) continue;
 
-            creature.Damage();
+            creature.Damage(CurrentMove.Info.Damage);
         }
+
+        Debug.Indent--;
+    }
+
+    public void ProjectileFire()
+    {
+        if (CurrentMove == null)
+        {
+            Debug.LogError("CreatureCombat.CurrentMove is not set");
+            return;
+        }
+
+        Debug.LogMethod();
+        Debug.Indent++;
+
+        var projectile = ProjectileController.Instance.CreateProjectile(CurrentMove.Info.ProjectileType);
+        var direction = Creature.GlobalBasis.Z;
+
+        projectile.SetParent(Scene.Current);
+        projectile.GlobalPosition = Creature.GlobalPosition + direction * 1.0f;
+        projectile.Info = CurrentMove.Info;
+        projectile.Sender = Creature;
+
+        projectile.Fire(direction);
 
         Debug.Indent--;
     }

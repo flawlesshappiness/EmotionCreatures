@@ -3,8 +3,9 @@ using System;
 
 public partial class CharacterMovement : Node
 {
-    private const float Speed = 5.0f;
     private const float RotationSpeed = 20f;
+
+    public float Speed { get; set; }
 
     private bool _init;
     private bool _moving;

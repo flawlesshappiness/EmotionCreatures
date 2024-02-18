@@ -9,6 +9,8 @@ public partial class HumanCharacter : Character
     {
         base._Ready();
         PlayerInput.Instance.Submit.OnPressed += PressInteract;
+
+        Movement.Speed = 4.0f;
     }
 
     private void PressInteract()

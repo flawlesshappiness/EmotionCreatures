@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ProjectileInfo" load_steps=2 format=3 uid="uid://bllpaqwk3xbmm"]
+
+[ext_resource type="Script" path="res://Projectile/ProjectileInfo.cs" id="1_03j2j"]
+
+[resource]
+script = ExtResource("1_03j2j")
+Type = 0
+Scene = "res://Projectiles/BaseProjectile.tscn"

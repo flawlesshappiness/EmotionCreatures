@@ -24,12 +24,12 @@ public class ClampedFloat
     {
         this.value = Math.Clamp(value, min, max);
 
-        if (value == min && !IsAtMin)
+        if (this.value == min && !IsAtMin)
         {
             IsAtMin = true;
             OnMin?.Invoke();
         }
-        else if (value == max && !IsAtMax)
+        else if (this.value == max && !IsAtMax)
         {
             IsAtMax = true;
             OnMax?.Invoke();

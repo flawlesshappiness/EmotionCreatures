@@ -9,5 +9,5 @@ Name = "Punch"
 Cooldown = 2.0
 Damage = 1.0
 AnimationType = 0
-MeleeHitboxPosition = Vector3(0, 0.6, 0.6)
-MeleeHitboxSize = Vector3(0.8, 0.8, 0.8)
+MeleeHitboxPosition = Vector3(0, 0.6, 0.8)
+MeleeHitboxSize = Vector3(1, 1, 1)

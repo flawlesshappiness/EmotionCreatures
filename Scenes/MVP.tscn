@@ -36,6 +36,8 @@ albedo_color = Color(0.152941, 0.454902, 0.129412, 1)
 size = Vector3(27.6018, 10.5186, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uxsfv"]
+radius = 0.25
+height = 1.0
 
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_e8mri")
@@ -52,7 +54,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4.247, 1.63231)
 script = ExtResource("2_fla0r")
 Speed = 20.0
-Offset = Vector3(0, 7, 3)
+Offset = Vector3(0, 3, 1.5)
 DebugOffset = Vector3(0, 6, 4)
 
 [node name="World" type="Node3D" parent="."]
@@ -236,7 +238,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/NPC/Dialogue/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("CapsuleShape3D_uxsfv")
 
 [node name="Battle" type="Node3D" parent="World/NPC"]

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="ProjectileInfoCollection" load_steps=2 format=3 uid="uid://c5b8vq0vq2b32"]
+
+[ext_resource type="Script" path="res://Projectile/ProjectileInfoCollection.cs" id="1_1ebdc"]
+
+[resource]
+script = ExtResource("1_1ebdc")

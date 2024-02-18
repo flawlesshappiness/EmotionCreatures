@@ -6,6 +6,7 @@ public partial class MoveInfo : Resource
     [Export]
     public MoveType Type { get; set; }
 
+
     [Export]
     public string Name { get; set; }
 
@@ -23,4 +24,10 @@ public partial class MoveInfo : Resource
 
     [Export]
     public Vector3 MeleeHitboxSize { get; set; }
+
+    [Export]
+    public ProjectileType ProjectileType { get; set; }
+
+    [Export]
+    public float ProjectileSpeed { get; set; }
 }
