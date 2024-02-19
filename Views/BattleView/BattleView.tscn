@@ -38,6 +38,18 @@ grow_horizontal = 2
 layout_mode = 2
 alignment = 1
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="AI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TargetCreature_Text" type="Label" parent="AI/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Target creature:"
+
+[node name="TargetCreature_Value" type="Label" parent="AI/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Frog"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="AI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1

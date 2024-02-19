@@ -16,7 +16,7 @@ public partial class BattleMoveControl : ControlScript
 
     private List<MoveControl> MoveControls;
 
-    private CreatureCharacter Creature => PlayerController.Instance.TargetCharacter as CreatureCharacter;
+    private CreatureCharacter Creature { get; set; }
 
     public override void _Ready()
     {
@@ -34,6 +34,14 @@ public partial class BattleMoveControl : ControlScript
         PlayerInput.Instance.MoveEast.OnReleased += () => PressMoveButton(1);
         PlayerInput.Instance.MoveSouth.OnReleased += () => PressMoveButton(2);
         PlayerInput.Instance.MoveWest.OnReleased += () => PressMoveButton(3);
+
+        BattleController.Instance.OnPlayerTargetCreatureChanged += OnCreatureChanged;
+    }
+
+    private void OnCreatureChanged(CreatureCharacter creature)
+    {
+        Creature = creature;
+        LoadMoves();
     }
 
     public void LoadMoves()
@@ -62,7 +70,8 @@ public partial class BattleMoveControl : ControlScript
             }
         }
 
-        Creature.Moves.SelectMove(0);
+        var selected_index = Creature.Moves.SelectedMoveIndex;
+        MoveControls[selected_index].Select();
 
         Debug.Indent--;
     }

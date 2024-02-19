@@ -7,6 +7,7 @@ public partial class CreatureMoves : Node
     public List<CreatureMove> Moves = new();
 
     public CreatureMove SelectedMove;
+    public int SelectedMoveIndex => SelectedMove == null ? 0 : Moves.IndexOf(SelectedMove);
 
     public CreatureCharacter Creature { get; private set; }
 

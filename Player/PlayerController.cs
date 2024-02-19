@@ -13,6 +13,7 @@ public partial class PlayerController : Node
     {
         base._Ready();
         PlayerInput.Instance.MoveDirection.OnHeld += InputMove;
+        PlayerInput.Instance.MoveDirection.OnEnded += _ => InputMove(Vector2.Zero);
     }
 
     private void InputMove(Vector2 direction)

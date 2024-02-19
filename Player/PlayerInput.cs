@@ -44,7 +44,7 @@ public partial class PlayerInput : Node
             init = true;
         }
 
-        input_directions.ForEach(x => x.ProcessInput());
+        ProcessInputDirections();
     }
 
     public override void _Input(InputEvent @event)
@@ -52,6 +52,12 @@ public partial class PlayerInput : Node
         if (InputLock.IsLocked) return;
         base._Input(@event);
         input_actions.ForEach(x => x.ProcessInput(@event));
+    }
+
+    private void ProcessInputDirections()
+    {
+        if (InputLock.IsLocked) return;
+        input_directions.ForEach(x => x.ProcessInput());
     }
 
     private void Initialize()

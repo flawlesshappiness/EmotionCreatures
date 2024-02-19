@@ -56,6 +56,7 @@ public partial class AI_Battle_Default : AI_Battle
 
         var creatures = creature.Team == TeamType.Opponent ? battle.PlayerCreatures.ToList() : battle.OpponentCreatures.ToList();
         var closest = creatures
+            .Where(c => c.IsAlive)
             .OrderBy(c => creature.GlobalPosition.DistanceTo(c.GlobalPosition))
             .FirstOrDefault();
 

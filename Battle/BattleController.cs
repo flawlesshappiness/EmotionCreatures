@@ -16,6 +16,7 @@ public partial class BattleController : Node
     public Action<StartBattleArgs> OnBattleStart;
     public Action<EndBattleArgs> OnBattleEnd;
     public Action OnToggleAI;
+    public Action<CreatureCharacter> OnPlayerTargetCreatureChanged;
 
     private List<Node> BattleObjects { get; set; } = new();
     public BattleArgs BattleArgs { get; private set; }
@@ -198,13 +199,15 @@ public partial class BattleController : Node
 
         var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
         camera_follow.SetTarget(TargetPlayerCreature);
+
+        OnPlayerTargetCreatureChanged?.Invoke(TargetPlayerCreature);
     }
 
     private void ChangePlayerTarget(Vector2 input)
     {
         if (!HasActiveBattle) return;
         if (TargetPlayerCreature == null) return;
-        if (!TargetPlayerCreature.AI.Active) return;
+        if (!TargetPlayerCreature.AI.Active && TargetPlayerCreature.IsAlive) return;
 
         var direction = new Vector3(input.X, 0, input.Y).Normalized();
         var position = TargetPlayerCreature.GlobalPosition;
@@ -229,6 +232,8 @@ public partial class BattleController : Node
     private void TogglePlayerAI()
     {
         if (!HasActiveBattle) return;
+        if (TargetPlayerCreature.IsDead) return;
+
         TargetPlayerCreature.AI.Toggle();
 
         if (!TargetPlayerCreature.AI.Active)
