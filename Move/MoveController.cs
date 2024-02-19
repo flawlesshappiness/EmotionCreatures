@@ -1,14 +1,9 @@
-using Godot;
 using System.Linq;
 
-public partial class MoveController : Node
+public partial class MoveController : ResourceController<MoveController, MoveInfoCollection, MoveInfo>
 {
-    public static MoveController Instance => Singleton.TryGet<MoveController>(out var instance) ? instance : Create();
-    public static MoveController Create() => Singleton.Create<MoveController>($"Move/{nameof(MoveController)}");
-
-    private MoveInfoCollection _collection;
-    private MoveInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private MoveInfoCollection LoadCollection() => MoveInfoCollection.Load<MoveInfoCollection>(ResourcePaths.Instance.Collection.MoveInfoCollection);
+    public static MoveController Instance => GetController("Move");
+    public MoveInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.MoveInfoCollection);
 
     public MoveInfo GetInfo(MoveType type)
     {

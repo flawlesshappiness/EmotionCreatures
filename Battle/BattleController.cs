@@ -4,10 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class BattleController : Node
+public partial class BattleController : SingletonController<BattleController>
 {
-    public static BattleController Instance => Singleton.TryGet<BattleController>(out var instance) ? instance : Create();
-    public static BattleController Create() => Singleton.Create<BattleController>($"Battle/{nameof(BattleController)}");
+    public static BattleController Instance => GetController("Battle");
 
     private BattleAnimationView AnimationView => View.Get<BattleAnimationView>();
     private BattleView BattleView => View.Get<BattleView>();

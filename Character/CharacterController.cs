@@ -1,14 +1,10 @@
 using Godot;
 using System.Linq;
 
-public partial class CharacterController : Node
+public partial class CharacterController : ResourceController<CharacterController, CharacterInfoCollection, CharacterInfo>
 {
-    public static CharacterController Instance => Singleton.TryGet<CharacterController>(out var instance) ? instance : Create();
-    public static CharacterController Create() => Singleton.Create<CharacterController>($"Character/{nameof(CharacterController)}");
-
-    private CharacterInfoCollection _collection;
-    private CharacterInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private CharacterInfoCollection LoadCollection() => CharacterInfoCollection.Load<CharacterInfoCollection>(ResourcePaths.Instance.Collection.CharacterInfoCollection);
+    public static CharacterController Instance => GetController("Character");
+    public CharacterInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.CharacterInfoCollection);
 
     public Character CreateCharacter(CharacterType type)
     {

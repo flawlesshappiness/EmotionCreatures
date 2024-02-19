@@ -1,14 +1,9 @@
-using Godot;
 using System.Linq;
 
-public partial class CreatureController : Node
+public partial class CreatureController : ResourceController<CreatureController, CreatureInfoCollection, CreatureInfo>
 {
-    public static CreatureController Instance => Singleton.TryGet<CreatureController>(out var instance) ? instance : Create();
-    public static CreatureController Create() => Singleton.Create<CreatureController>($"Creature/{nameof(CreatureController)}");
-
-    private CreatureInfoCollection _collection;
-    private CreatureInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private CreatureInfoCollection LoadCollection() => CreatureInfoCollection.Load<CreatureInfoCollection>(ResourcePaths.Instance.Collection.CreatureInfoCollection);
+    public static CreatureController Instance => GetController("Creature");
+    public CreatureInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.CreatureInfoCollection);
 
     public CreatureInfo GetInfo(CharacterType type)
     {

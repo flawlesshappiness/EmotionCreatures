@@ -1,18 +1,12 @@
 using Godot;
 using System.Linq;
 
-public partial class ArenaController : Node
+public partial class ArenaController : ResourceController<ArenaController, ArenaInfoCollection, ArenaInfo>
 {
-    public static ArenaController Instance => Singleton.TryGet<ArenaController>(out var instance) ? instance : Create();
-
-    public static ArenaController Create() =>
-        Singleton.Create<ArenaController>($"Arena/{nameof(ArenaController)}");
+    public static ArenaController Instance => GetController("Arena");
+    public ArenaInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.ArenaInfoCollection);
 
     public ArenaScene CurrentArena { get; private set; }
-
-    private ArenaInfoCollection _collection;
-    private ArenaInfoCollection Collection => _collection ?? (_collection = LoadCollection());
-    private ArenaInfoCollection LoadCollection() => ArenaInfoCollection.Load<ArenaInfoCollection>(ResourcePaths.Instance.Collection.ArenaInfoCollection);
 
     public ArenaScene SetArena(ArenaType type)
     {
