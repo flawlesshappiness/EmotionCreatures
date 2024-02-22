@@ -15,4 +15,8 @@ public partial class PlayerControls : Node
     public const string MoveSouth = "move_south";
     public const string MoveWest = "move_west";
     public const string ToggleAI = "toggle_ai";
+    public const string LookLeft = "look_left";
+    public const string LookRight = "look_right";
+    public const string LookForward = "look_forward";
+    public const string LookBack = "look_back";
 }

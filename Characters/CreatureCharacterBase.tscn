@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ddv1jhrxiuj4l"]
+[gd_scene load_steps=13 format=3 uid="uid://ddv1jhrxiuj4l"]
 
 [ext_resource type="Script" path="res://Character/CreatureCharacter.cs" id="1_o2d2t"]
 [ext_resource type="Script" path="res://Character/CreatureCombat.cs" id="2_hje3u"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Character/Navigation/CreatureNavigation.cs" id="5_u6eun"]
 [ext_resource type="PackedScene" uid="uid://boncc0fcu7kkg" path="res://Health/HealthBar/HealthBar.tscn" id="6_yyqmr"]
 [ext_resource type="Script" path="res://Creature/CreatureMoves.cs" id="7_sk8qg"]
+[ext_resource type="Script" path="res://Camera/VirtualCamera.cs" id="8_mk2hh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c3i13"]
 size = Vector3(0.751953, 0.80957, 0.849609)
@@ -57,3 +58,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_qyp6u")
 
 [node name="HealthBar" parent="." instance=ExtResource("6_yyqmr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54838, 0)
+
+[node name="LookAtPosition" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="FollowPosition" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="VCam" type="Node3D" parent="." node_paths=PackedStringArray("FollowTarget", "LookTarget")]
+script = ExtResource("8_mk2hh")
+FollowTarget = NodePath("../FollowPosition")
+LookTarget = NodePath("../LookAtPosition")

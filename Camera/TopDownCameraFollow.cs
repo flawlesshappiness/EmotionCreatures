@@ -40,7 +40,7 @@ public partial class TopDownCameraFollow : Camera3D
 
         var start = GlobalPosition;
         var end = _target.GlobalPosition + _offset;
-        GlobalPosition = Lerp.Vector3(start, end, f * Speed);
+        GlobalPosition = Lerp.Vector(start, end, f * Speed);
     }
 
     public void SetTarget(Node3D target)

@@ -13,6 +13,10 @@ public partial class Character : CharacterBody3D
 
     [NodeType(typeof(CharacterNavigation))]
     public CharacterNavigation Navigation;
+
+    [NodeName(nameof(VCam))]
+    public VirtualCamera VCam;
+
     public AI AI { get; private set; }
 
     public bool IsPlayer => PlayerController.Instance.TargetCharacter == this;

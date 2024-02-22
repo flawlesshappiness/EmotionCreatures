@@ -24,6 +24,7 @@ public partial class PlayerInput : Node
     public readonly InputAction MoveWest = new InputAction(PlayerControls.MoveWest);
     public readonly InputAction ToggleAI = new InputAction(PlayerControls.ToggleAI);
     public readonly InputDirection MoveDirection = new InputDirection(PlayerControls.Left, PlayerControls.Right, PlayerControls.Forward, PlayerControls.Back);
+    public readonly InputDirection LookDirection = new InputDirection(PlayerControls.LookLeft, PlayerControls.LookRight, PlayerControls.LookForward, PlayerControls.LookBack);
 
     private List<InputAction> input_actions = new();
     private List<InputDirection> input_directions = new();
@@ -98,6 +99,7 @@ public partial class PlayerInput : Node
         input_actions.Add(ToggleAI);
 
         input_directions.Add(MoveDirection);
+        input_directions.Add(LookDirection);
     }
 
     public PlayerInput()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=25 format=3 uid="uid://bs2uec3bxwmen"]
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
-[ext_resource type="Script" path="res://Camera/TopDownCameraFollow.cs" id="2_fla0r"]
+[ext_resource type="Script" path="res://Camera/CameraBrain.cs" id="2_u6iah"]
 [ext_resource type="ArrayMesh" uid="uid://bebtdyj74su2q" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_1.obj" id="3_6wi4m"]
 [ext_resource type="ArrayMesh" uid="uid://nucxm433my7p" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_2.obj" id="4_gja1w"]
 [ext_resource type="ArrayMesh" uid="uid://nlgrrn56n3fh" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_3.obj" id="5_rsrq4"]
@@ -52,10 +52,7 @@ shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4.247, 1.63231)
-script = ExtResource("2_fla0r")
-Speed = 20.0
-Offset = Vector3(0, 4, 1.5)
-DebugOffset = Vector3(0, 6, 4)
+script = ExtResource("2_u6iah")
 
 [node name="World" type="Node3D" parent="."]
 

@@ -21,13 +21,16 @@ public partial class CharacterMovement : Node
 
     public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
-    public CharacterBody3D Body { get; private set; }
+    public Character Character { get; private set; }
 
     public bool IsMoving => _moving;
 
-    public void Initialize(CharacterBody3D body)
+    private bool HasActiveAI => Character.AI?.Active ?? false;
+    private bool IsControlledByPlayer => Character.IsPlayer && !HasActiveAI;
+
+    public void Initialize(Character character)
     {
-        Body = body;
+        Character = character;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -53,11 +56,16 @@ public partial class CharacterMovement : Node
 
     public void Move(Vector2 input)
     {
-        Vector3 velocity = Body.Velocity;
+        Vector3 velocity = Character.Velocity;
         Vector3 direction = MovementLock.IsLocked ? Vector3.Zero : (new Vector3(input.X, 0, input.Y)).Normalized();
 
+        if (IsControlledByPlayer && CameraBrain.MainCamera != null)
+        {
+            direction = CameraBrain.MainCamera.Basis * direction;
+        }
+
         // Add the gravity.
-        if (!Body.IsOnFloor())
+        if (!Character.IsOnFloor())
             velocity.Y -= GravityLock.IsLocked ? 0 : Gravity * _time;
 
         if (direction != Vector3.Zero)
@@ -69,12 +77,12 @@ public partial class CharacterMovement : Node
         }
         else
         {
-            velocity.X = Mathf.MoveToward(Body.Velocity.X, 0, Speed);
-            velocity.Z = Mathf.MoveToward(Body.Velocity.Z, 0, Speed);
+            velocity.X = Mathf.MoveToward(Character.Velocity.X, 0, Speed);
+            velocity.Z = Mathf.MoveToward(Character.Velocity.Z, 0, Speed);
         }
 
-        Body.Velocity = velocity;
-        Body.MoveAndSlide();
+        Character.Velocity = velocity;
+        Character.MoveAndSlide();
 
         if (MovementLock.IsFree)
         {
@@ -100,13 +108,13 @@ public partial class CharacterMovement : Node
 
     public void Rotate(Vector3 velocity)
     {
-        var ry = Mathf.LerpAngle(Body.Rotation.Y, Mathf.Atan2(velocity.X, velocity.Z), RotationSpeed * _time);
-        Body.Rotation = new Vector3(0, ry, 0);
+        var ry = Mathf.LerpAngle(Character.Rotation.Y, Mathf.Atan2(velocity.X, velocity.Z), RotationSpeed * _time);
+        Character.Rotation = new Vector3(0, ry, 0);
     }
 
     public void RotateTowards(Vector3 position)
     {
-        var dir = Body.GlobalPosition.DirectionTo(position);
+        var dir = Character.GlobalPosition.DirectionTo(position);
         Rotate(dir);
     }
 

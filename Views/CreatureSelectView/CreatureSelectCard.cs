@@ -41,6 +41,7 @@ public partial class CreatureSelectCard : ControlScript
     {
         base._Ready();
 
+        Button.MouseEntered += MouseEntered;
         Button.FocusEntered += FocusEntered;
         Button.FocusExited += FocusExited;
         Button.Pressed += Pressed;
@@ -57,6 +58,11 @@ public partial class CreatureSelectCard : ControlScript
         Debug.TraceMethod(info.Name);
         NameLabel.Text = info.Name;
         WorldObjectControl.LoadCreature(data);
+    }
+
+    new private void MouseEntered()
+    {
+        Button.GrabFocus();
     }
 
     new private void FocusEntered()
@@ -109,7 +115,7 @@ public partial class CreatureSelectCard : ControlScript
             var curve = show ? Curves.EaseOutBack : Curves.EaseInBack;
             yield return LerpEnumerator.Lerp01(0.2f, f =>
             {
-                HoverTexture.Scale = Lerp.Vector2(start, end, curve.Evaluate(f));
+                HoverTexture.Scale = Lerp.Vector(start, end, curve.Evaluate(f));
             });
         }
     }
@@ -125,7 +131,7 @@ public partial class CreatureSelectCard : ControlScript
             var curve = show ? Curves.EaseOutBack : Curves.EaseInBack;
             yield return LerpEnumerator.Lerp01(0.2f, f =>
             {
-                SelectedTexture.Scale = Lerp.Vector2(start, end, curve.Evaluate(f));
+                SelectedTexture.Scale = Lerp.Vector(start, end, curve.Evaluate(f));
             });
         }
     }

@@ -17,7 +17,6 @@ public partial class BattleController : SingletonController<BattleController>
     public Action OnToggleAI;
     public Action<CreatureCharacter> OnPlayerTargetCreatureChanged;
 
-    private List<Node> BattleObjects { get; set; } = new();
     public BattleArgs BattleArgs { get; private set; }
     public bool HasActiveBattle => BattleArgs != null;
 
@@ -33,12 +32,18 @@ public partial class BattleController : SingletonController<BattleController>
 
     public void Clear()
     {
-        foreach (var obj in BattleObjects.ToList())
+        if (BattleArgs != null)
         {
-            obj.QueueFree();
-        }
+            if (BattleArgs.Arena != null)
+            {
+                BattleArgs.Arena.QueueFree();
+            }
 
-        BattleObjects.Clear();
+            foreach (var obj in BattleArgs.BattleObjects.ToList())
+            {
+                obj.QueueFree();
+            }
+        }
 
         BattleArgs = null;
     }
@@ -72,6 +77,7 @@ public partial class BattleController : SingletonController<BattleController>
             // Move camera
             SetPlayerTarget(BattleArgs.PlayerCreatures.First());
             PlayerController.Instance.SetTargetCharacter(TargetPlayerCreature);
+            CameraBrain.MainCamera.TeleportTo(TargetPlayerCreature.VCam);
 
             // Begin battle
             BattleView.Show();
@@ -112,7 +118,7 @@ public partial class BattleController : SingletonController<BattleController>
                 creature.HealthBar.SetBlue();
 
                 BattleArgs.PlayerCreatures.Add(creature);
-                BattleObjects.Add(creature);
+                BattleArgs.BattleObjects.Add(creature);
                 return creature;
             }
 
@@ -130,7 +136,7 @@ public partial class BattleController : SingletonController<BattleController>
                 creature.HealthBar.SetRed();
 
                 BattleArgs.OpponentCreatures.Add(creature);
-                BattleObjects.Add(creature);
+                BattleArgs.BattleObjects.Add(creature);
                 return creature;
             }
 
@@ -151,7 +157,6 @@ public partial class BattleController : SingletonController<BattleController>
         };
 
         BattleArgs.StopBattle();
-        BattleArgs = null;
 
         Coroutine.Start(Cr);
         IEnumerator Cr()
@@ -160,6 +165,7 @@ public partial class BattleController : SingletonController<BattleController>
             AnimationView.Show();
             yield return AnimationView.AnimateBackgroundFade(true, 1f);
             BattleView.Hide();
+            Clear();
             OnBattleEnd?.Invoke(args);
             yield return AnimationView.AnimateBackgroundFade(false, 1.0f);
             AnimationView.Hide();
@@ -195,10 +201,6 @@ public partial class BattleController : SingletonController<BattleController>
     private void SetPlayerTarget(CreatureCharacter creature)
     {
         TargetPlayerCreature = creature;
-
-        var camera_follow = CameraController.Instance.Camera.GetNodeInChildren<TopDownCameraFollow>();
-        camera_follow.SetTarget(TargetPlayerCreature);
-
         OnPlayerTargetCreatureChanged?.Invoke(TargetPlayerCreature);
     }
 
@@ -208,7 +210,7 @@ public partial class BattleController : SingletonController<BattleController>
         if (TargetPlayerCreature == null) return;
         if (!TargetPlayerCreature.AI.Active && TargetPlayerCreature.IsAlive) return;
 
-        var direction = new Vector3(input.X, 0, input.Y).Normalized();
+        var direction = CameraBrain.MainCamera.Basis * new Vector3(input.X, 0, input.Y).Normalized();
         var position = TargetPlayerCreature.GlobalPosition;
         var best_dot = -1f;
         var best_creature = TargetPlayerCreature;
@@ -225,6 +227,7 @@ public partial class BattleController : SingletonController<BattleController>
         if (best_dot > 0)
         {
             SetPlayerTarget(best_creature);
+            CameraBrain.MainCamera.MoveTo(best_creature.VCam, 0.5f, Curves.EaseInOutQuad);
         }
     }
 
@@ -260,6 +263,7 @@ public class BattleArgs
     public ArenaScene Arena { get; set; }
     public List<CreatureCharacter> OpponentCreatures { get; set; } = new();
     public List<CreatureCharacter> PlayerCreatures { get; set; } = new();
+    public List<Node> BattleObjects { get; set; } = new();
 
     public void StartBattle()
     {
