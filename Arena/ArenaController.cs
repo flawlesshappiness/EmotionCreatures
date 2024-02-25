@@ -19,7 +19,7 @@ public partial class ArenaController : ResourceController<ArenaController, Arena
         return CurrentArena;
     }
 
-    private void RemoveArena()
+    public void RemoveArena()
     {
         if (CurrentArena != null)
         {

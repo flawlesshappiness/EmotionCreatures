@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="2_lkdhg"]
 [ext_resource type="Script" path="res://Character/Animation/HumanAnimator.cs" id="3_wyrur"]
 [ext_resource type="Script" path="res://Character/Navigation/CharacterNavigation.cs" id="4_geetl"]
-[ext_resource type="Script" path="res://Camera/VirtualCamera.cs" id="5_2g1px"]
+[ext_resource type="PackedScene" uid="uid://ba5iflh3lka53" path="res://Camera/ThirdPersonVirtualCamera.tscn" id="5_infs5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
 radius = 0.25
@@ -44,13 +44,4 @@ target_position = Vector3(0, 0, 0.75)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="FollowPosition" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-
-[node name="LookAtPosition" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-
-[node name="VCam" type="Node3D" parent="." node_paths=PackedStringArray("FollowTarget", "LookTarget")]
-script = ExtResource("5_2g1px")
-FollowTarget = NodePath("../FollowPosition")
-LookTarget = NodePath("../LookAtPosition")
+[node name="VCam" parent="." instance=ExtResource("5_infs5")]

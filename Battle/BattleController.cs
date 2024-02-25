@@ -34,10 +34,7 @@ public partial class BattleController : SingletonController<BattleController>
     {
         if (BattleArgs != null)
         {
-            if (BattleArgs.Arena != null)
-            {
-                BattleArgs.Arena.QueueFree();
-            }
+            ArenaController.Instance.RemoveArena();
 
             foreach (var obj in BattleArgs.BattleObjects.ToList())
             {

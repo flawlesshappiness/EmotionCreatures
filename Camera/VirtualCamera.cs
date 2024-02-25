@@ -1,4 +1,5 @@
 using Godot;
+using System;
 
 public partial class VirtualCamera : Node3DScript
 {
@@ -8,7 +9,15 @@ public partial class VirtualCamera : Node3DScript
     [Export(PropertyHint.NodeType, "Node3D")]
     public Node3D LookTarget { get; set; }
 
-    private float zoom = 1f;
+    [Export(PropertyHint.Range, "0.25, 10")]
+    public float ZoomMin { get; set; }
+
+    [Export(PropertyHint.Range, "0.25, 10")]
+    public float ZoomMax { get; set; }
+
+    private float zoom_adjust = 0.05f;
+    private static float zoom_perc = 0f;
+    private float zoom_value = 0.01f;
     private float angle_x, angle_y;
 
     private Ring RingUpper = new Ring(0.3f, 0.5f);
@@ -37,6 +46,12 @@ public partial class VirtualCamera : Node3DScript
         PlayerInput.Instance.LookDirection.OnHeld += OnDirectionHeld;
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        ProcessZoom(delta);
+    }
+
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
@@ -49,8 +64,7 @@ public partial class VirtualCamera : Node3DScript
             var input = @event as InputEventMouseMotion;
             var x = input.Relative.X * 0.1f;
             var y = input.Relative.Y * 0.001f;
-            angle_x = (angle_x + x) % 360;
-            angle_y = Mathf.Clamp((angle_y + y), 0f, 1f);
+            InputLook(x, y);
         }
 
         if (@event is InputEventMouseButton)
@@ -71,13 +85,31 @@ public partial class VirtualCamera : Node3DScript
     {
         var x = input.X * 8f;
         var y = input.Y * 0.05f;
+        InputLook(x, y);
+    }
+
+    private void InputLook(float x, float y)
+    {
         angle_x = (angle_x + x) % 360;
         angle_y = Mathf.Clamp((angle_y + y), 0f, 1f);
     }
 
+    private void SetZoom(float perc)
+    {
+        zoom_perc = perc;
+        zoom_value = Mathf.Lerp(ZoomMin, ZoomMax, zoom_perc);
+    }
+
     private void AdjustZoom(int sign)
     {
-        zoom = Mathf.Clamp(zoom + 0.1f * sign, 1f, 5f);
+        zoom_perc = Mathf.Clamp(zoom_perc + zoom_adjust * sign, 0f, 1f);
+    }
+
+    private void ProcessZoom(double delta)
+    {
+        var start = zoom_value;
+        var end = Mathf.Lerp(ZoomMin, ZoomMax, zoom_perc);
+        zoom_value = Mathf.Lerp(start, end, 10 * Convert.ToSingle(delta));
     }
 
     public Transform3D CalculateTransform()
@@ -106,7 +138,7 @@ public partial class VirtualCamera : Node3DScript
         var r = Mathf.Lerp(lower.Radius, upper.Radius, t);
 
         var p = MathHelper.CirclePoint(r, angle_x);
-        var offset = FollowTarget.GlobalPosition + new Vector3(p.X, y, p.Y) * zoom;
+        var offset = FollowTarget.GlobalPosition + new Vector3(p.X, y, p.Y) * zoom_value;
         return transform.Translated(offset);
     }
 }
