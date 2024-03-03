@@ -1,7 +1,6 @@
 using Godot;
 
-public abstract partial class ResourceController<T, C, R> : SingletonController<T>
-    where T : Node
+public abstract partial class ResourceController<C, R> : SingletonController
     where C : ResourceCollection<R>
     where R : Resource
 {

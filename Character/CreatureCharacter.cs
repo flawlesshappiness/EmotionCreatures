@@ -32,7 +32,6 @@ public partial class CreatureCharacter : Character
 
         Moves.Initialize(this);
         Combat.Initialize(this);
-        CreatureAnimator = Animator as CreatureAnimator;
         HealthBar.Hide();
     }
 

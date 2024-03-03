@@ -1,8 +1,8 @@
 using System.Linq;
 
-public partial class CreatureController : ResourceController<CreatureController, CreatureInfoCollection, CreatureInfo>
+public partial class CreatureController : ResourceController<CreatureInfoCollection, CreatureInfo>
 {
-    public static CreatureController Instance => GetController("Creature");
+    public static CreatureController Instance => GetController<CreatureController>("Creature");
     public CreatureInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.CreatureInfoCollection);
 
     public CreatureInfo GetInfo(CharacterType type)

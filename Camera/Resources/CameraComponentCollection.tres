@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CameraComponentCollection" load_steps=2 format=3 uid="uid://d4hjyenl7tgdp"]
+
+[ext_resource type="Script" path="res://Camera/CameraComponentCollection.cs" id="1_0o6e1"]
+
+[resource]
+script = ExtResource("1_0o6e1")
+CameraBrain = "res://Camera/CameraBrain.tscn"
+ThirdPersonVirtualCamera = "res://Camera/ThirdPersonVirtualCamera.tscn"
+StaticVirtualCamera = "res://Camera/StaticVirtualCamera.tscn"

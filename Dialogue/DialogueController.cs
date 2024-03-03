@@ -213,7 +213,6 @@ public partial class DialogueController : Node
 public class DialogueStartedArguments
 {
     public DialogueNode Node { get; set; }
-
     public Interactable Interactable { get; set; }
 }
 

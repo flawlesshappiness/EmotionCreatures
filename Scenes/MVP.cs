@@ -15,12 +15,13 @@ public partial class MVP : Scene
 
         player = CharacterController.Instance.CreateCharacter(CharacterType.Adventurer);
         PlayerController.Instance.SetTargetCharacter(player);
-        CameraBrain.MainCamera.TeleportTo(player.VCam);
+
+        player.ThirdPersonVCam.TeleportTo();
     }
 
     private void OnBattleEnd(EndBattleArgs args)
     {
-        CameraBrain.MainCamera.TeleportTo(player.VCam);
+        CameraBrain.MainCamera.TeleportTo(player.ThirdPersonVCam);
         PlayerController.Instance.SetTargetCharacter(player);
         player.GlobalPosition = Vector3.Zero;
     }

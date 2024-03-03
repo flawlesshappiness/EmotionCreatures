@@ -1,9 +1,9 @@
 using Godot;
 using System.Linq;
 
-public partial class ArenaController : ResourceController<ArenaController, ArenaInfoCollection, ArenaInfo>
+public partial class ArenaController : ResourceController<ArenaInfoCollection, ArenaInfo>
 {
-    public static ArenaController Instance => GetController("Arena");
+    public static ArenaController Instance => GetController<ArenaController>("Arena");
     public ArenaInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.ArenaInfoCollection);
 
     public ArenaScene CurrentArena { get; private set; }

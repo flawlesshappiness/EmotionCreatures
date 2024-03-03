@@ -17,4 +17,6 @@ public partial class ResourcePathsCollection : Resource
 
     [Export(PropertyHint.File)]
     public string ProjectileInfoCollection { get; set; }
+    [Export(PropertyHint.File)]
+    public string CameraComponentCollection { get; set; }
 }

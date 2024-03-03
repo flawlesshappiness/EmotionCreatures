@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://xfgj5dfg2pt8"]
+
+[ext_resource type="Script" path="res://Camera/StaticVirtualCamera.cs" id="1_jhsg8"]
+
+[node name="VirtualCamera (Static)" type="Node3D" node_paths=PackedStringArray("FollowTarget", "LookTarget")]
+script = ExtResource("1_jhsg8")
+FollowTarget = NodePath("FollowTarget")
+LookTarget = NodePath("LookTarget")
+
+[node name="FollowTarget" type="Node3D" parent="."]
+
+[node name="LookTarget" type="Node3D" parent="."]

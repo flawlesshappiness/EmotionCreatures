@@ -70,9 +70,6 @@ public partial class BattleMoveControl : ControlScript
             }
         }
 
-        var selected_index = Creature.Moves.SelectedMoveIndex;
-        MoveControls[selected_index].Select();
-
         Debug.Indent--;
     }
 

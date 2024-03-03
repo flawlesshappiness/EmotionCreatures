@@ -1,16 +1,19 @@
 [gd_scene load_steps=2 format=3 uid="uid://ba5iflh3lka53"]
 
-[ext_resource type="Script" path="res://Camera/VirtualCamera.cs" id="1_c5dho"]
+[ext_resource type="Script" path="res://Camera/ThirdPersonVirtualCamera.cs" id="1_up2kv"]
 
-[node name="VCam" type="Node3D" node_paths=PackedStringArray("FollowTarget", "LookTarget")]
-script = ExtResource("1_c5dho")
-FollowTarget = NodePath("FollowPosition")
-LookTarget = NodePath("LookAtPosition")
+[node name="VirtualCamera (ThirdPerson)" type="Node3D" node_paths=PackedStringArray("FollowTarget", "LookTarget")]
+script = ExtResource("1_up2kv")
 ZoomMin = 1.0
 ZoomMax = 5.0
+FollowTarget = NodePath("FollowPosition")
+LookTarget = NodePath("LookAtPosition")
 
 [node name="LookAtPosition" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="FollowPosition" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Raycast" type="RayCast3D" parent="."]
+collision_mask = 4

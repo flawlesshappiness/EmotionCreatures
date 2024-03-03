@@ -14,8 +14,13 @@ public partial class Character : CharacterBody3D
     [NodeType(typeof(CharacterNavigation))]
     public CharacterNavigation Navigation;
 
-    [NodeName(nameof(VCam))]
-    public VirtualCamera VCam;
+    [NodeName(nameof(ShoulderVCam))]
+    public VirtualCamera ShoulderVCam;
+
+    [NodeName(nameof(FaceNode))]
+    public Node3D FaceNode;
+
+    public VirtualCamera ThirdPersonVCam { get; private set; }
 
     public AI AI { get; private set; }
 
@@ -31,10 +36,18 @@ public partial class Character : CharacterBody3D
         Movement.Initialize(this);
         Animator.Initialize(this);
         Navigation.Initialize(this);
+        InitializeCamera();
 
         DialogueController.Instance.OnDialogueStarted += OnDialogueStarted;
         DialogueController.Instance.OnDialogueEnded += OnDialogueEnded;
         PlayerInput.Instance.InputLock.OnLocked += OnInputLocked;
+    }
+
+    private void InitializeCamera()
+    {
+        ThirdPersonVCam = CameraController.Instance.CreateThirdPersonVirtualCamera();
+        ThirdPersonVCam.FollowTarget = FaceNode;
+        ThirdPersonVCam.LookTarget = FaceNode;
     }
 
     public override void _Process(double delta)
@@ -68,6 +81,14 @@ public partial class Character : CharacterBody3D
         if (!IsPlayer) return;
 
         Movement.StartLookingAt(args.Interactable);
+
+        var interact_character = args.Interactable.GetNodeInParents<Character>();
+        if (interact_character != null)
+        {
+            ShoulderVCam.LookTarget = interact_character.FaceNode;
+        }
+
+        ShoulderVCam.MoveTo(0.25f, Curves.EaseOutQuad);
     }
 
     private void OnDialogueEnded(DialogueEndedArguments args)
@@ -75,6 +96,7 @@ public partial class Character : CharacterBody3D
         if (!IsPlayer) return;
 
         Movement.StopLookingAt();
+        ThirdPersonVCam.MoveTo(0.25f, Curves.EaseOutQuad);
     }
 
     private void OnInputLocked()

@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class BattleController : SingletonController<BattleController>
+public partial class BattleController : SingletonController
 {
-    public static BattleController Instance => GetController("Battle");
+    public static BattleController Instance => GetController<BattleController>("Battle");
 
     private BattleAnimationView AnimationView => View.Get<BattleAnimationView>();
     private BattleView BattleView => View.Get<BattleView>();
@@ -74,7 +74,7 @@ public partial class BattleController : SingletonController<BattleController>
             // Move camera
             SetPlayerTarget(BattleArgs.PlayerCreatures.First());
             PlayerController.Instance.SetTargetCharacter(TargetPlayerCreature);
-            CameraBrain.MainCamera.TeleportTo(TargetPlayerCreature.VCam);
+            CameraBrain.MainCamera.TeleportTo(TargetPlayerCreature.ThirdPersonVCam);
 
             // Begin battle
             BattleView.Show();
@@ -224,7 +224,7 @@ public partial class BattleController : SingletonController<BattleController>
         if (best_dot > 0)
         {
             SetPlayerTarget(best_creature);
-            CameraBrain.MainCamera.MoveTo(best_creature.VCam, 0.5f, Curves.EaseInOutQuad);
+            CameraBrain.MainCamera.MoveTo(best_creature.ThirdPersonVCam, 0.5f, Curves.EaseInOutQuad);
         }
     }
 

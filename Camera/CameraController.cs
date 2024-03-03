@@ -1,27 +1,57 @@
 using Godot;
 
-public partial class CameraController : Node
+public partial class CameraController : SingletonController
 {
-    public static CameraController Instance => Singleton.TryGet<CameraController>(out var instance) ? instance : Create();
+    public static CameraController Instance => GetController<CameraController>("Camera");
+    public CameraComponentCollection Collection => GetCollection(ResourcePaths.Instance.Collection.CameraComponentCollection);
 
-    public static CameraController Create() =>
-        Singleton.Create<CameraController>($"Camera/{nameof(CameraController)}");
+    private CameraComponentCollection _collection;
+    protected CameraComponentCollection GetCollection(string path) => _collection ?? (_collection = LoadCollection(path));
+    private CameraComponentCollection LoadCollection(string path) => GD.Load<CameraComponentCollection>(path);
 
-    private Camera3D _camera;
-    public Camera3D Camera => _camera ?? (_camera = FindCamera());
+    private CameraBrain _camera;
+    public CameraBrain Camera => _camera ?? (_camera = FindCamera());
 
-    private Camera3D FindCamera()
+    public override void Initialize()
+    {
+        base.Initialize();
+        _camera ??= FindCamera();
+    }
+
+    private CameraBrain FindCamera()
     {
         Debug.LogMethod();
         Debug.Indent++;
 
-        var camera = Scene.Current.GetNodeInChildren<Camera3D>();
+        var camera = Scene.Current.GetNodeInChildren<CameraBrain>();
         if (camera == null)
         {
-            Debug.LogError("Found no camera");
+            camera = CreateCameraBrain();
         }
 
         Debug.Indent--;
         return camera;
+    }
+
+    private CameraBrain CreateCameraBrain()
+    {
+        Debug.TraceMethod();
+        var camera = GDHelper.Instantiate<CameraBrain>(Collection.CameraBrain);
+        camera.SetParent(Scene.Current);
+        return camera;
+    }
+
+    public ThirdPersonVirtualCamera CreateThirdPersonVirtualCamera()
+    {
+        var vcam = GDHelper.Instantiate<ThirdPersonVirtualCamera>(Collection.ThirdPersonVirtualCamera);
+        vcam.SetParent(Scene.Current);
+        return vcam;
+    }
+
+    public StaticVirtualCamera CreateStaticVirtualCamera()
+    {
+        var vcam = GDHelper.Instantiate<StaticVirtualCamera>(Collection.StaticVirtualCamera);
+        vcam.SetParent(Scene.Current);
+        return vcam;
     }
 }

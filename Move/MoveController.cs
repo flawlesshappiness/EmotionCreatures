@@ -1,8 +1,8 @@
 using System.Linq;
 
-public partial class MoveController : ResourceController<MoveController, MoveInfoCollection, MoveInfo>
+public partial class MoveController : ResourceController<MoveInfoCollection, MoveInfo>
 {
-    public static MoveController Instance => GetController("Move");
+    public static MoveController Instance => GetController<MoveController>("Move");
     public MoveInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.MoveInfoCollection);
 
     public MoveInfo GetInfo(MoveType type)

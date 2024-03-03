@@ -36,42 +36,26 @@ public partial class CameraBrain : Node3DScript
         if (cr_move_to != null) return;
 
         var transform = CurrentVCam.CalculateTransform();
+        transform = ProcessRaycastPoint(transform);
         Camera.GlobalTransform = transform;
-
-        ProcessRaycastPoint();
-        //ProcessRaycastGround();
     }
 
-    private void ProcessRaycastPoint()
+    private Transform3D ProcessRaycastPoint(Transform3D transform)
     {
-        var extra_length = 0.01f;
-        var dir_to_camera = Camera.GlobalPosition - Raycast.GlobalPosition;
-        Raycast.GlobalPosition = CurrentVCam.FollowTarget.GlobalPosition;
-        Raycast.TargetPosition = dir_to_camera + dir_to_camera.Normalized() * extra_length;
+        var center = CurrentVCam.FollowTarget.GlobalPosition;
+        Raycast.GlobalPosition = center;
+        var dir_to_origin = transform.Origin - center;
+        Raycast.TargetPosition = dir_to_origin;
+
         if (Raycast.IsColliding())
         {
             var point = Raycast.GetCollisionPoint();
-            var dir_to_point = point - Raycast.GlobalPosition;
-            var dir_to_point_extended = dir_to_point - dir_to_point.Normalized() * extra_length;
-            if (dir_to_point_extended.Length() < dir_to_camera.Length())
-            {
-                var dir = point - Camera.GlobalPosition;
-                var offset = dir.Normalized() * extra_length;
-                Camera.Transform = Camera.Transform.Translated(dir + offset);
-            }
+            var dir = point - transform.Origin;
+            transform = transform.Translated(dir);
         }
-    }
 
-    private void ProcessRaycastGround()
-    {
-        Raycast.GlobalPosition = Camera.GlobalPosition;
-        Raycast.TargetPosition = new Vector3(0, -0.1f, 0);
-        if (Raycast.IsColliding())
-        {
-            var point = Raycast.GetCollisionPoint() + new Vector3(0, 0.1f, 0);
-            var dir = point - Camera.GlobalPosition;
-            Camera.Transform = Camera.Transform.Translated(dir);
-        }
+        transform = transform.Translated(-dir_to_origin.Normalized() * 0.1f);
+        return transform;
     }
 
     public void TeleportTo(VirtualCamera vcam)

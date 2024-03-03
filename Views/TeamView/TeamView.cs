@@ -16,8 +16,6 @@ public partial class TeamView : View
 
         CreateCards();
         OtherOptions.CreateOption("Back", Back);
-
-        Debug.Log(TeamController.Instance);
     }
 
     protected override void OnShow()

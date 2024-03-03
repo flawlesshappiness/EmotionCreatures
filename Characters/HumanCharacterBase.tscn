@@ -1,42 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://ckap6ux3nauhq"]
+[gd_scene load_steps=5 format=3 uid="uid://ckap6ux3nauhq"]
 
 [ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_ceiqt"]
-[ext_resource type="Script" path="res://Character/CharacterMovement.cs" id="2_lkdhg"]
+[ext_resource type="PackedScene" uid="uid://fllae2lynubd" path="res://Characters/CharacterComponents.tscn" id="2_bp0ts"]
 [ext_resource type="Script" path="res://Character/Animation/HumanAnimator.cs" id="3_wyrur"]
-[ext_resource type="Script" path="res://Character/Navigation/CharacterNavigation.cs" id="4_geetl"]
-[ext_resource type="PackedScene" uid="uid://ba5iflh3lka53" path="res://Camera/ThirdPersonVirtualCamera.tscn" id="5_infs5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
 radius = 0.25
 height = 1.0
 
-[sub_resource type="SphereMesh" id="SphereMesh_0uexq"]
-radius = 0.1
-height = 0.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5666w"]
-shading_mode = 0
-albedo_color = Color(1, 0, 0, 1)
-
 [node name="HumanCharacterBase" type="CharacterBody3D"]
+collision_layer = 8
+collision_mask = 12
 script = ExtResource("1_ceiqt")
-
-[node name="Movement" type="Node3D" parent="."]
-script = ExtResource("2_lkdhg")
-
-[node name="Animation" type="Node3D" parent="."]
-script = ExtResource("3_wyrur")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("CapsuleShape3D_rnhpt")
-
-[node name="Navigation" type="NavigationAgent3D" parent="."]
-script = ExtResource("4_geetl")
-
-[node name="DebugSphere" type="MeshInstance3D" parent="Navigation"]
-mesh = SubResource("SphereMesh_0uexq")
-surface_material_override/0 = SubResource("StandardMaterial3D_5666w")
 
 [node name="RayCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.674716, 0)
@@ -44,4 +19,11 @@ target_position = Vector3(0, 0, 0.75)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="VCam" parent="." instance=ExtResource("5_infs5")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_rnhpt")
+
+[node name="CharacterComponents" parent="." instance=ExtResource("2_bp0ts")]
+
+[node name="Animation" type="Node3D" parent="."]
+script = ExtResource("3_wyrur")

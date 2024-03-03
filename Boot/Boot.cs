@@ -29,30 +29,56 @@ public partial class Boot : Node
         InitializeScene();
         InitializeViews();
         LoadScene();
+        InitializeControllers();
 
         SaveDataController.Instance.SaveAll();
     }
 
     private void InitializeScene()
     {
+        Debug.LogMethod();
+        Debug.Indent++;
+
         Scene.Tree = GetTree();
         Scene.Root = Scene.Tree.Root;
         Scene.PauseLock.OnLocked += () => Scene.Tree.Paused = true;
         Scene.PauseLock.OnFree += () => Scene.Tree.Paused = false;
+
+        Debug.Indent--;
     }
 
     private void InitializeViews()
     {
+        Debug.LogMethod();
+        Debug.Indent++;
+
         View.LoadSingleton<DebugView>();
         View.LoadSingleton<GameMenuView>();
         View.LoadSingleton<BattleAnimationView>();
         View.LoadSingleton<BattleView>();
         View.LoadSingleton<TeamView>();
         View.LoadSingleton<CreatureSelectView>();
+
+        Debug.Indent--;
+    }
+
+    private void InitializeControllers()
+    {
+        Debug.LogMethod();
+        Debug.Indent++;
+
+        CameraController.Instance.Initialize();
+
+        Debug.Indent--;
     }
 
     private void LoadScene()
     {
+        Debug.LogMethod();
+        Debug.Indent++;
+
         Scene.Goto(Save.Game.Scene);
+
+        Debug.Indent--;
     }
 }

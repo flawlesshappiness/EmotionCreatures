@@ -1,9 +1,9 @@
 using Godot;
 using System.Linq;
 
-public partial class CharacterController : ResourceController<CharacterController, CharacterInfoCollection, CharacterInfo>
+public partial class CharacterController : ResourceController<CharacterInfoCollection, CharacterInfo>
 {
-    public static CharacterController Instance => GetController("Character");
+    public static CharacterController Instance => GetController<CharacterController>("Character");
     public CharacterInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.CharacterInfoCollection);
 
     public Character CreateCharacter(CharacterType type)

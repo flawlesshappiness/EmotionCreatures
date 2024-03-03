@@ -1,8 +1,8 @@
 using System.Linq;
 
-public partial class ProjectileController : ResourceController<ProjectileController, ProjectileInfoCollection, ProjectileInfo>
+public partial class ProjectileController : ResourceController<ProjectileInfoCollection, ProjectileInfo>
 {
-    public static ProjectileController Instance => GetController("Projectile");
+    public static ProjectileController Instance => GetController<ProjectileController>("Projectile");
     public ProjectileInfoCollection Collection => GetCollection(ResourcePaths.Instance.Collection.ProjectileInfoCollection);
 
     public ProjectileInfo GetInfo(ProjectileType type)
