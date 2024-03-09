@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5b7lq8xb7s06"]
+
+[ext_resource type="Shader" path="res://Shaders/Wind Waker Water Shader.gdshader" id="1_mpybp"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uhfkt"]
+size = Vector2(10000, 10000)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_la1ab"]
+render_priority = 0
+shader = ExtResource("1_mpybp")
+shader_parameter/WATER_COL = Color(0.176471, 0.635294, 0.85098, 1)
+shader_parameter/WATER2_COL = Color(0, 0.568627, 0.870588, 1)
+shader_parameter/FOAM_COL = Color(0.87451, 0.988235, 1, 1)
+shader_parameter/distortion_speed = 1.0
+shader_parameter/tile = Vector2(1000, 1000)
+shader_parameter/wave_speed = 1.5
+
+[node name="Water" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PlaneMesh_uhfkt")
+surface_material_override/0 = SubResource("ShaderMaterial_la1ab")

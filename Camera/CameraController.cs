@@ -37,7 +37,7 @@ public partial class CameraController : SingletonController
     {
         Debug.TraceMethod();
         var camera = GDHelper.Instantiate<CameraBrain>(Collection.CameraBrain);
-        camera.SetParent(Scene.Current);
+        camera.SetParent(Scene.Root);
         return camera;
     }
 

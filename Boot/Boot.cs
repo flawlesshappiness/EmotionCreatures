@@ -30,6 +30,7 @@ public partial class Boot : Node
         InitializeViews();
         LoadScene();
         InitializeControllers();
+        Game.RegisterDebugActions();
 
         SaveDataController.Instance.SaveAll();
     }

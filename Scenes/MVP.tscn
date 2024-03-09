@@ -1,26 +1,24 @@
-[gd_scene load_steps=24 format=3 uid="uid://bs2uec3bxwmen"]
+[gd_scene load_steps=17 format=3 uid="uid://bs2uec3bxwmen"]
 
 [ext_resource type="Script" path="res://Scenes/MVP.cs" id="1_e8mri"]
+[ext_resource type="Texture2D" uid="uid://dvagly5ecp1nd" path="res://addons/AllSkyFree/Skyboxes/AllSkyFree_Sky_ClearBlueSky_Equirect.png" id="2_m81q8"]
 [ext_resource type="ArrayMesh" uid="uid://bebtdyj74su2q" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_1.obj" id="3_6wi4m"]
-[ext_resource type="ArrayMesh" uid="uid://nucxm433my7p" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_2.obj" id="4_gja1w"]
-[ext_resource type="ArrayMesh" uid="uid://nlgrrn56n3fh" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_3.obj" id="5_rsrq4"]
-[ext_resource type="ArrayMesh" uid="uid://c501f535s6xpq" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_1.obj" id="7_jlw7k"]
-[ext_resource type="ArrayMesh" uid="uid://ci44an2wjajvi" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_4.obj" id="7_so8k8"]
-[ext_resource type="ArrayMesh" uid="uid://d3ts5shibkseb" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_2.obj" id="8_5lnic"]
-[ext_resource type="ArrayMesh" uid="uid://df8w2ryeaaphh" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/WoodLog.obj" id="9_mauh0"]
-[ext_resource type="ArrayMesh" uid="uid://nvkrt1lljf8i" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_3.obj" id="10_w26fa"]
-[ext_resource type="ArrayMesh" uid="uid://dq5c5rswduk0w" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_4.obj" id="11_ommn7"]
-[ext_resource type="ArrayMesh" uid="uid://dwgf401oqyilo" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_5.obj" id="12_trc80"]
-[ext_resource type="ArrayMesh" uid="uid://cek50ousxl4nb" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_6.obj" id="13_u24xw"]
-[ext_resource type="ArrayMesh" uid="uid://c283hcnmwqm7k" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/Rock_Moss_7.obj" id="14_316t8"]
+[ext_resource type="PackedScene" uid="uid://c5b7lq8xb7s06" path="res://Water/Water.tscn" id="8_61oup"]
 [ext_resource type="Script" path="res://Spawn/CharacterSpawn.cs" id="15_v34xy"]
 [ext_resource type="PackedScene" uid="uid://xn86bcu7wvvr" path="res://Characters/Adventurer/adventurer.tscn" id="16_adpuj"]
 [ext_resource type="Script" path="res://Interact/InteractableDialogueCharacter.cs" id="17_ansl3"]
 [ext_resource type="Script" path="res://Dialogue/DialogueBattle.cs" id="18_t8wdv"]
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fuhit"]
+panorama = ExtResource("2_m81q8")
+
+[sub_resource type="Sky" id="Sky_xrc3t"]
+sky_material = SubResource("PanoramaSkyMaterial_fuhit")
+
 [sub_resource type="Environment" id="Environment_l0ktl"]
-background_mode = 1
+background_mode = 2
 background_color = Color(0.513726, 0.662745, 0.870588, 1)
+sky = SubResource("Sky_xrc3t")
 ambient_light_color = Color(0.85098, 0.901961, 0.996078, 1)
 ambient_light_energy = 0.0
 
@@ -32,7 +30,7 @@ albedo_color = Color(0.152941, 0.454902, 0.129412, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ki12o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wi05b"]
-size = Vector3(27.6018, 10.5186, 1)
+size = Vector3(103.183, 10.5186, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uxsfv"]
 radius = 0.25
@@ -51,16 +49,16 @@ shadow_enabled = true
 
 [node name="World" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+[node name="Ground" type="MeshInstance3D" parent="World"]
 transform = Transform3D(100, 0, 0, 0, 0.5, 0, 0, 0, 100, -2.87241, -0.25, 0)
 mesh = SubResource("BoxMesh_iisck")
 surface_material_override/0 = SubResource("StandardMaterial3D_k3hhn")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="World/MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Ground"]
 collision_layer = 4
 collision_mask = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Ground/StaticBody3D"]
 shape = SubResource("BoxShape3D_ki12o")
 
 [node name="Trees" type="Node3D" parent="World"]
@@ -70,150 +68,25 @@ transform = Transform3D(1.66352, -0.00391239, -1.11026, 0.00292914, 2, -0.002658
 mesh = ExtResource("3_6wi4m")
 skeleton = NodePath("../../..")
 
-[node name="BirchTree7" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1.87027, -0.0017971, 0.708592, 0.00292914, 2, -0.0026589, -0.708588, 0.00352422, 1.87026, -10.8354, 0, 4.33897)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree10" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-1.95074, 0.00344348, 0.441145, 0.00292914, 2, -0.0026589, -0.44115, -0.00194733, -1.95074, 6.49708, 0, 0.948821)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree6" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.0755199, 0, -1.99857, 0, 2, 0, 1.99857, 0, 0.0755199, -5.25801, 0, -6.63915)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree11" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-1.89955, 0, 0.625864, 0, 2, 0, -0.625864, 0, -1.89955, 6.04487, 0, 4.34972)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree12" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-1.69445, 0, -1.06247, 0, 2, 0, 1.06247, 0, -1.69445, 5.31973, 0, -2.9942)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree14" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-1.97531, 0, -0.313317, 0, 2, 0, 0.313317, 0, -1.97531, -12.0767, 0, -2.19569)
-mesh = ExtResource("3_6wi4m")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree2" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.319108, 0, -1.97438, 0, 2, 0, 1.97438, 0, 0.319108, -6.96348, 9.53674e-07, -6.97742)
-mesh = ExtResource("4_gja1w")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree3" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.790546, 0, -1.83713, 0, 2, 0, 1.83713, 0, -0.790546, -0.7226, 0.0381432, -7.14988)
-mesh = ExtResource("5_rsrq4")
-skeleton = NodePath("../../..")
-
-[node name="BirchTree4" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.878656, 0, 1.79665, 0, 2, 0, -1.79665, 0, 0.878656, 4.58713, 0, -5.53341)
-mesh = ExtResource("7_so8k8")
-skeleton = NodePath("../../..")
-
-[node name="Rock1" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -6.34516, 4.76837e-07, 7.00183)
-mesh = ExtResource("7_jlw7k")
-skeleton = NodePath("../../..")
-
-[node name="Rock3" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.547314, 0, -1.92365, 0, 2, 0, 1.92365, 0, 0.547314, 1.95162, 4.76837e-07, 7.44435)
-mesh = ExtResource("7_jlw7k")
-skeleton = NodePath("../../..")
-
-[node name="Rock2" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.499983, 0, -1.9365, 0, 2, 0, 1.9365, 0, 0.499983, -0.445005, 0, 6.22629)
-mesh = ExtResource("8_5lnic")
-skeleton = NodePath("../../..")
-
-[node name="WoodLog" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.103243, 0, -1.99733, 0, 2, 0, 1.99733, 0, 0.103243, 2.60191, 0, 5.92056)
-mesh = ExtResource("9_mauh0")
-skeleton = NodePath("../../..")
-
-[node name="WoodLog2" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.141115, 0, -1.99502, 0, 2, 0, 1.99502, 0, -0.141115, -8.35123, 0, 5.93862)
-mesh = ExtResource("9_mauh0")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss3" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.88632, 0, 6.57369)
-mesh = ExtResource("10_w26fa")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss4" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.586104, 0, 0.810236, 0, 1, 0, -0.810236, 0, 0.586104, -4.25239, 0, 5.63375)
-mesh = ExtResource("11_ommn7")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss13" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.17736, 0, 0.984146, 0, 1, 0, -0.984146, 0, -0.17736, -0.82781, 0, 9.49195)
-mesh = ExtResource("11_ommn7")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss8" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.94734, 0, 6.27441)
-mesh = ExtResource("11_ommn7")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss5" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(0.293996, 0, -1.97827, 0, 2, 0, 1.97827, 0, 0.293996, -3.81627, -0.164711, 6.90388)
-mesh = ExtResource("12_trc80")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss9" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.312076, 0, -1.9755, 0, 2, 0, 1.9755, 0, -0.312076, 4.05775, -0.164711, 7.11549)
-mesh = ExtResource("12_trc80")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss10" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.616706, 0, -1.90254, 0, 2, 0, 1.90254, 0, -0.616706, -10.5068, -0.164711, 7.81509)
-mesh = ExtResource("12_trc80")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss6" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.53756, 0, 6.29974)
-mesh = ExtResource("13_u24xw")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss11" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.7515, 0, 7.09821)
-mesh = ExtResource("13_u24xw")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss12" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(-0.650721, 0, 0.759317, 0, 1, 0, -0.759317, 0, -0.650721, -6.60289, 0, 9.59349)
-mesh = ExtResource("13_u24xw")
-skeleton = NodePath("../../..")
-
-[node name="RockMoss7" type="MeshInstance3D" parent="World/Trees"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28468, 0, 5.81303)
-mesh = ExtResource("14_316t8")
-skeleton = NodePath("../../..")
-
 [node name="Colliders" type="StaticBody3D" parent="World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.71988, 4.90935, 7.50908)
 collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/Colliders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.10563, 0.369717, -1.63265)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37, 39.42)
 shape = SubResource("BoxShape3D_wi05b")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="World/Colliders"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2636, 0.369717, -12.8159)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2636, 0.369717, -56.6163)
 shape = SubResource("BoxShape3D_wi05b")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="World/Colliders"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -8.55994, 0.369717, -7.13037)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -50.0206, 0.369717, -7.13037)
 shape = SubResource("BoxShape3D_wi05b")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="World/Colliders"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.1284, 0.369717, -7.13037)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 47.6071, 0.369717, -7.13037)
 shape = SubResource("BoxShape3D_wi05b")
 
 [node name="NPC" type="Node3D" parent="World"]
@@ -240,3 +113,6 @@ shape = SubResource("CapsuleShape3D_uxsfv")
 [node name="Battle" type="Node3D" parent="World/NPC"]
 script = ExtResource("18_t8wdv")
 DialogueNodeEnd = "##TEST_BATTLE_002##"
+
+[node name="Water" parent="World" instance=ExtResource("8_61oup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.510036, 0)

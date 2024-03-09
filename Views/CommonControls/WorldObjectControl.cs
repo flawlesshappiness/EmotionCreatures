@@ -15,13 +15,14 @@ public partial class WorldObjectControl : ControlScript
         current_object = null;
     }
 
-    public void SetObject(Node3D obj)
+    private void SetObject(Node3D obj)
     {
         Clear();
 
-        obj.SetParent(Origin);
-        obj.GlobalPosition = Origin.GlobalPosition;
-        obj.GlobalRotation = Origin.GlobalRotation;
+        current_object = obj;
+        current_object.SetParent(Origin);
+        current_object.GlobalPosition = Origin.GlobalPosition;
+        current_object.GlobalRotation = Origin.GlobalRotation;
     }
 
     public void LoadCreature(CreatureData data)
