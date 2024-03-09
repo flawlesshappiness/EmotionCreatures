@@ -203,13 +203,13 @@ public partial class AI_Battle_Default : AI_Battle
             while (true)
             {
                 var target_dir = Position.DirectionTo(TargetPosition);
-                Character.Movement.Move(target_dir);
+                Character.Movement.InputMove(target_dir);
 
                 var target_dist = Position.DistanceTo(TargetPosition);
                 if (target_dist < 1f)
                 {
                     Navigation.NavigationLock.RemoveLock(state.ToString());
-                    creature.UseSelectedMove();
+                    creature.Moves.UseSelectedMove();
                     SetState(State.Idle);
                 }
 
@@ -248,7 +248,7 @@ public partial class AI_Battle_Default : AI_Battle
             }
             else
             {
-                creature.UseSelectedMove();
+                creature.Moves.UseSelectedMove();
                 SetState(State.Idle);
             }
         }

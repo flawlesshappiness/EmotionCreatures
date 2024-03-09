@@ -28,6 +28,9 @@ public partial class CharacterMovement : Node
     private bool HasActiveAI => Character.AI?.Active ?? false;
     private bool IsControlledByPlayer => Character.IsPlayer && !HasActiveAI;
 
+    private bool automove_enabled;
+    private Vector3 automove_direction;
+
     public void Initialize(Character character)
     {
         Character = character;
@@ -44,20 +47,35 @@ public partial class CharacterMovement : Node
         }
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        if (automove_enabled)
+        {
+            Move(automove_direction);
+        }
+    }
+
     public void Stop()
     {
-        Move(Vector2.Zero);
+        Move(Vector3.Zero);
     }
 
-    public void Move(Vector3 input)
+    public void InputMove(Vector2 input)
     {
-        Move(new Vector2(input.X, input.Z));
+        InputMove(new Vector3(input.X, 0, input.Y));
     }
 
-    public void Move(Vector2 input)
+    public void InputMove(Vector3 input)
+    {
+        var direction = MovementLock.IsLocked ? Vector3.Zero : input.Normalized();
+        Move(direction * Speed);
+    }
+
+    private void Move(Vector3 direction)
     {
         Vector3 velocity = Character.Velocity;
-        Vector3 direction = MovementLock.IsLocked ? Vector3.Zero : (new Vector3(input.X, 0, input.Y)).Normalized();
 
         if (IsControlledByPlayer && CameraBrain.MainCamera != null)
         {
@@ -70,8 +88,8 @@ public partial class CharacterMovement : Node
 
         if (direction != Vector3.Zero)
         {
-            velocity.X = direction.X * Speed;
-            velocity.Z = direction.Z * Speed;
+            velocity.X = direction.X;
+            velocity.Z = direction.Z;
 
             Rotate(velocity);
         }
@@ -104,6 +122,17 @@ public partial class CharacterMovement : Node
         {
             _moving = false;
         }
+    }
+
+    public void AutoMove(Vector3 direction)
+    {
+        automove_enabled = true;
+        automove_direction = direction;
+    }
+
+    public void StopAutoMove()
+    {
+        automove_enabled = false;
     }
 
     public void Rotate(Vector3 velocity)

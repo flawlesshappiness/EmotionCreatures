@@ -20,7 +20,7 @@ public partial class PlayerController : Node
     {
         if (TargetCharacter == null) return;
         if (!TargetCharacter.CanControl) return;
-        TargetCharacter.Movement.Move(direction);
+        TargetCharacter.Movement.InputMove(direction);
     }
 
     public void SetTargetCharacter(Character target)

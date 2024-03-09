@@ -1,12 +1,7 @@
-using Godot;
-
 public partial class CreatureCombat : NodeScript
 {
-    [NodeName(nameof(MeleeHitbox))]
-    public Area3D MeleeHitbox;
-
-    [NodeName(nameof(MeleeHitboxShape))]
-    public CollisionShape3D MeleeHitboxShape;
+    [NodeType(typeof(HurtboxArea))]
+    public HurtboxArea Hurtbox;
 
     private CreatureCharacter Creature { get; set; }
 
@@ -15,64 +10,70 @@ public partial class CreatureCombat : NodeScript
     public void Initialize(CreatureCharacter creature)
     {
         Creature = creature;
-
-        if (Creature.Animator.Mesh != null)
-        {
-            SetMesh(Creature.Animator.Mesh as CreatureMesh);
-        }
-        else
-        {
-            Creature.CreatureAnimator.OnMeshSet += m => SetMesh(m as CreatureMesh);
-        }
+        Hurtbox.OnHitCreature += OnHitCreature;
+        DisableHitbox();
     }
 
-    private void SetMesh(CreatureMesh mesh)
+    private void OnHitCreature(CreatureCharacter target, bool hit_before)
     {
-        mesh.OnAnimationMeleeHit += MeleeHit;
-        mesh.OnAnimationProjectileFire += ProjectileFire;
-    }
-
-    public void MeleeHit()
-    {
-        if (CurrentMove == null)
-        {
-            Debug.LogError("CreatureCombat.CurrentMove is not set");
-            return;
-        }
-
         Debug.LogMethod();
         Debug.Indent++;
 
-        MeleeHitboxShape.Position = CurrentMove.Info.MeleeHitboxPosition;
-
-        var shape = MeleeHitboxShape.Shape as BoxShape3D;
-        shape.Size = CurrentMove.Info.MeleeHitboxPosition;
-
-        var bodies = MeleeHitbox.GetOverlappingBodies();
-        foreach (var body in bodies)
+        if (CurrentMove == null)
         {
-            if (body == Creature) continue;
-            Debug.Trace("Body: " + body);
-            var creature = body.GetNodeInChildren<CreatureCharacter>();
-            Debug.Trace("Creature: " + creature);
-            if (creature == null) continue;
+            Debug.LogError("CreatureCombat.CurrentMove is not set");
+            Debug.Indent--;
+            return;
+        }
 
-            creature.ApplyEffect(CurrentMove.Effect);
+        if (!hit_before)
+        {
+            target.ApplyEffect(CurrentMove.Effect);
         }
 
         Debug.Indent--;
     }
 
-    public void ProjectileFire()
+    public void EnableHitbox()
     {
+        Debug.LogMethod();
+        Debug.Indent++;
+
         if (CurrentMove == null)
         {
             Debug.LogError("CreatureCombat.CurrentMove is not set");
+            Debug.Indent--;
             return;
         }
 
+        Hurtbox.SetPosition(CurrentMove.Info.MeleeHitboxPosition);
+        Hurtbox.SetSize(CurrentMove.Info.MeleeHitboxSize);
+        Hurtbox.SetEnabled(true);
+
+        Debug.Indent--;
+    }
+
+    public void DisableHitbox()
+    {
         Debug.LogMethod();
         Debug.Indent++;
+
+        Hurtbox.SetEnabled(false);
+
+        Debug.Indent--;
+    }
+
+    public void FireProjectile()
+    {
+        Debug.LogMethod();
+        Debug.Indent++;
+
+        if (CurrentMove == null)
+        {
+            Debug.LogError("CreatureCombat.CurrentMove is not set");
+            Debug.Indent--;
+            return;
+        }
 
         var projectile = ProjectileController.Instance.CreateProjectile(CurrentMove.Info.ProjectileType);
         var direction = Creature.GlobalBasis.Z;

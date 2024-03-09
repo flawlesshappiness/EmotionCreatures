@@ -25,11 +25,8 @@ public partial class CharacterController : ResourceController<CharacterInfoColle
         var mesh = GDHelper.Instantiate<CharacterMesh>(info.Scene);
         Debug.Trace($"Mesh loaded: {mesh}");
 
-        var animation = base_character.GetNodeInChildren<CharacterAnimator>();
-        Debug.Trace($"Animation controller found: {animation}");
-
-        animation.SetMesh(mesh);
-        Debug.Trace($"Character is now parented to Animator");
+        base_character.SetMesh(mesh);
+        Debug.Trace($"Mesh is now set in base character");
 
         Debug.Indent--;
         return base_character;

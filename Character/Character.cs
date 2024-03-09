@@ -8,8 +8,8 @@ public partial class Character : CharacterBody3D
     [NodeType(typeof(CharacterMovement))]
     public CharacterMovement Movement;
 
-    [NodeType(typeof(CharacterAnimator))]
-    public CharacterAnimator Animator;
+    [NodeType(typeof(CharacterAnimationStateMachine))]
+    public CharacterAnimationStateMachine Animator;
 
     [NodeType(typeof(CharacterNavigation))]
     public CharacterNavigation Navigation;
@@ -19,6 +19,8 @@ public partial class Character : CharacterBody3D
 
     [NodeName(nameof(FaceNode))]
     public Node3D FaceNode;
+
+    public CharacterMesh Mesh { get; private set; }
 
     public VirtualCamera ThirdPersonVCam { get; private set; }
 
@@ -34,13 +36,24 @@ public partial class Character : CharacterBody3D
         NodeScript.FindNodesFromAttribute(this, GetType());
 
         Movement.Initialize(this);
-        Animator.Initialize(this);
         Navigation.Initialize(this);
         InitializeCamera();
 
         DialogueController.Instance.OnDialogueStarted += OnDialogueStarted;
         DialogueController.Instance.OnDialogueEnded += OnDialogueEnded;
         PlayerInput.Instance.InputLock.OnLocked += OnInputLocked;
+    }
+
+    public virtual void SetMesh(CharacterMesh mesh)
+    {
+        Mesh = mesh;
+        Mesh.SetParent(Animator);
+        Mesh.Position = Vector3.Zero;
+        Mesh.Rotation = Vector3.Zero;
+
+        Mesh.OnAnimationEvent += AnimationEvent;
+
+        Animator.Initialize(this);
     }
 
     private void InitializeCamera()
@@ -105,4 +118,62 @@ public partial class Character : CharacterBody3D
 
         Movement.Stop();
     }
+
+    #region ANIMATION EVENT
+    protected virtual void AnimationEvent(AnimationEvent e)
+    {
+        if (e.Animation != null)
+        {
+            AnimationEvent_Animation(e.Animation);
+        }
+
+        if (e.Movement != null)
+        {
+            AnimationEvent_Movement(e.Movement);
+        }
+
+        if (e.Hurtbox != null)
+        {
+            AnimationEvent_Hitbox(e.Hurtbox);
+        }
+
+        if (e.Projectile != null)
+        {
+            AnimationEvent_Projectile(e.Projectile);
+        }
+    }
+
+    protected virtual void AnimationEvent_Animation(AnimationEvent.AnimationArgs args)
+    {
+    }
+
+    protected virtual void AnimationEvent_Movement(AnimationEvent.MovementArgs args)
+    {
+        if (args.PlayerInputEnabled)
+        {
+            Movement.MovementLock.RemoveLock(nameof(AnimationEvent));
+        }
+        else
+        {
+            Movement.MovementLock.AddLock(nameof(AnimationEvent));
+        }
+
+        if (args.AutoMoveEnabled)
+        {
+            Movement.AutoMove(args.Direction * args.Speed);
+        }
+        else
+        {
+            Movement.StopAutoMove();
+        }
+    }
+
+    protected virtual void AnimationEvent_Hitbox(AnimationEvent.HurtboxArgs args)
+    {
+    }
+
+    protected virtual void AnimationEvent_Projectile(AnimationEvent.ProjectileArgs args)
+    {
+    }
+    #endregion
 }

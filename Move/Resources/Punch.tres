@@ -10,6 +10,6 @@ Cooldown = 2.0
 Damage = 1.0
 AnimationType = 0
 MeleeHitboxPosition = Vector3(0, 0.6, 0.8)
-MeleeHitboxSize = Vector3(1.5, 1.5, 1.5)
+MeleeHitboxSize = Vector3(0.8, 0.8, 0.8)
 ProjectileType = 0
 ProjectileSpeed = 0.0

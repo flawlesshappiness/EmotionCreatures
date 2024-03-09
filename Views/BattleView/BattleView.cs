@@ -32,14 +32,11 @@ public partial class BattleView : View
     {
         base.OnShow();
         MoveControl.LoadMoves();
-
-        BGM.Play();
     }
 
     protected override void OnHide()
     {
         base.OnHide();
-        BGM.Stop();
     }
 
     private void OnBattleStart(StartBattleArgs args)

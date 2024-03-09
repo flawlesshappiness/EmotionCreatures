@@ -58,7 +58,7 @@ public partial class CharacterNavigation : NavigationAgent3D
         var dir = currentAgentPosition.DirectionTo(nextPathPosition);
         //DebugSphere.Visible = true;
         DebugSphere.GlobalPosition = nextPathPosition;
-        Character.Movement.Move(dir);
+        Character.Movement.InputMove(dir);
     }
 
     public void NavigatoTo(Vector3 position)

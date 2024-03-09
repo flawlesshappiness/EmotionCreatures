@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Character/HumanCharacter.cs" id="1_ceiqt"]
 [ext_resource type="PackedScene" uid="uid://fllae2lynubd" path="res://Characters/CharacterComponents.tscn" id="2_bp0ts"]
-[ext_resource type="Script" path="res://Character/Animation/HumanAnimator.cs" id="3_wyrur"]
+[ext_resource type="Script" path="res://Character/Animation/HumanAnimationStateMachine.cs" id="3_kecsk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rnhpt"]
 radius = 0.25
@@ -26,4 +26,4 @@ shape = SubResource("CapsuleShape3D_rnhpt")
 [node name="CharacterComponents" parent="." instance=ExtResource("2_bp0ts")]
 
 [node name="Animation" type="Node3D" parent="."]
-script = ExtResource("3_wyrur")
+script = ExtResource("3_kecsk")

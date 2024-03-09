@@ -69,11 +69,42 @@ public partial class CreatureMoves : Node
 
     public bool TryUseSelectedMove()
     {
+        if (Creature.Health.IsDead) return false;
         if (SelectedMove == null) return false;
         if (SelectedMove.IsOnCooldown) return false;
+        if (IsAttacking()) return false;
 
         SelectedMove.Use();
         return true;
+    }
+
+    public void UseSelectedMove()
+    {
+        if (TryUseSelectedMove())
+        {
+            Creature.Combat.CurrentMove = SelectedMove;
+            TriggerAttackAnimation();
+        }
+    }
+
+    private void TriggerAttackAnimation()
+    {
+        switch (SelectedMove.Info.AnimationType)
+        {
+            case MoveAnimationType.Melee:
+                Creature.CreatureAnimator.TriggerAttackMelee.Trigger();
+                break;
+
+            case MoveAnimationType.Projectile:
+                Creature.CreatureAnimator.TriggerAttackProjectile.Trigger();
+                break;
+        }
+    }
+
+    public bool IsAttacking()
+    {
+        var animator = Creature.CreatureAnimator;
+        return animator.Current == animator.AttackMelee || animator.Current == animator.AttackProjectile;
     }
 }
 

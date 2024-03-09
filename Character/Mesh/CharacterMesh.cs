@@ -1,7 +1,11 @@
 using Godot;
+using System;
 
-public partial class CharacterMesh : Node3D
+public partial class CharacterMesh : Node3DScript
 {
+    [NodeType(typeof(AnimationPlayer))]
+    public AnimationPlayer AnimationPlayer;
+
     [Export]
     public string IdleAnimation;
 
@@ -11,25 +15,34 @@ public partial class CharacterMesh : Node3D
     [NodeType(typeof(Skeleton3D))]
     public Skeleton3D Skeleton;
 
-    // THIS METHOD IS UNFINISHED
-    public Transform3D GetGlobalBoneTransform(string bone_name)
+    public Action<AnimationEvent> OnAnimationEvent;
+
+    #region ANIMATION EVENTS
+    protected void AnimationEvent(AnimationEvent animation_event)
     {
-        Debug.TraceMethod(bone_name);
-        Debug.Indent++;
-
-        if (Skeleton == null)
-        {
-            Debug.LogError("No skeleton on mesh");
-            return Transform;
-        }
-
-        var bone_index = Skeleton.FindBone(bone_name);
-        Debug.LogError($"Bone index: {bone_index}");
-        // Check if exists
-        var bone_pose = Skeleton.GetBoneGlobalPose(bone_index);
-        var transform = Transform * bone_pose;
-
-        Debug.Indent--;
-        return transform;
+        OnAnimationEvent?.Invoke(animation_event);
     }
+
+    public void EventEnablePlayerMovement()
+    {
+        AnimationEvent(new AnimationEvent
+        {
+            Movement = new()
+            {
+                PlayerInputEnabled = true,
+            }
+        });
+    }
+
+    public void EventDisablePlayerMovement()
+    {
+        AnimationEvent(new AnimationEvent
+        {
+            Movement = new()
+            {
+                PlayerInputEnabled = false,
+            }
+        });
+    }
+    #endregion
 }

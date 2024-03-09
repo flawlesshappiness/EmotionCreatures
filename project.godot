@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="EmotionCreatures"
-config/version="0.0.1"
+config/version="0.0.3"
 run/main_scene="res://Scenes/Boot.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://Assets/icon.svg"

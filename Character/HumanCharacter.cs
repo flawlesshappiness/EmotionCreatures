@@ -21,9 +21,7 @@ public partial class HumanCharacter : Character
         if (!RayCast.IsColliding()) return;
 
         var collider = RayCast.GetCollider() as Node3D;
-        Debug.Trace("Collider: " + collider);
         var interactable = collider.GetNodeInParents<Interactable>();
-        Debug.Trace("Interactable: " + collider);
         if (interactable == null) return;
 
         interactable.TryInteract(null);

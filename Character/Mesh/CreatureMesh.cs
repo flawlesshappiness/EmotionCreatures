@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class CreatureMesh : CharacterMesh
 {
@@ -15,16 +14,61 @@ public partial class CreatureMesh : CharacterMesh
     [Export]
     public string DeathAnimation;
 
-    public Action OnAnimationMeleeHit;
-    public Action OnAnimationProjectileFire;
-
-    public void AnimationMeleeHit()
+    #region ANIMATION EVENTS
+    public void EventEnableHurtbox()
     {
-        OnAnimationMeleeHit?.Invoke();
+        AnimationEvent(new AnimationEvent
+        {
+            Hurtbox = new()
+            {
+                Enabled = true,
+            }
+        });
     }
 
-    public void AnimationProjectileFire()
+    public void EventDisableHurtbox()
     {
-        OnAnimationProjectileFire?.Invoke();
+        AnimationEvent(new AnimationEvent
+        {
+            Hurtbox = new()
+            {
+                Enabled = false,
+            }
+        });
     }
+
+    public void EventFireProjectile()
+    {
+        AnimationEvent(new AnimationEvent
+        {
+            Projectile = new()
+            {
+            }
+        });
+    }
+
+    public void EventMoveForward(float speed)
+    {
+        AnimationEvent(new AnimationEvent
+        {
+            Movement = new()
+            {
+                AutoMoveEnabled = true,
+                Direction = Vector3.Forward,
+                Speed = speed,
+            }
+        });
+    }
+
+    public void EventStopMoving()
+    {
+        AnimationEvent(new AnimationEvent
+        {
+            Movement = new()
+            {
+                AutoMoveEnabled = false,
+            }
+        });
+    }
+    #endregion
 }

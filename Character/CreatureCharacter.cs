@@ -2,8 +2,8 @@ using Godot;
 
 public partial class CreatureCharacter : Character
 {
-    [NodeType(typeof(CreatureAnimator))]
-    public CreatureAnimator CreatureAnimator;
+    [NodeType(typeof(CreatureAnimationStateMachine))]
+    public CreatureAnimationStateMachine CreatureAnimator;
 
     [NodeType(typeof(HealthBar))]
     public HealthBar HealthBar;
@@ -74,29 +74,7 @@ public partial class CreatureCharacter : Character
 
     private void AttackPressed()
     {
-        UseSelectedMove();
-    }
-
-    public void UseSelectedMove()
-    {
-        if (IsDead) return;
-
-        if (Moves.TryUseSelectedMove())
-        {
-            var move = Moves.SelectedMove;
-            var anim = CreatureAnimator.GetAttackAnimationEvent(move.Info.AnimationType);
-
-            if (Animator.CurrentAnimation.Name == anim.Name) return;
-
-            Combat.CurrentMove = move;
-
-            Movement.MovementLock.AddLock(anim.Name);
-            anim.Play(() =>
-            {
-                CreatureAnimator.PlayIdle();
-                Movement.MovementLock.RemoveLock(anim.Name);
-            });
-        }
+        Moves.UseSelectedMove();
     }
 
     public void ApplyEffect(MoveEffect effect)
@@ -106,7 +84,7 @@ public partial class CreatureCharacter : Character
             return;
         }
 
-        if (effect.Sender == this) // Don't hit self, doofus
+        if (effect.Sender == this) // Don't hit yourself, doofus
         {
             return;
         }
@@ -122,6 +100,34 @@ public partial class CreatureCharacter : Character
         }
     }
 
+    #region ANIMATION EVENT
+    protected override void AnimationEvent_Movement(AnimationEvent.MovementArgs args)
+    {
+        base.AnimationEvent_Movement(args);
+    }
+
+    protected override void AnimationEvent_Hitbox(AnimationEvent.HurtboxArgs args)
+    {
+        base.AnimationEvent_Hitbox(args);
+
+        if (args.Enabled)
+        {
+            Combat.EnableHitbox();
+        }
+        else
+        {
+            Combat.DisableHitbox();
+        }
+    }
+
+    protected override void AnimationEvent_Projectile(AnimationEvent.ProjectileArgs args)
+    {
+        base.AnimationEvent_Projectile(args);
+
+        Combat.FireProjectile();
+    }
+    #endregion
+    #region HEALTH
     private void OnHealthChanged()
     {
         if (Health.IsDead)
@@ -138,14 +144,7 @@ public partial class CreatureCharacter : Character
     {
         if (IsDead) return;
 
-        var anim = CreatureAnimator.Hurt;
-
-        Movement.MovementLock.AddLock(anim.Name);
-        anim.Play(() =>
-        {
-            CreatureAnimator.PlayIdle();
-            Movement.MovementLock.RemoveLock(anim.Name);
-        });
+        CreatureAnimator.TriggerHurt.Trigger();
     }
 
     private void OnDeath()
@@ -154,11 +153,7 @@ public partial class CreatureCharacter : Character
         Movement.GravityLock.AddLock("Death");
         Collider.Disabled = true;
 
-        var anim = CreatureAnimator.Dead;
-
-        Movement.MovementLock.AddLock(anim.Name);
-        anim.Play(() =>
-        {
-        });
+        CreatureAnimator.TriggerDeath.Trigger();
     }
+    #endregion
 }
