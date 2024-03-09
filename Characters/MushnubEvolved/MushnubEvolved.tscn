@@ -14,7 +14,6 @@ IdleAnimation = "Idle"
 MoveAnimation = "Walk"
 
 [node name="Skeleton3D" parent="CharacterArmature" index="0"]
-bones/1/position = Vector3(0, 1.08768, 0)
-bones/1/rotation = Quaternion(0, 0, 0, 1)
-bones/1/scale = Vector3(1, 1, 1)
-bones/3/rotation = Quaternion(4.52382e-36, 3.54715e-10, -0.00264005, 0.999997)
+bones/1/position = Vector3(0, 1.09134, -0.00324077)
+bones/1/rotation = Quaternion(-0.008764, -1.03398e-25, -2.29168e-26, 0.999962)
+bones/3/rotation = Quaternion(-3.85253e-10, 3.55465e-10, -0.00372167, 0.999993)

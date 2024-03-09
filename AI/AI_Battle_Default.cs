@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class AI_Battle_Default : AI_Battle
 {
-    private enum State { Approach, Hunt, Idle }
+    private enum State { Approach, Hunt, Idle, UseMove }
     private State state;
     private Coroutine cr_state;
 
@@ -28,6 +28,7 @@ public partial class AI_Battle_Default : AI_Battle
 
         creature = character as CreatureCharacter;
         creature.Health.OnDeath += OnDeath;
+        creature.Moves.OnMoveFinished += MoveFinished;
     }
 
     public override void Start()
@@ -136,6 +137,7 @@ public partial class AI_Battle_Default : AI_Battle
             State.Approach => Approach(),
             State.Hunt => Hunt(),
             State.Idle => Idle(),
+            State.UseMove => UseMove(),
             _ => null
         };
 
@@ -158,6 +160,31 @@ public partial class AI_Battle_Default : AI_Battle
     {
         Navigation.NavigationLock.AddLock("Dead");
         StopStateCoroutine();
+    }
+
+    private void MoveFinished(CreatureMove move)
+    {
+        creature.Navigation.NavigationLock.RemoveLock("Move");
+        SetState(State.Idle);
+    }
+
+    private Coroutine UseMove()
+    {
+        return Coroutine.Start(Cr);
+        IEnumerator Cr()
+        {
+            creature.Navigation.NavigationLock.AddLock("Move");
+            var success = creature.Moves.TryUseSelectedMove();
+
+            if (success)
+            {
+                while (true)
+                {
+                    LookAtTarget();
+                    yield return null;
+                }
+            }
+        }
     }
 
     private Coroutine Approach()
@@ -209,8 +236,7 @@ public partial class AI_Battle_Default : AI_Battle
                 if (target_dist < 1f)
                 {
                     Navigation.NavigationLock.RemoveLock(state.ToString());
-                    creature.Moves.UseSelectedMove();
-                    SetState(State.Idle);
+                    SetState(State.UseMove);
                 }
 
                 yield return null;
@@ -248,8 +274,7 @@ public partial class AI_Battle_Default : AI_Battle
             }
             else
             {
-                creature.Moves.UseSelectedMove();
-                SetState(State.Idle);
+                SetState(State.UseMove);
             }
         }
     }

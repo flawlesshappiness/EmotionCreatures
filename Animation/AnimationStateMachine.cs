@@ -21,7 +21,7 @@ public abstract partial class AnimationStateMachine : Node
 
     public void Start(StateNode node)
     {
-        SetCurrentNode(node);
+        SetCurrentState(node);
         Started = true;
     }
 
@@ -47,12 +47,22 @@ public abstract partial class AnimationStateMachine : Node
     private void UseConnection(Connection connection)
     {
         connection.Used();
-        SetCurrentNode(connection.End);
+        SetCurrentState(connection.End);
     }
 
-    public virtual void SetCurrentNode(StateNode node)
+    public virtual void SetCurrentState(StateNode node)
     {
+        if (Current != null)
+        {
+            Current.OnExit?.Invoke();
+        }
+
         Current = node;
+
+        if (Current != null)
+        {
+            Current.OnEnter?.Invoke();
+        }
     }
 
     public StateNode CreateNode(string name)
@@ -131,8 +141,9 @@ public class StateNode
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; private set; }
     public List<Connection> Connections => _connections.ToList();
-
     private List<Connection> _connections = new();
+
+    public Action OnEnter, OnExit;
 
     public StateNode(string name)
     {

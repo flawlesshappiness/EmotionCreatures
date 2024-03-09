@@ -73,9 +73,9 @@ public partial class CharacterAnimationStateMachine : AnimationStateMachine
         HorizontalVelocity.Set(vel.Length());
     }
 
-    public override void SetCurrentNode(StateNode node)
+    public override void SetCurrentState(StateNode node)
     {
-        base.SetCurrentNode(node);
+        base.SetCurrentState(node);
 
         if (Animations.TryGetValue(node.Name, out var state))
         {

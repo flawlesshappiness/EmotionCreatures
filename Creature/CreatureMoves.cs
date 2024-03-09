@@ -1,3 +1,4 @@
+using FlawLizArt.Animation.StateMachine;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ public partial class CreatureMoves : Node
 
     public CreatureMove SelectedMove;
     public int SelectedMoveIndex => SelectedMove == null ? 0 : Moves.IndexOf(SelectedMove);
-
     public CreatureCharacter Creature { get; private set; }
+
+    public Action<CreatureMove> OnMoveFinished;
 
     public void Initialize(CreatureCharacter creature)
     {
@@ -35,6 +37,7 @@ public partial class CreatureMoves : Node
             {
                 Info = info,
                 Creature = Creature,
+                AnimationState = GetAnimationState(info.AnimationType)
             };
 
             Moves.Add(move);
@@ -67,38 +70,40 @@ public partial class CreatureMoves : Node
         Debug.Indent--;
     }
 
-    public bool TryUseSelectedMove()
+    private bool TryUseMove(CreatureMove move)
     {
         if (Creature.Health.IsDead) return false;
         if (SelectedMove == null) return false;
         if (SelectedMove.IsOnCooldown) return false;
         if (IsAttacking()) return false;
 
-        SelectedMove.Use();
+        UseMove(move);
         return true;
     }
 
     public void UseSelectedMove()
     {
-        if (TryUseSelectedMove())
-        {
-            Creature.Combat.CurrentMove = SelectedMove;
-            TriggerAttackAnimation();
-        }
+        UseMove(SelectedMove);
     }
 
-    private void TriggerAttackAnimation()
+    public bool TryUseSelectedMove()
     {
-        switch (SelectedMove.Info.AnimationType)
-        {
-            case MoveAnimationType.Melee:
-                Creature.CreatureAnimator.TriggerAttackMelee.Trigger();
-                break;
+        return TryUseMove(SelectedMove);
+    }
 
-            case MoveAnimationType.Projectile:
-                Creature.CreatureAnimator.TriggerAttackProjectile.Trigger();
-                break;
-        }
+    public void UseMove(CreatureMove move)
+    {
+        move.Use();
+        Creature.Combat.CurrentMove = move;
+        Creature.CreatureAnimator.SetCurrentState(move.AnimationState);
+
+        move.AnimationState.OnExit += MoveFinished;
+        move.AnimationState.OnExit += () => move.AnimationState.OnExit -= MoveFinished;
+    }
+
+    private void MoveFinished()
+    {
+        OnMoveFinished?.Invoke(Creature.Combat.CurrentMove);
     }
 
     public bool IsAttacking()
@@ -106,12 +111,20 @@ public partial class CreatureMoves : Node
         var animator = Creature.CreatureAnimator;
         return animator.Current == animator.AttackMelee || animator.Current == animator.AttackProjectile;
     }
+
+    private StateNode GetAnimationState(MoveAnimationType type) => type switch
+    {
+        MoveAnimationType.Melee => Creature.CreatureAnimator.AttackMelee,
+        MoveAnimationType.Projectile => Creature.CreatureAnimator.AttackProjectile,
+        _ => Creature.CreatureAnimator.AttackMelee
+    };
 }
 
 public class CreatureMove
 {
     public MoveInfo Info { get; set; }
     public CreatureCharacter Creature { get; set; }
+    public StateNode AnimationState { get; set; }
     public float TimeCooldownStart { get; set; }
     public float TimeCooldownEnd { get; set; }
     public int TimesUsed { get; set; }

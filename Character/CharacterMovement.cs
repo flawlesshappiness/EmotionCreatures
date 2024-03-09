@@ -62,6 +62,13 @@ public partial class CharacterMovement : Node
         Move(Vector3.Zero);
     }
 
+    public void PlayerInputMove(Vector2 input)
+    {
+        var v3 = new Vector3(input.X, 0, input.Y).Normalized();
+        var direction = CameraBrain.MainCamera.Basis * v3;
+        InputMove(direction);
+    }
+
     public void InputMove(Vector2 input)
     {
         InputMove(new Vector3(input.X, 0, input.Y));
@@ -76,11 +83,6 @@ public partial class CharacterMovement : Node
     private void Move(Vector3 direction)
     {
         Vector3 velocity = Character.Velocity;
-
-        if (IsControlledByPlayer && CameraBrain.MainCamera != null)
-        {
-            direction = CameraBrain.MainCamera.Basis * direction;
-        }
 
         // Add the gravity.
         if (!Character.IsOnFloor())
@@ -127,7 +129,7 @@ public partial class CharacterMovement : Node
     public void AutoMove(Vector3 direction)
     {
         automove_enabled = true;
-        automove_direction = direction;
+        automove_direction = Character.Basis * direction;
     }
 
     public void StopAutoMove()

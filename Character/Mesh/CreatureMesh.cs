@@ -54,7 +54,7 @@ public partial class CreatureMesh : CharacterMesh
             Movement = new()
             {
                 AutoMoveEnabled = true,
-                Direction = Vector3.Forward,
+                Direction = Vector3.Back,
                 Speed = speed,
             }
         });

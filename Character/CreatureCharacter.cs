@@ -74,7 +74,7 @@ public partial class CreatureCharacter : Character
 
     private void AttackPressed()
     {
-        Moves.UseSelectedMove();
+        Moves.TryUseSelectedMove();
     }
 
     public void ApplyEffect(MoveEffect effect)
