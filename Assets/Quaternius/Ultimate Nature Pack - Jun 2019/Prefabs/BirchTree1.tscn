@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0gfa80lds5pl"]
+
+[ext_resource type="ArrayMesh" uid="uid://bebtdyj74su2q" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/OBJ/BirchTree_1.obj" id="1_8w2l3"]
+
+[node name="BirchTree1" type="MeshInstance3D"]
+transform = Transform3D(1, -1.89175e-10, 2.47757e-20, 1.89175e-10, 1, -1.30967e-10, 1.61559e-27, 1.30967e-10, 1, -0.116696, 0, -0.0653045)
+mesh = ExtResource("1_8w2l3")
+skeleton = NodePath("../../../../..")

@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dw4seimeuek4u"]
+
+[ext_resource type="Script" path="res://Environment/EnvironmentRandomizer.cs" id="1_mhwko"]
+[ext_resource type="PackedScene" uid="uid://b0gfa80lds5pl" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/Prefabs/BirchTree1.tscn" id="2_rj8i8"]
+[ext_resource type="PackedScene" uid="uid://b8ew12ftbp46c" path="res://Assets/Quaternius/Ultimate Nature Pack - Jun 2019/Prefabs/BirchTree2.tscn" id="3_mjkni"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2jf71"]
+height = 1.45327
+radius = 0.191889
+
+[node name="BirchTree" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
+script = ExtResource("1_mhwko")
+Prefabs = Array[PackedScene]([ExtResource("2_rj8i8"), ExtResource("3_mjkni")])
+
+[node name="BirchTree1" parent="." instance=ExtResource("2_rj8i8")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.709724, 0)
+shape = SubResource("CylinderShape3D_2jf71")

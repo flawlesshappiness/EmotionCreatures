@@ -15,10 +15,15 @@ public partial class GDHelper
         if (!scene_path.EndsWith(ext)) sb.Append(ext);
         var path = sb.ToString();
 
-        var scene = GD.Load(path) as PackedScene;
-        var packed_scene = scene.Instantiate();
-        Scene.Root.AddChild(packed_scene);
-        var script = packed_scene.GetNodeInChildren<T>();
+        var packed_scene = GD.Load(path) as PackedScene;
+        return Instantiate<T>(packed_scene);
+    }
+
+    public static T Instantiate<T>(PackedScene packed_scene) where T : Node
+    {
+        var node = packed_scene.Instantiate();
+        Scene.Root.AddChild(node);
+        var script = node.GetNodeInChildren<T>();
         return script;
     }
 }
